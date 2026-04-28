@@ -1,5 +1,8 @@
 # DesignToCode
 
+[![Release](https://img.shields.io/github/v/release/fitoe/DesignToCode)](https://github.com/fitoe/DesignToCode/releases)
+![Topics](https://img.shields.io/badge/topics-agent--skills%20%C2%B7%20design--to--code%20%C2%B7%20unocss-blue)
+
 DesignToCode 是一个 Codex skill，用于把分段设计稿图片还原为基于 UnoCSS 的高保真页面代码。
 
 当前版本：`v1.2.0`
