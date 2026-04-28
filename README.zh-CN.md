@@ -5,7 +5,7 @@
 
 DesignToCode 是一个 Codex skill，用于把分段设计稿图片还原为基于 UnoCSS 的高保真页面代码。
 
-当前版本：`v1.2.0`
+当前版本：`v1.2.1`
 
 它面向的不是“参考一下做个差不多”，而是更强调结构和视觉还原的图片转代码流程：
 - 先识别当前项目技术栈
@@ -97,28 +97,31 @@ DesignToCode 采用“项目优先”规则：
 
 ```text
 .
-├── SKILL.md
 ├── RELEASE_NOTES.md
 ├── README.md
+├── README.en.md
 ├── README.zh-CN.md
-├── agents/
-│   └── openai.yaml
-└── references/
-    ├── prompt-shape.md
-    ├── framework-resolution.md
-    ├── pre-implementation-brief.md
-    ├── width-normalization.md
-    ├── media-role-classification.md
-    ├── vue-astro-unocss-output-rules.md
-    ├── playwright-section-diff.md
-    ├── failure-handling.md
-    ├── visual-checklist.md
-    ├── examples.md
-    ├── section-taxonomy.md
-    ├── layer-stack-model.md
-    ├── section-boundary-and-cross-section-rules.md
-    ├── repair-loop-policy.md
-    └── confidence-and-escalation.md
+└── skills/
+    └── design-to-code/
+        ├── SKILL.md
+        ├── agents/
+        │   └── openai.yaml
+        └── references/
+            ├── prompt-shape.md
+            ├── framework-resolution.md
+            ├── pre-implementation-brief.md
+            ├── width-normalization.md
+            ├── media-role-classification.md
+            ├── vue-astro-unocss-output-rules.md
+            ├── playwright-section-diff.md
+            ├── failure-handling.md
+            ├── visual-checklist.md
+            ├── examples.md
+            ├── section-taxonomy.md
+            ├── layer-stack-model.md
+            ├── section-boundary-and-cross-section-rules.md
+            ├── repair-loop-policy.md
+            └── confidence-and-escalation.md
 ```
 
 ## 输入格式
@@ -185,6 +188,6 @@ DesignToCode 采用“项目优先”规则：
 
 ## 相关文件
 
-- skill 主规范：[SKILL.md](SKILL.md)
+- skill 主规范：[skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
 - 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
-- 英文 README：[README.md](README.md)
+- 英文 README：[README.en.md](README.en.md)

@@ -5,7 +5,7 @@
 
 DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
-Current version: `v1.2.0`
+Current version: `v1.2.1`
 
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
 - resolve the current project stack first
@@ -97,29 +97,31 @@ If a critical asset reaches `unresolved`, the skill must stop and ask.
 
 ```text
 .
-├── SKILL.md
 ├── RELEASE_NOTES.md
 ├── README.md
 ├── README.en.md
 ├── README.zh-CN.md
-├── agents/
-│   └── openai.yaml
-└── references/
-    ├── prompt-shape.md
-    ├── framework-resolution.md
-    ├── pre-implementation-brief.md
-    ├── width-normalization.md
-    ├── media-role-classification.md
-    ├── vue-astro-unocss-output-rules.md
-    ├── playwright-section-diff.md
-    ├── failure-handling.md
-    ├── visual-checklist.md
-    ├── examples.md
-    ├── section-taxonomy.md
-    ├── layer-stack-model.md
-    ├── section-boundary-and-cross-section-rules.md
-    ├── repair-loop-policy.md
-    └── confidence-and-escalation.md
+└── skills/
+    └── design-to-code/
+        ├── SKILL.md
+        ├── agents/
+        │   └── openai.yaml
+        └── references/
+            ├── prompt-shape.md
+            ├── framework-resolution.md
+            ├── pre-implementation-brief.md
+            ├── width-normalization.md
+            ├── media-role-classification.md
+            ├── vue-astro-unocss-output-rules.md
+            ├── playwright-section-diff.md
+            ├── failure-handling.md
+            ├── visual-checklist.md
+            ├── examples.md
+            ├── section-taxonomy.md
+            ├── layer-stack-model.md
+            ├── section-boundary-and-cross-section-rules.md
+            ├── repair-loop-policy.md
+            └── confidence-and-escalation.md
 ```
 
 ## Input Shape
@@ -188,5 +190,5 @@ It does not yet include:
 
 - English README: [README.en.md](README.en.md)
 - Chinese skill overview: [README.md](README.md)
-- Skill spec: [SKILL.md](SKILL.md)
+- Skill spec: [skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
 - Release notes: [RELEASE_NOTES.md](RELEASE_NOTES.md)

@@ -5,9 +5,15 @@ description: Convert segmented design images into high-fidelity UnoCSS page code
 
 # DesignToCode
 
-Version: `v1.2.0`
+Version: `v1.2.1`
 
 ## Changelog
+
+### v1.2.1
+
+- moved the skill package to `skills/design-to-code/` so the parent directory matches `name: design-to-code`
+- updated repository documentation to point at the packaged skill location
+- aligned the repository layout with the Agent Skills directory structure expected by skills.sh-style tooling
 
 ### v1.2.0
 
