@@ -2,6 +2,8 @@
 
 DesignToCode 是一个 Codex skill，用于把分段设计稿图片还原为基于 UnoCSS 的高保真页面代码。
 
+当前版本：`v1.2.0`
+
 它面向的不是“参考一下做个差不多”，而是更强调结构和视觉还原的图片转代码流程：
 - 先识别当前项目技术栈
 - 尽量从仓库中判断输出为 `Vue` 或 `Astro`
@@ -31,11 +33,12 @@ DesignToCode 不适用于：
 3. 从仓库推断目标页面宽度，或回退到用户提供的 `pageWidth`。
 4. 按目标页面宽度缩放每个区块设计图。
 5. 分析区块结构、媒体角色、资源情况和实现风险。
-6. 输出强制性的 `Pre-Implementation Brief`。
-7. 等待用户确认。
-8. 按项目匹配框架生成页面代码。
-9. 使用 Playwright 做区块截图 diff。
-10. 输出偏差说明，以及可选的局部修复建议。
+6. 先对当前项目做 design system mapping pass。
+7. 输出强制性的 `Pre-Implementation Brief`。
+8. 等待用户确认。
+9. 按项目匹配框架生成页面代码。
+10. 使用 Playwright 做区块截图 diff。
+11. 输出偏差说明，以及可选的局部修复建议。
 
 ## Pre-Implementation Brief
 
@@ -44,6 +47,8 @@ DesignToCode 不适用于：
 ```md
 ## Page Understanding
 ## Section Breakdown
+## Input Mode
+## Reuse Mapping
 ## Media Role Decisions
 ## Layout Implementation Plan
 ## Framework/Output Plan
@@ -74,11 +79,25 @@ DesignToCode 采用“项目优先”规则：
 
 如果关键视觉角色存在歧义，skill 必须先停下来问，而不是猜。
 
+## 资源解析顺序
+
+资源解析顺序固定为：
+- `provided original`
+- `project existing`
+- `crop fallback`
+- `css reproducible`
+- `unresolved`
+
+如果关键资源落到 `unresolved`，skill 必须停止并追问。
+
 ## 仓库结构
 
 ```text
-DesignToCode/
+.
 ├── SKILL.md
+├── RELEASE_NOTES.md
+├── README.md
+├── README.zh-CN.md
 ├── agents/
 │   └── openai.yaml
 └── references/
@@ -129,7 +148,12 @@ DesignToCode/
 - 将渲染结果与缩放后的区块参考图对比
 - 只容忍轻微字体渲染噪声
 
-同时做结构层面的 smoke check：
+验证拆成三层：
+- structure checks
+- visual checks
+- reuse checks
+
+结构层面的 smoke check 包括：
 - 不允许横向溢出
 - 不允许明显文字重叠
 - 不允许图片变形
@@ -158,5 +182,6 @@ DesignToCode/
 
 ## 相关文件
 
-- skill 主规范：[DesignToCode/SKILL.md](DesignToCode/SKILL.md)
+- skill 主规范：[SKILL.md](SKILL.md)
+- 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
 - 英文 README：[README.md](README.md)

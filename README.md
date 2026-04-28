@@ -2,6 +2,8 @@
 
 DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
+Current version: `v1.2.0`
+
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
 - resolve the current project stack first
 - choose `Vue` or `Astro` from the repo when possible
@@ -31,11 +33,12 @@ DesignToCode is not intended for:
 3. Resolve canonical page width from the repo, or fall back to user-provided `pageWidth`.
 4. Scale each section image to the target page width before analysis.
 5. Analyze section structure, media roles, assets, and implementation risks.
-6. Output a mandatory `Pre-Implementation Brief`.
-7. Wait for user confirmation.
-8. Generate page code in the project-matching framework.
-9. Run Playwright section screenshot diff.
-10. Report mismatches and optional local repair opportunities.
+6. Run a design-system mapping pass against the current project.
+7. Output a mandatory `Pre-Implementation Brief`.
+8. Wait for user confirmation.
+9. Generate page code in the project-matching framework.
+10. Run Playwright section screenshot diff.
+11. Report mismatches and optional local repair opportunities.
 
 ## Pre-Implementation Brief
 
@@ -44,6 +47,8 @@ Before any code generation, the skill must output:
 ```md
 ## Page Understanding
 ## Section Breakdown
+## Input Mode
+## Reuse Mapping
 ## Media Role Decisions
 ## Layout Implementation Plan
 ## Framework/Output Plan
@@ -74,11 +79,25 @@ Default mapping:
 
 If a critical visual is ambiguous, the skill must stop and ask instead of guessing.
 
+## Asset Resolution
+
+Asset resolution follows this order:
+- `provided original`
+- `project existing`
+- `crop fallback`
+- `css reproducible`
+- `unresolved`
+
+If a critical asset reaches `unresolved`, the skill must stop and ask.
+
 ## Repository Layout
 
 ```text
-DesignToCode/
+.
 ├── SKILL.md
+├── RELEASE_NOTES.md
+├── README.md
+├── README.zh-CN.md
 ├── agents/
 │   └── openai.yaml
 └── references/
@@ -129,7 +148,12 @@ Primary verification is section-level screenshot diff with Playwright:
 - compare rendered section against scaled reference image
 - tolerate only minor font-rendering noise
 
-Structural smoke checks also apply:
+Validation is split into:
+- structure checks
+- visual checks
+- reuse checks
+
+Structural smoke checks include:
 - no horizontal overflow
 - no obvious text overlap
 - no image distortion
@@ -158,5 +182,6 @@ It does not yet include:
 
 ## Related Files
 
-- English skill spec: [DesignToCode/SKILL.md](DesignToCode/SKILL.md)
+- English skill spec: [SKILL.md](SKILL.md)
+- Release notes: [RELEASE_NOTES.md](RELEASE_NOTES.md)
 - Chinese README: [README.zh-CN.md](README.zh-CN.md)

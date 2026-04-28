@@ -7,6 +7,8 @@ Emit this before any page code. Wait for user confirmation.
 ```md
 ## Page Understanding
 ## Section Breakdown
+## Input Mode
+## Reuse Mapping
 ## Media Role Decisions
 ## Layout Implementation Plan
 ## Framework/Output Plan
@@ -25,6 +27,16 @@ Emit this before any page code. Wait for user confirmation.
 - section order
 - purpose of each section
 - primary content vs decoration
+
+### `Input Mode`
+- chosen mode: `image-only mode` / `metadata-assisted mode` / `figma-assisted mode`
+- why this mode applies
+- confidence limits implied by this mode
+
+### `Reuse Mapping`
+- section or pattern -> existing component / layout primitive / token
+- mark bespoke implementations explicitly
+- note ambiguous mappings that need confirmation
 
 ### `Media Role Decisions`
 - which visuals are `background`
@@ -51,6 +63,7 @@ Emit this before any page code. Wait for user confirmation.
 ### `Verification Plan`
 - which sections will be diffed
 - which must-not-miss points get manual attention
+- which reuse or approximation decisions need special checking
 
 ## Hard Rule
 
