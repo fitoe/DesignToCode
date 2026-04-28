@@ -1,5 +1,22 @@
 # Release Notes
 
+## v1.2.2 - 2026-04-28
+
+Published license and metadata cleanup for the packaged skill.
+
+Highlights:
+- added an MIT `LICENSE` file at the repository root
+- added `license: MIT` to the skill frontmatter
+- updated repository READMEs to link the license file
+- reduced `gh skill publish --dry-run` warnings to tag-protection guidance only
+
+Published files:
+- `LICENSE`
+- `skills/design-to-code/SKILL.md`
+- `README.md`
+- `README.en.md`
+- `README.zh-CN.md`
+
 ## v1.2.1 - 2026-04-28
 
 Published a skills.sh-compatible package layout.
