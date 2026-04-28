@@ -1,6 +1,7 @@
 ---
 name: design-to-code
 description: Convert segmented design images into high-fidelity UnoCSS page code for the current project stack, resolving Vue vs Astro from the repo, requiring a pre-implementation brief before code generation, and verifying output with Playwright section screenshot diffs.
+license: MIT
 ---
 
 # DesignToCode

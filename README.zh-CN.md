@@ -97,6 +97,7 @@ DesignToCode 采用“项目优先”规则：
 
 ```text
 .
+├── LICENSE
 ├── RELEASE_NOTES.md
 ├── README.md
 ├── README.en.md
@@ -189,5 +190,6 @@ DesignToCode 采用“项目优先”规则：
 ## 相关文件
 
 - skill 主规范：[skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
+- 许可证：[LICENSE](LICENSE)
 - 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
 - 英文 README：[README.en.md](README.en.md)

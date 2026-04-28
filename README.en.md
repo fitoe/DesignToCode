@@ -97,6 +97,7 @@ If a critical asset reaches `unresolved`, the skill must stop and ask.
 
 ```text
 .
+├── LICENSE
 ├── RELEASE_NOTES.md
 ├── README.md
 ├── README.en.md
@@ -191,4 +192,5 @@ It does not yet include:
 - English README: [README.en.md](README.en.md)
 - Chinese skill overview: [README.md](README.md)
 - Skill spec: [skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
+- License: [LICENSE](LICENSE)
 - Release notes: [RELEASE_NOTES.md](RELEASE_NOTES.md)
