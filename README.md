@@ -1,6 +1,6 @@
-# Design2Code
+# DESIGNTOCODE
 
-Design2Code is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
+DESIGNTOCODE is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
 - resolve the current project stack first
@@ -12,13 +12,13 @@ It is built for image-to-code workflows where the goal is not “rough inspirati
 
 ## Scope
 
-Design2Code is intended for:
+DESIGNTOCODE is intended for:
 - segmented page-design screenshots
 - existing `Vue` or `Astro` projects
 - new page implementation with UnoCSS
 - high-fidelity landing pages, marketing pages, dashboards, feature pages
 
-Design2Code is not intended for:
+DESIGNTOCODE is not intended for:
 - Figma-node to code workflows
 - backend or API generation
 - vague “make something like this” prompts
@@ -55,7 +55,7 @@ No page code should be generated until the user confirms this brief.
 
 ## Framework Resolution
 
-Design2Code is project-first:
+DESIGNTOCODE is project-first:
 - `Vue` project -> generate Vue page/component
 - `Astro` project -> generate Astro page/component
 - mixed or unclear repo -> stop and ask
@@ -77,7 +77,7 @@ If a critical visual is ambiguous, the skill must stop and ask instead of guessi
 ## Repository Layout
 
 ```text
-design2code/
+DESIGNTOCODE/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
@@ -158,5 +158,5 @@ It does not yet include:
 
 ## Related Files
 
-- English skill spec: [design2code/SKILL.md](design2code/SKILL.md)
+- English skill spec: [DESIGNTOCODE/SKILL.md](DESIGNTOCODE/SKILL.md)
 - Chinese README: [README.zh-CN.md](README.zh-CN.md)
