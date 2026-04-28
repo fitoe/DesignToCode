@@ -11,6 +11,9 @@ Generate project-matching page code. Do not cross frameworks unless user correct
 - semantic buttons, links, headings, lists where obvious
 - content images get `alt`
 - backgrounds must not carry essential information alone
+- final output must not reference remote asset URLs
+- Figma-derived images, icons, illustrations, and svg assets must be downloaded into local project files before use
+- svg must be referenced as local `.svg` files; do not inline raw svg markup in page code
 
 ## Abstraction Rules
 

@@ -6,9 +6,14 @@ license: MIT
 
 # DesignToCode
 
-Version: `v1.2.1`
+Version: `v1.2.2`
 
 ## Changelog
+
+### v1.2.2
+
+- added mandatory local-asset rule for Figma-derived resources: download every remote image or svg to project files before use
+- forbade direct remote asset URLs and inline svg markup in generated page output
 
 ### v1.2.1
 
@@ -170,6 +175,9 @@ Rules:
 - if a real asset is available, use it; do not silently replace it
 - do not invent logos, icons, or illustrations without explicit permission
 - do not silently downgrade missing assets into placeholders
+- remote Figma or CDN asset URLs are not allowed in final page code
+- when a Figma-derived image, svg, icon, or illustration is used, download it into local project files first, then reference that file
+- svg assets must be stored as `.svg` files and referenced as files; do not inline raw svg markup into page code
 - if crop fallback is used, record it explicitly
 - unresolved critical assets are a hard stop
 - background visuals should become CSS background layers when appropriate
@@ -227,6 +235,8 @@ Hard rules:
 - use `data-section="..."` anchors for each major section
 - content images get semantic `<img>` or `<picture>`
 - background visuals become CSS background layers
+- do not reference remote asset URLs in final output
+- do not inline svg source in page markup; reference local svg files instead
 - preserve minimum accessibility floor
 - keep abstractions minimal; only factor repeated structure when same pattern repeats 3 or more times
 
