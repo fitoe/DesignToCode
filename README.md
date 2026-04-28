@@ -3,49 +3,49 @@
 [![Release](https://img.shields.io/github/v/release/fitoe/DesignToCode)](https://github.com/fitoe/DesignToCode/releases)
 ![Topics](https://img.shields.io/badge/topics-agent--skills%20%C2%B7%20design--to--code%20%C2%B7%20unocss-blue)
 
-DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
+DesignToCode 是一个 Codex skill，用于把分段设计稿图片还原为基于 UnoCSS 的高保真页面代码。
 
-Current version: `v1.2.0`
+当前版本：`v1.2.0`
 
-It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
-- resolve the current project stack first
-- choose `Vue` or `Astro` from the repo when possible
-- normalize design sections to the target page width
-- classify visuals as CSS background vs semantic content image
-- emit a mandatory pre-implementation brief before writing code
-- verify output with Playwright section screenshot diffs
+它面向的不是“参考一下做个差不多”，而是更强调结构和视觉还原的图片转代码流程：
+- 先识别当前项目技术栈
+- 尽量从仓库中判断输出为 `Vue` 或 `Astro`
+- 先按目标页面宽度缩放设计图区块，再做分析
+- 识别视觉元素应落为 CSS 背景还是语义图片
+- 写代码前必须先输出 `Pre-Implementation Brief`
+- 最后通过 Playwright 做区块级截图 diff 校验
 
-## Scope
+## 适用范围
 
-DesignToCode is intended for:
-- segmented page-design screenshots
-- existing `Vue` or `Astro` projects
-- new page implementation with UnoCSS
-- high-fidelity landing pages, marketing pages, dashboards, feature pages
+DesignToCode 适用于：
+- 按区块切分好的页面设计截图
+- 现有 `Vue` 或 `Astro` 项目
+- 基于 UnoCSS 的新页面实现
+- 高保真落地页、营销页、dashboard、功能展示页
 
-DesignToCode is not intended for:
-- Figma-node to code workflows
-- backend or API generation
-- vague “make something like this” prompts
-- framework-agnostic final output
+DesignToCode 不适用于：
+- Figma 节点直接转代码
+- 后端或 API 生成
+- “照着这个随便做个类似的” 这类模糊需求
+- 最终输出为框架无关伪代码
 
-## Core Workflow
+## 核心流程
 
-1. Read ordered section images and notes.
-2. Inspect the current project to resolve framework and layout conventions.
-3. Resolve canonical page width from the repo, or fall back to user-provided `pageWidth`.
-4. Scale each section image to the target page width before analysis.
-5. Analyze section structure, media roles, assets, and implementation risks.
-6. Run a design-system mapping pass against the current project.
-7. Output a mandatory `Pre-Implementation Brief`.
-8. Wait for user confirmation.
-9. Generate page code in the project-matching framework.
-10. Run Playwright section screenshot diff.
-11. Report mismatches and optional local repair opportunities.
+1. 读取按顺序排列的区块图片和说明。
+2. 检查当前项目，识别框架和页面约定。
+3. 从仓库推断目标页面宽度，或回退到用户提供的 `pageWidth`。
+4. 按目标页面宽度缩放每个区块设计图。
+5. 分析区块结构、媒体角色、资源情况和实现风险。
+6. 先对当前项目做 design system mapping pass。
+7. 输出强制性的 `Pre-Implementation Brief`。
+8. 等待用户确认。
+9. 按项目匹配框架生成页面代码。
+10. 使用 Playwright 做区块截图 diff。
+11. 输出偏差说明，以及可选的局部修复建议。
 
 ## Pre-Implementation Brief
 
-Before any code generation, the skill must output:
+在真正生成代码前，skill 必须先输出：
 
 ```md
 ## Page Understanding
@@ -59,47 +59,48 @@ Before any code generation, the skill must output:
 ## Verification Plan
 ```
 
-No page code should be generated until the user confirms this brief.
+在用户确认这份 brief 之前，不应开始生成页面代码。
 
-## Framework Resolution
+## 框架判定
 
-DesignToCode is project-first:
-- `Vue` project -> generate Vue page/component
-- `Astro` project -> generate Astro page/component
-- mixed or unclear repo -> stop and ask
+DesignToCode 采用“项目优先”规则：
+- `Vue` 项目 -> 生成 Vue 页面/组件
+- `Astro` 项目 -> 生成 Astro 页面/组件
+- 仓库混合或不清晰 -> 停止并询问
 
-The skill does not silently default to Vue or Astro.
+不会静默默认 Vue，也不会静默默认 Astro。
 
-## Media Role Rules
+## 媒体角色规则
 
-Every important visual media element is classified as either:
+每个重要视觉媒体元素都要先判定为：
 - `background`
 - `content image`
 
-Default mapping:
+默认映射：
 - `background` -> CSS background
-- `content image` -> `<img>` or `<picture>`
+- `content image` -> `<img>` 或 `<picture>`
 
-If a critical visual is ambiguous, the skill must stop and ask instead of guessing.
+如果关键视觉角色存在歧义，skill 必须先停下来问，而不是猜。
 
-## Asset Resolution
+## 资源解析顺序
 
-Asset resolution follows this order:
+资源解析顺序固定为：
 - `provided original`
 - `project existing`
 - `crop fallback`
 - `css reproducible`
 - `unresolved`
 
-If a critical asset reaches `unresolved`, the skill must stop and ask.
+如果关键资源落到 `unresolved`，skill 必须停止并追问。
 
-## Repository Layout
+## 仓库结构
 
 ```text
 .
 ├── SKILL.md
 ├── RELEASE_NOTES.md
 ├── README.md
+├── README.en.md
 ├── README.zh-CN.md
 ├── agents/
 │   └── openai.yaml
@@ -121,70 +122,71 @@ If a critical asset reaches `unresolved`, the skill must stop and ask.
     └── confidence-and-escalation.md
 ```
 
-## Input Shape
+## 输入格式
 
-Canonical input:
+推荐输入格式：
 
 ```text
-Goal: page purpose
+目标：页面用途
 
-Global requirements:
-- target project: existing project / new page
-- pageWidth: 1440
-- style keywords: ...
-- acceptable approximations: ...
+全局要求：
+- 目标项目：现有项目 / 新页面
+- pageWidth：1440
+- 风格关键词：...
+- 允许近似项：...
 
-Section 1:
-- name: hero
-- image: /path/hero.png
-- purpose: hero with left text and right visual
-- required text: ...
-- interactions: button hover
-- must-not-miss points: title wrap, CTA hierarchy
-- media notes: gradient background, right-side content image
+区块 1：
+- 名称：hero
+- 图片：/path/hero.png
+- 说明：首屏，左文右图
+- 必须出现文案：...
+- 交互要求：按钮 hover
+- 不能错的点：标题换行、主 CTA 层级
+- 媒体说明：背景有渐变纹理；右侧是内容主图
 ```
 
-## Verification
+## 验证方式
 
-Primary verification is section-level screenshot diff with Playwright:
-- target sections using `data-section`
-- compare rendered section against scaled reference image
-- tolerate only minor font-rendering noise
+主验证方式是 Playwright 区块级截图 diff：
+- 通过 `data-section` 锚点锁定区块
+- 将渲染结果与缩放后的区块参考图对比
+- 只容忍轻微字体渲染噪声
 
-Validation is split into:
+验证拆成三层：
 - structure checks
 - visual checks
 - reuse checks
 
-Structural smoke checks include:
-- no horizontal overflow
-- no obvious text overlap
-- no image distortion
-- no missing critical section content
-- no invisible main CTA
+结构层面的 smoke check 包括：
+- 不允许横向溢出
+- 不允许明显文字重叠
+- 不允许图片变形
+- 不允许关键区块内容丢失
+- 不允许主 CTA 不可见
 
-## Hard Stop Conditions
+## 强制停止条件
 
-The skill must stop and ask when:
-- target framework is unresolved
-- target width is unresolved
-- required text is unreadable and not supplied
-- critical media role is ambiguous
-- critical asset is missing and crop fallback is unusable
-- key layout relationship cannot be inferred safely
-- user has not confirmed the pre-implementation brief
+以下情况必须停止并追问：
+- 目标框架无法确定
+- 目标页面宽度无法确定
+- 必需文案无法识别且用户未提供
+- 关键视觉的媒体角色存在歧义
+- 关键资源缺失且截图裁切也无法可靠替代
+- 核心布局关系无法安全推断
+- 用户尚未确认 pre-implementation brief
 
-## Current Status
+## 当前状态
 
-This repository currently contains the skill specification and reference documents.
+当前仓库已包含 skill 规范和参考文档。
 
-It does not yet include:
-- a runnable implementation harness
-- automated validator scripts inside this repo
-- end-to-end example execution outputs
+还未包含：
+- 仓库内可直接执行的实现 harness
+- 仓库内自动校验脚本
+- 端到端示例运行结果
 
-## Related Files
+## 相关文件
 
-- English skill spec: [SKILL.md](SKILL.md)
-- Release notes: [RELEASE_NOTES.md](RELEASE_NOTES.md)
-- Chinese README: [README.zh-CN.md](README.zh-CN.md)
+- 中文主文档：[README.md](README.md)
+- English README: [README.en.md](README.en.md)
+- skill 主规范：[SKILL.md](SKILL.md)
+- 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
