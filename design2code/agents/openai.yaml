@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design2Code"
+  short_description: "Convert design images into high-fidelity UnoCSS pages."
+  default_prompt: "Use $design2code to turn segmented design images into a project-matched UnoCSS page after a pre-implementation brief."
