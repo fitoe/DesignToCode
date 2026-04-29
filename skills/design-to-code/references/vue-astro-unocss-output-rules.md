@@ -14,6 +14,7 @@ Generate project-matching page code. Do not cross frameworks unless user correct
 - final output must not reference remote asset URLs
 - Figma-derived images, icons, illustrations, and svg assets must be downloaded into local project files before use
 - svg must be referenced as local `.svg` files; do not inline raw svg markup in page code
+- large bitmap assets should follow the repository asset-compression policy before final output is considered complete
 
 ## Abstraction Rules
 

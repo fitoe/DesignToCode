@@ -1,5 +1,29 @@
 # Release Notes
 
+## v1.3.0 - 2026-04-29
+
+Added role-based image compression governance for bitmap assets.
+
+Highlights:
+- added scanner and optimizer tooling for repository asset hygiene
+- added `Asset Compression Policy` guidance to the skill and reference docs
+- expanded the pre-implementation brief and verification flow with compression reporting
+
+Published files:
+- `package.json`
+- `package-lock.json`
+- `asset-policy.config.json`
+- `scripts/asset-policy/`
+- `tests/asset-policy/`
+- `skills/design-to-code/SKILL.md`
+- `skills/design-to-code/references/asset-compression-rules.md`
+- `skills/design-to-code/references/pre-implementation-brief.md`
+- `skills/design-to-code/references/visual-checklist.md`
+- `skills/design-to-code/references/vue-astro-unocss-output-rules.md`
+- `README.md`
+- `README.en.md`
+- `README.zh-CN.md`
+
 ## v1.2.2 - 2026-04-28
 
 Published license and metadata cleanup for the packaged skill.

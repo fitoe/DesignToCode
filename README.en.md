@@ -5,7 +5,7 @@
 
 DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
-Current version: `v1.2.1`
+Current version: `v1.3.0`
 
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
 - resolve the current project stack first
@@ -53,6 +53,7 @@ Before any code generation, the skill must output:
 ## Input Mode
 ## Reuse Mapping
 ## Media Role Decisions
+## Asset Compression Plan
 ## Layout Implementation Plan
 ## Framework/Output Plan
 ## Known Ambiguities
@@ -93,6 +94,12 @@ Asset resolution follows this order:
 
 If a critical asset reaches `unresolved`, the skill must stop and ask.
 
+## Asset Compression Policy
+
+- bitmap assets must follow role-based compression rules
+- large assets should be scanned before merge
+- fallback and exemption cases must be reported explicitly
+
 ## Repository Layout
 
 ```text
@@ -112,6 +119,7 @@ If a critical asset reaches `unresolved`, the skill must stop and ask.
             ├── framework-resolution.md
             ├── pre-implementation-brief.md
             ├── width-normalization.md
+            ├── asset-compression-rules.md
             ├── media-role-classification.md
             ├── vue-astro-unocss-output-rules.md
             ├── playwright-section-diff.md

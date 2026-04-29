@@ -10,6 +10,7 @@ Emit this before any page code. Wait for user confirmation.
 ## Input Mode
 ## Reuse Mapping
 ## Media Role Decisions
+## Asset Compression Plan
 ## Layout Implementation Plan
 ## Framework/Output Plan
 ## Known Ambiguities
@@ -42,6 +43,12 @@ Emit this before any page code. Wait for user confirmation.
 - which visuals are `background`
 - which visuals are `content image`
 - asset fallback assumptions
+
+### `Asset Compression Plan`
+- asset role summary for new or changed bitmap assets
+- which assets should stay original, be optimized, or be replaced with vector/CSS output
+- fallback asset status
+- exemption candidates and reasons
 
 ### `Layout Implementation Plan`
 - layout system per section

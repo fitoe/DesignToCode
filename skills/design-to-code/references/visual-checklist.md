@@ -22,6 +22,8 @@ Use this after code generation and section diff.
 - background vs content-image choices still look correct
 - images not stretched
 - decorative layers not missing where visually critical
+- optimized assets still preserve acceptable visual fidelity
+- new bitmap assets use the expected local format where practical
 
 ## Interaction
 

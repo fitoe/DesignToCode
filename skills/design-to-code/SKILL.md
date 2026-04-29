@@ -6,9 +6,15 @@ license: MIT
 
 # DesignToCode
 
-Version: `v1.2.2`
+Version: `v1.3.0`
 
 ## Changelog
+
+### v1.3.0
+
+- added role-based image compression governance for bitmap assets
+- added repository-local scanner and optimizer commands for asset hygiene
+- expanded the mandatory brief and verification flow with compression reporting
 
 ### v1.2.2
 
@@ -183,6 +189,20 @@ Rules:
 - background visuals should become CSS background layers when appropriate
 - semantic content images should remain `<img>` or `<picture>`
 
+## Asset Compression Policy
+
+Large bitmap assets must follow role-based compression rules in addition to provenance rules.
+
+Use [references/asset-compression-rules.md](references/asset-compression-rules.md).
+
+Rules:
+- classify bitmap assets as `critical content image`, `decorative bitmap`, `ui/icon-like asset`, or `crop fallback / temporary asset`
+- prefer `webp` for bitmap content unless fidelity or transparency constraints justify an exception
+- prefer `svg` for icon-like assets where vector output is available
+- run repository-local asset scanning before merge when new bitmap assets are introduced
+- record fallback and exemption cases explicitly in the brief and final report
+- do not silently keep oversized originals when a compliant optimized asset is expected
+
 ## Asset Resolution Escalation
 
 Resolve assets in this order:
@@ -209,6 +229,7 @@ Required sections:
 - `Input Mode`
 - `Reuse Mapping`
 - `Media Role Decisions`
+- `Asset Compression Plan`
 - `Layout Implementation Plan`
 - `Framework/Output Plan`
 - `Known Ambiguities`
@@ -217,6 +238,7 @@ Required sections:
 Rules:
 - `Reuse Mapping` must list the intended mapping between inferred design elements and existing project components, layout primitives, and tokens
 - `Input Mode` must state the chosen mode and its confidence limits
+- `Asset Compression Plan` must summarize asset roles, planned compression actions, fallback status, and exemption candidates
 - no code generation before user confirms brief
 - if critical ambiguity remains, do not proceed
 - user corrections override prior inference
@@ -270,6 +292,7 @@ Visual checks:
 Reuse checks:
 - token reuse is preferred wherever visual parity is preserved
 - asset substitutions, if any, are explicitly reported
+- asset size/format compliance is explicitly reported for new or changed bitmap assets
 - implementation does not introduce unnecessary one-off abstractions
 
 Also run [references/visual-checklist.md](references/visual-checklist.md).

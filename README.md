@@ -5,7 +5,7 @@
 
 DesignToCode 是一个 Codex skill，用于把分段设计稿图片还原为基于 UnoCSS 的高保真页面代码。
 
-当前版本：`v1.2.1`
+当前版本：`v1.3.0`
 
 它面向的不是“参考一下做个差不多”，而是更强调结构和视觉还原的图片转代码流程：
 - 先识别当前项目技术栈
@@ -53,6 +53,7 @@ DesignToCode 不适用于：
 ## Input Mode
 ## Reuse Mapping
 ## Media Role Decisions
+## Asset Compression Plan
 ## Layout Implementation Plan
 ## Framework/Output Plan
 ## Known Ambiguities
@@ -93,6 +94,12 @@ DesignToCode 采用“项目优先”规则：
 
 如果关键资源落到 `unresolved`，skill 必须停止并追问。
 
+## 资源压缩策略
+
+- 位图资源需要遵循基于角色的压缩规则
+- 新增大图在合入前应先经过扫描检查
+- fallback 和 exemption 情况必须显式记录
+
 ## 仓库结构
 
 ```text
@@ -112,6 +119,7 @@ DesignToCode 采用“项目优先”规则：
             ├── framework-resolution.md
             ├── pre-implementation-brief.md
             ├── width-normalization.md
+            ├── asset-compression-rules.md
             ├── media-role-classification.md
             ├── vue-astro-unocss-output-rules.md
             ├── playwright-section-diff.md
