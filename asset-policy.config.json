@@ -1,0 +1,37 @@
+{
+  "scanDirs": [
+    "."
+  ],
+  "ignoreDirs": [
+    ".git",
+    "node_modules"
+  ],
+  "roles": {
+    "critical-content-image": {
+      "preferredFormat": "webp",
+      "softLimitKb": 400,
+      "hardLimitKb": 800,
+      "maxDisplayScale": 3
+    },
+    "decorative-bitmap": {
+      "preferredFormat": "webp",
+      "softLimitKb": 250,
+      "hardLimitKb": 500,
+      "maxDisplayScale": 3
+    },
+    "ui-icon-like-asset": {
+      "preferredFormat": "svg",
+      "softLimitKb": 80,
+      "hardLimitKb": 150,
+      "maxDisplayScale": 3
+    },
+    "crop-fallback-temporary-asset": {
+      "preferredFormat": "webp",
+      "softLimitKb": 250,
+      "hardLimitKb": 500,
+      "maxDisplayScale": 3
+    }
+  },
+  "roleOverrides": [],
+  "exemptions": []
+}

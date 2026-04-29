@@ -1,0 +1,13 @@
+{
+  "name": "design-to-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/asset-policy/*.test.mjs",
+    "scan-assets": "node scripts/asset-policy/scan-assets.mjs",
+    "optimize-assets": "node scripts/asset-policy/optimize-assets.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.34.2"
+  }
+}
