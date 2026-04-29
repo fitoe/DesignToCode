@@ -1,0 +1,29 @@
+name: Asset Policy
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  scan-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run asset scan
+        run: npm run scan-assets -- --ci
