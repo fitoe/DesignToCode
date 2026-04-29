@@ -6,45 +6,6 @@ license: MIT
 
 # DesignToCode
 
-Version: `v1.3.0`
-
-## Changelog
-
-### v1.3.0
-
-- added role-based image compression governance for bitmap assets
-- added repository-local scanner and optimizer commands for asset hygiene
-- expanded the mandatory brief and verification flow with compression reporting
-
-### v1.2.2
-
-- added mandatory local-asset rule for Figma-derived resources: download every remote image or svg to project files before use
-- forbade direct remote asset URLs and inline svg markup in generated page output
-
-### v1.2.1
-
-- moved the skill package to `skills/design-to-code/` so the parent directory matches `name: design-to-code`
-- updated repository documentation to point at the packaged skill location
-- aligned the repository layout with the Agent Skills directory structure expected by skills.sh-style tooling
-
-### v1.2.0
-
-- added explicit `Input Modes` to distinguish image-only, metadata-assisted, and figma-assisted workflows
-- added a mandatory `Design System Mapping Pass` before page code generation
-- added `Deviation Policy` to prefer project tokens with explicit approximation reporting
-- added `Asset Resolution Escalation` to formalize asset fallback order and stop conditions
-- split verification into `Structure Checks`, `Visual Checks`, and `Reuse Checks`
-- synchronized `Pre-Implementation Brief` requirements across the main skill and reference docs
-
-### v1.1.0
-
-- added `Input Precision Ladder` to distinguish node-aware, metadata-aware, and image-only inputs
-- added `Design System Reuse Rules` to enforce component/token reuse before bespoke implementation
-- added `Asset Provenance and Media Rules` to make asset sourcing explicit and auditable
-- added `Scoped Fallback Strategy` to reduce scope when whole-page inference is unsafe
-- expanded `Pre-Implementation Brief` with required `Reuse Mapping`
-- expanded verification checks to cover token reuse, asset substitutions, cross-section continuity, and unnecessary one-off abstractions
-
 ## Overview
 
 Use this skill when user wants to turn image-based design sections into high-fidelity page code with UnoCSS.

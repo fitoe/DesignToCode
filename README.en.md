@@ -5,8 +5,6 @@
 
 DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
-Current version: `v1.3.0`
-
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
 - resolve the current project stack first
 - choose `Vue` or `Astro` from the repo when possible

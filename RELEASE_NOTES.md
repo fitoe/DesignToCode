@@ -1,5 +1,21 @@
 # Release Notes
 
+## v1.3.1 - 2026-04-29
+
+Moved version and changelog metadata out of the README and skill spec.
+
+Highlights:
+- removed inline version labels from `README.md`, `README.en.md`, and `README.zh-CN.md`
+- removed the embedded version and changelog section from `skills/design-to-code/SKILL.md`
+- kept release history only in `RELEASE_NOTES.md`
+
+Published files:
+- `README.md`
+- `README.en.md`
+- `README.zh-CN.md`
+- `skills/design-to-code/SKILL.md`
+- `RELEASE_NOTES.md`
+
 ## v1.3.0 - 2026-04-29
 
 Added role-based image compression governance for bitmap assets.
