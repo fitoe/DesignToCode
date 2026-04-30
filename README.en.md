@@ -3,6 +3,12 @@
 [![Release](https://img.shields.io/github/v/release/fitoe/DesignToCode)](https://github.com/fitoe/DesignToCode/releases)
 ![Topics](https://img.shields.io/badge/topics-agent--skills%20%C2%B7%20design--to--code%20%C2%B7%20unocss-blue)
 
+Install:
+
+```bash
+npx skills add fitoe/DesignToCode
+```
+
 DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
