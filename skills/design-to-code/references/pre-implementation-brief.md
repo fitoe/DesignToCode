@@ -28,6 +28,7 @@ Emit this before any page code. Wait for user confirmation.
 - section order
 - purpose of each section
 - primary content vs decoration
+- shell scope vs inner container scope when a section is full-bleed
 
 ### `Input Mode`
 - chosen mode: `image-only mode` / `metadata-assisted mode` / `figma-assisted mode`
@@ -52,6 +53,8 @@ Emit this before any page code. Wait for user confirmation.
 
 ### `Layout Implementation Plan`
 - layout system per section
+- shell ownership of background layers, if any
+- inner container width/alignment
 - shared container width assumptions
 - spacing rhythm
 - likely responsive constraints
@@ -69,6 +72,7 @@ Emit this before any page code. Wait for user confirmation.
 
 ### `Verification Plan`
 - which sections will be diffed
+- which sections need shell coverage checks
 - which must-not-miss points get manual attention
 - which reuse or approximation decisions need special checking
 

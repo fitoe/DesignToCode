@@ -25,12 +25,14 @@ Use taxonomy to stabilize layout reasoning. Do not force a type when evidence is
 - dominant headline
 - primary CTA
 - large media or backdrop
+- may use a full-bleed section shell with a centered inner container
 
 ### `feature-grid`
 - repeated cards in 2-4 columns
 
 ### `feature-split`
 - left/right text-media split
+- may use a full-bleed shell with inner container alignment when the background spans the viewport
 
 ### `pricing`
 - repeated plan cards
@@ -40,6 +42,7 @@ Use taxonomy to stabilize layout reasoning. Do not force a type when evidence is
 
 ### `dashboard-panel`
 - data blocks, charts, shell chrome
+- may use a shell/container split when the panel spans the viewport
 
 ## Use
 

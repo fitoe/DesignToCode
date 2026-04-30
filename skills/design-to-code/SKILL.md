@@ -122,6 +122,7 @@ Rules:
 
 For each section:
 - identify likely section type; see [references/section-taxonomy.md](references/section-taxonomy.md)
+- identify whether the section uses a full-bleed shell with an inner content container
 - identify layout system: `flex`, `grid`, or `overlay/absolute`
 - build internal layer stack; see [references/layer-stack-model.md](references/layer-stack-model.md)
 - classify visual media; see [references/media-role-classification.md](references/media-role-classification.md)
@@ -239,6 +240,8 @@ Verify with Playwright section screenshot diff using [references/playwright-sect
 
 Structure checks:
 - section order matches the intended reading flow
+- full-bleed section shells remain full-width when the evidence supports them
+- inner content containers stay aligned to canonical page/container width
 - no horizontal overflow
 - no obvious text overlap
 - no broken section hierarchy

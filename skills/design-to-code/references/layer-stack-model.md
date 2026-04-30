@@ -4,6 +4,8 @@ Model each section as stacked layers before coding.
 
 ## Layers
 
+- `section-shell`
+- `inner-container`
 - `base-background`
 - `decorative-overlay`
 - `content-media`
@@ -13,26 +15,32 @@ Model each section as stacked layers before coding.
 ## Purpose
 
 This prevents confusion between:
+- shell vs inner container
 - background vs semantic media
 - decoration vs content
 - overlay vs independent block
 
 ## Common Patterns
 
+### Section Shell
+- shell: full-bleed background, texture, or bleed field
+- inner container: centered content width with readable rhythm
+- content stack: text, CTA, and semantic media
+
 ### Hero
-- base background: gradient/photo/texture
-- decorative overlay: mask/noise/glow
-- content media: product shot or illustration
-- text content: heading, copy, CTA
+- shell base background: gradient/photo/texture
+- shell decorative overlay: mask/noise/glow
+- inner container content media: product shot or illustration
+- inner container text content: heading, copy, CTA
 
 ### Card Grid
-- base background: page/card field
-- content media: icon or illustration
-- text content: card copy
+- shell base background: page/card field
+- inner container content media: icon or illustration
+- inner container text content: card copy
 
 ### Split Section
-- one side text
-- one side content media
+- shell can be full-bleed when the background spans the viewport
+- inner container can hold one side text and one side content media
 - optional floating accent on top
 
 ## Rule

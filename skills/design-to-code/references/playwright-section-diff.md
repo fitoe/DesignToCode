@@ -25,6 +25,7 @@ Optional debug aids:
 
 ## Non-Tolerated Differences
 
+- full-bleed shell collapsed into a boxed container
 - wrong section width or alignment
 - broken hierarchy
 - visible text overlap
@@ -34,6 +35,7 @@ Optional debug aids:
 
 ## Failure Categories
 
+- shell/container boundary error
 - width normalization error
 - hierarchy/layout error
 - text wrap/typography error
@@ -46,4 +48,5 @@ Optional debug aids:
 Default first action:
 - report failed sections
 - report likely categories
+- call out whether the shell or inner container failed
 - do not silently regenerate whole page

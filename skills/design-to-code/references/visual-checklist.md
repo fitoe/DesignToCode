@@ -4,6 +4,8 @@ Use this after code generation and section diff.
 
 ## Core Fidelity
 
+- full-bleed shells stay full-bleed when intended
+- inner content containers stay centered and aligned
 - section order correct
 - shared container widths consistent
 - dominant hierarchy matches design
@@ -36,6 +38,7 @@ Use this after code generation and section diff.
 - no catastrophic overlap
 - no empty critical section
 - no invisible primary CTA
+- shell/background field not accidentally boxed in
 
 ## Mobile Floor
 
