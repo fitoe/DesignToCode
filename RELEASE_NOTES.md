@@ -1,5 +1,17 @@
 # Release Notes
 
+## v1.3.2 - 2026-04-30
+
+Stopped tracking the `docs/` directory in git.
+
+Highlights:
+- added `docs/` to `.gitignore`
+- removed the tracked design spec at `docs/superpowers/specs/2026-04-29-image-asset-compression-design.md`
+
+Published files:
+- `.gitignore`
+- `docs/superpowers/specs/2026-04-29-image-asset-compression-design.md`
+
 ## v1.3.1 - 2026-04-29
 
 Moved version and changelog metadata out of the README and skill spec.
