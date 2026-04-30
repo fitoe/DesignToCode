@@ -1,5 +1,19 @@
 # Release Notes
 
+## v1.3.4 - 2026-04-30
+
+Rewrote the README files to be more formal, more approachable, and more clearly oriented around general skill usage.
+
+Highlights:
+- reorganized the README content around usage, workflow, verification, and limits
+- simplified the language to make the skill easier to understand at a glance
+- kept the install command visible at the top of each README
+
+Published files:
+- `README.md`
+- `README.en.md`
+- `README.zh-CN.md`
+
 ## v1.3.3 - 2026-04-30
 
 Reworked the README files to present DesignToCode as a general-purpose skill instead of a Vue/Astro-specific workflow.

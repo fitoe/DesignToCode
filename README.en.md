@@ -11,28 +11,32 @@ npx skills add fitoe/DesignToCode
 
 DesignToCode is a general-purpose Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
-It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
-- resolve the current project and page conventions first
-- normalize design sections to the target page width
-- classify visuals as CSS background vs semantic content image
-- emit a mandatory pre-implementation brief before writing code
-- verify output with Playwright section screenshot diffs
+It is designed for image-to-code workflows where structural fidelity matters more than rough inspiration. The focus is on preserving hierarchy, backgrounds, media roles, and maintainable implementation choices.
 
-## Scope
+## What It Helps With
+
+- turning segmented design screenshots into page code
+- handling layouts with clear layering and background relationships
+- producing a pre-implementation brief before code is written
+- verifying section-level output with Playwright screenshot diffs
+
+## Intended Use
 
 DesignToCode is intended for:
+
 - segmented page-design screenshots
 - existing frontend projects
 - new page implementation with UnoCSS
-- high-fidelity landing pages, marketing pages, dashboards, feature pages
+- high-fidelity landing pages, marketing pages, dashboards, and feature pages
 
 DesignToCode is not intended for:
+
 - Figma-node to code workflows
 - backend or API generation
 - vague “make something like this” prompts
 - framework-agnostic final output
 
-## Core Workflow
+## How It Works
 
 1. Read ordered section images and notes.
 2. Inspect the current project to resolve page conventions and reusable constraints.
@@ -68,73 +72,36 @@ No page code should be generated until the user confirms this brief.
 ## Project Resolution
 
 DesignToCode is project-first:
+
 - read the existing page, component, and layout conventions from the repo
 - generate output that follows those conventions
-- mixed or unclear repo -> stop and ask
+- if the repo is mixed or unclear, stop and ask
 
 The skill does not silently guess project conventions.
 
-## Media Role Rules
+## Media and Assets
 
 Every important visual media element is classified as either:
+
 - `background`
 - `content image`
 
 Default mapping:
+
 - `background` -> CSS background
 - `content image` -> `<img>` or `<picture>`
 
-If a critical visual is ambiguous, the skill must stop and ask instead of guessing.
-
-## Asset Resolution
-
 Asset resolution follows this order:
+
 - `provided original`
 - `project existing`
 - `crop fallback`
 - `css reproducible`
 - `unresolved`
 
-If a critical asset reaches `unresolved`, the skill must stop and ask.
+Bitmap assets must follow role-based compression rules. Large assets should be scanned before merge, and fallback or exemption cases must be reported explicitly.
 
-## Asset Compression Policy
-
-- bitmap assets must follow role-based compression rules
-- large assets should be scanned before merge
-- fallback and exemption cases must be reported explicitly
-
-## Repository Layout
-
-```text
-.
-├── LICENSE
-├── RELEASE_NOTES.md
-├── README.md
-├── README.en.md
-├── README.zh-CN.md
-└── skills/
-    └── design-to-code/
-        ├── SKILL.md
-        ├── agents/
-        │   └── openai.yaml
-        └── references/
-            ├── prompt-shape.md
-            ├── framework-resolution.md
-            ├── pre-implementation-brief.md
-            ├── width-normalization.md
-            ├── asset-compression-rules.md
-            ├── media-role-classification.md
-            ├── vue-astro-unocss-output-rules.md
-            ├── playwright-section-diff.md
-            ├── failure-handling.md
-            ├── visual-checklist.md
-            ├── examples.md
-            ├── section-taxonomy.md
-            ├── layer-stack-model.md
-            ├── section-boundary-and-cross-section-rules.md
-            ├── repair-loop-policy.md
-            └── confidence-and-escalation.md
-```
+If a critical visual role or critical asset is ambiguous, the skill must stop and ask instead of guessing.
 
 ## Input Shape
 
@@ -162,16 +129,19 @@ Section 1:
 ## Verification
 
 Primary verification is section-level screenshot diff with Playwright:
+
 - target sections using `data-section`
-- compare rendered section against scaled reference image
+- compare rendered section against the scaled reference image
 - tolerate only minor font-rendering noise
 
 Validation is split into:
+
 - structure checks
 - visual checks
 - reuse checks
 
 Structural smoke checks include:
+
 - no horizontal overflow
 - no obvious text overlap
 - no image distortion
@@ -181,7 +151,7 @@ Structural smoke checks include:
 ## Hard Stop Conditions
 
 The skill must stop and ask when:
-- target framework is unresolved
+
 - target width is unresolved
 - required text is unreadable and not supplied
 - critical media role is ambiguous
@@ -194,6 +164,7 @@ The skill must stop and ask when:
 This repository currently contains the skill specification and reference documents.
 
 It does not yet include:
+
 - a runnable implementation harness
 - automated validator scripts inside this repo
 - end-to-end example execution outputs

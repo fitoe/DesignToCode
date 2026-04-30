@@ -9,30 +9,34 @@
 npx skills add fitoe/DesignToCode
 ```
 
-DesignToCode 是一个通用 Codex skill，用于把分段设计稿图片还原为基于 UnoCSS 的高保真页面代码。
+DesignToCode 是一个通用 Codex skill，用于把分段设计稿图片转成基于 UnoCSS 的高保真页面代码。
 
-它面向的不是“参考一下做个差不多”，而是更强调结构和视觉还原的图片转代码流程：
-- 先识别当前项目和页面约定
-- 先按目标页面宽度缩放设计图区块，再做分析
-- 识别视觉元素应落为 CSS 背景还是语义图片
-- 写代码前必须先输出 `Pre-Implementation Brief`
-- 最后通过 Playwright 做区块级截图 diff 校验
+它适合处理结构清晰、视觉要求明确的图片转代码任务，重点是保留页面层次、背景关系、媒体语义和可维护的实现方式。
+
+## 它能帮你做什么
+
+- 将按区块拆分的设计稿落成页面代码
+- 处理有明确层级、背景和内容关系的页面
+- 在生成代码前先得到可确认的实现说明
+- 用 Playwright 做区块级截图校验
 
 ## 适用范围
 
 DesignToCode 适用于：
+
 - 按区块切分好的页面设计截图
 - 现有前端项目
 - 基于 UnoCSS 的新页面实现
 - 高保真落地页、营销页、dashboard、功能展示页
 
 DesignToCode 不适用于：
+
 - Figma 节点直接转代码
 - 后端或 API 生成
 - “照着这个随便做个类似的” 这类模糊需求
 - 最终输出为框架无关伪代码
 
-## 核心流程
+## 工作方式
 
 1. 读取按顺序排列的区块图片和说明。
 2. 检查当前项目，识别页面约定和可复用约束。
@@ -68,73 +72,36 @@ DesignToCode 不适用于：
 ## 项目判定
 
 DesignToCode 采用“项目优先”规则：
+
 - 先读取仓库中已有的页面、组件和约定
 - 生成与现有项目一致的页面输出
-- 仓库约定混合或不清晰 -> 停止并询问
+- 仓库约定混合或不清晰时，停止并询问
 
 不会静默猜测项目约定。
 
-## 媒体角色规则
+## 媒体与资源
 
 每个重要视觉媒体元素都要先判定为：
+
 - `background`
 - `content image`
 
 默认映射：
+
 - `background` -> CSS background
 - `content image` -> `<img>` 或 `<picture>`
 
-如果关键视觉角色存在歧义，skill 必须先停下来问，而不是猜。
-
-## 资源解析顺序
-
 资源解析顺序固定为：
+
 - `provided original`
 - `project existing`
 - `crop fallback`
 - `css reproducible`
 - `unresolved`
 
-如果关键资源落到 `unresolved`，skill 必须停止并追问。
+位图资源需要遵循基于角色的压缩规则。新增大图在合入前应先经过扫描检查；fallback 和 exemption 情况必须显式记录。
 
-## 资源压缩策略
-
-- 位图资源需要遵循基于角色的压缩规则
-- 新增大图在合入前应先经过扫描检查
-- fallback 和 exemption 情况必须显式记录
-
-## 仓库结构
-
-```text
-.
-├── LICENSE
-├── RELEASE_NOTES.md
-├── README.md
-├── README.en.md
-├── README.zh-CN.md
-└── skills/
-    └── design-to-code/
-        ├── SKILL.md
-        ├── agents/
-        │   └── openai.yaml
-        └── references/
-            ├── prompt-shape.md
-            ├── framework-resolution.md
-            ├── pre-implementation-brief.md
-            ├── width-normalization.md
-            ├── asset-compression-rules.md
-            ├── media-role-classification.md
-            ├── vue-astro-unocss-output-rules.md
-            ├── playwright-section-diff.md
-            ├── failure-handling.md
-            ├── visual-checklist.md
-            ├── examples.md
-            ├── section-taxonomy.md
-            ├── layer-stack-model.md
-            ├── section-boundary-and-cross-section-rules.md
-            ├── repair-loop-policy.md
-            └── confidence-and-escalation.md
-```
+如果关键视觉角色或关键资源存在歧义，skill 必须先停下来问，而不是猜。
 
 ## 输入格式
 
@@ -162,16 +129,19 @@ DesignToCode 采用“项目优先”规则：
 ## 验证方式
 
 主验证方式是 Playwright 区块级截图 diff：
+
 - 通过 `data-section` 锚点锁定区块
 - 将渲染结果与缩放后的区块参考图对比
 - 只容忍轻微字体渲染噪声
 
 验证拆成三层：
+
 - structure checks
 - visual checks
 - reuse checks
 
 结构层面的 smoke check 包括：
+
 - 不允许横向溢出
 - 不允许明显文字重叠
 - 不允许图片变形
@@ -181,19 +151,20 @@ DesignToCode 采用“项目优先”规则：
 ## 强制停止条件
 
 以下情况必须停止并追问：
-- 目标框架无法确定
+
 - 目标页面宽度无法确定
 - 必需文案无法识别且用户未提供
 - 关键视觉的媒体角色存在歧义
 - 关键资源缺失且截图裁切也无法可靠替代
 - 核心布局关系无法安全推断
-- 用户尚未确认 pre-implementation brief
+- 用户尚未确认 `Pre-Implementation Brief`
 
 ## 当前状态
 
 当前仓库已包含 skill 规范和参考文档。
 
 还未包含：
+
 - 仓库内可直接执行的实现 harness
 - 仓库内自动校验脚本
 - 端到端示例运行结果
@@ -203,4 +174,4 @@ DesignToCode 采用“项目优先”规则：
 - skill 主规范：[skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
 - 许可证：[LICENSE](LICENSE)
 - 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
-- 英文 README：[README.en.md](README.en.md)
+- English README：[README.en.md](README.en.md)
