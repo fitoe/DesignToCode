@@ -9,11 +9,10 @@ Install:
 npx skills add fitoe/DesignToCode
 ```
 
-DesignToCode is a Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
+DesignToCode is a general-purpose Codex skill for turning segmented design images into high-fidelity page code with UnoCSS.
 
 It is built for image-to-code workflows where the goal is not “rough inspiration”, but structurally faithful implementation:
-- resolve the current project stack first
-- choose `Vue` or `Astro` from the repo when possible
+- resolve the current project and page conventions first
 - normalize design sections to the target page width
 - classify visuals as CSS background vs semantic content image
 - emit a mandatory pre-implementation brief before writing code
@@ -23,7 +22,7 @@ It is built for image-to-code workflows where the goal is not “rough inspirati
 
 DesignToCode is intended for:
 - segmented page-design screenshots
-- existing `Vue` or `Astro` projects
+- existing frontend projects
 - new page implementation with UnoCSS
 - high-fidelity landing pages, marketing pages, dashboards, feature pages
 
@@ -36,14 +35,14 @@ DesignToCode is not intended for:
 ## Core Workflow
 
 1. Read ordered section images and notes.
-2. Inspect the current project to resolve framework and layout conventions.
+2. Inspect the current project to resolve page conventions and reusable constraints.
 3. Resolve canonical page width from the repo, or fall back to user-provided `pageWidth`.
 4. Scale each section image to the target page width before analysis.
 5. Analyze section structure, media roles, assets, and implementation risks.
 6. Run a design-system mapping pass against the current project.
 7. Output a mandatory `Pre-Implementation Brief`.
 8. Wait for user confirmation.
-9. Generate page code in the project-matching framework.
+9. Generate page code that matches the project's conventions.
 10. Run Playwright section screenshot diff.
 11. Report mismatches and optional local repair opportunities.
 
@@ -66,14 +65,14 @@ Before any code generation, the skill must output:
 
 No page code should be generated until the user confirms this brief.
 
-## Framework Resolution
+## Project Resolution
 
 DesignToCode is project-first:
-- `Vue` project -> generate Vue page/component
-- `Astro` project -> generate Astro page/component
+- read the existing page, component, and layout conventions from the repo
+- generate output that follows those conventions
 - mixed or unclear repo -> stop and ask
 
-The skill does not silently default to Vue or Astro.
+The skill does not silently guess project conventions.
 
 ## Media Role Rules
 

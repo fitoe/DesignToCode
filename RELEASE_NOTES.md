@@ -1,5 +1,19 @@
 # Release Notes
 
+## v1.3.3 - 2026-04-30
+
+Reworked the README files to present DesignToCode as a general-purpose skill instead of a Vue/Astro-specific workflow.
+
+Highlights:
+- removed Vue/Astro-specific language from the README introductions and workflow summaries
+- broadened the README scope language to describe general frontend projects and project conventions
+- kept the install command visible at the top of each README
+
+Published files:
+- `README.md`
+- `README.en.md`
+- `README.zh-CN.md`
+
 ## v1.3.2 - 2026-04-30
 
 Stopped tracking the `docs/` directory in git.
