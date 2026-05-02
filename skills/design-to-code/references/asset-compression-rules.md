@@ -8,6 +8,7 @@ Use these rules for bitmap asset governance inside `DesignToCode`.
 - `decorative bitmap`
 - `ui/icon-like asset`
 - `crop fallback / temporary asset`
+- `generated asset`
 
 ## Rules
 
@@ -15,6 +16,7 @@ Use these rules for bitmap asset governance inside `DesignToCode`.
 - `decorative bitmap`: prefer `webp`, compress aggressively, replace with CSS when reproducible
 - `ui/icon-like asset`: prefer `svg`, use bitmap only when vector is unavailable or inappropriate
 - `crop fallback / temporary asset`: mark explicitly, keep easy to replace, do not present as a true original
+- `generated asset`: treat as a first-class bitmap asset once saved locally; compress and validate like any other project asset
 
 ## Validation
 
