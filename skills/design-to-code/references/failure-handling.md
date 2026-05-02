@@ -8,7 +8,7 @@ Stop unsafe guessing early. Report clearly.
 - page width unresolved
 - required text unreadable and not supplied
 - critical media role ambiguous
-- critical asset missing and crop fallback unusable
+- critical asset missing and cannot be safely regenerated or cropped
 - core layout relationship unclear
 - `Pre-Implementation Brief` not confirmed
 
@@ -40,7 +40,7 @@ State:
 State:
 - original asset unavailable
 - screenshot crop is not isolated enough
-- ask for source asset or permission to approximate
+- ask for source asset, permission to approximate, or permission to regenerate the asset
 
 ## May Continue With Note
 

@@ -15,6 +15,7 @@ Default behavior:
 - resolve target framework from repo: Vue or Astro
 - normalize section images to target page width before analysis
 - classify media as `background` vs `content image`
+- regenerate missing or unusable reference visuals with `gpt image2` at target size when needed, then treat the result as a regular local asset
 - emit mandatory `Pre-Implementation Brief`
 - wait for user confirmation before writing page code
 - verify result with Playwright section screenshot diff
@@ -127,7 +128,7 @@ For each section:
 - build internal layer stack; see [references/layer-stack-model.md](references/layer-stack-model.md)
 - classify visual media; see [references/media-role-classification.md](references/media-role-classification.md)
 - detect cross-section continuity; see [references/section-boundary-and-cross-section-rules.md](references/section-boundary-and-cross-section-rules.md)
-- identify assets that are original, crop-fallback, CSS-reproducible, or unresolved
+- identify assets that are original, generated, crop-fallback, CSS-reproducible, or unresolved
 
 Scale each section image to canonical page width before making layout judgments. Do not rely on raw image width if it differs from page width.
 
@@ -137,7 +138,7 @@ Every visual asset must be classified by both role and provenance.
 
 Required classifications:
 - role: `background` | `content image` | `icon` | `illustration` | `logo` | `texture` | `decorative overlay`
-- provenance: `provided original` | `project existing` | `crop fallback` | `css reproducible` | `unresolved`
+- provenance: `provided original` | `project existing` | `generated asset` | `crop fallback` | `css reproducible` | `unresolved`
 
 Rules:
 - if a real asset is available, use it; do not silently replace it
@@ -146,8 +147,9 @@ Rules:
 - remote Figma or CDN asset URLs are not allowed in final page code
 - when a Figma-derived image, svg, icon, or illustration is used, download it into local project files first, then reference that file
 - svg assets must be stored as `.svg` files and referenced as files; do not inline raw svg markup into page code
+- if `gpt image2` is used, record the generated asset path, target size, and generation basis explicitly
 - if crop fallback is used, record it explicitly
-- unresolved critical assets are a hard stop
+- critical assets that remain unresolved after original, project existing, and generated asset attempts are a hard stop
 - background visuals should become CSS background layers when appropriate
 - semantic content images should remain `<img>` or `<picture>`
 
@@ -171,15 +173,16 @@ Resolve assets in this order:
 
 1. `provided original`
 2. `project existing`
-3. `crop fallback`
-4. `css reproducible`
-5. `unresolved`
+3. `generated asset`
+4. `crop fallback`
+5. `css reproducible`
+6. `unresolved`
 
 Rules:
 - always choose the highest-fidelity available asset source
 - if moving down the escalation ladder, record the downgrade explicitly
 - do not skip directly to placeholder-like output when a higher rung is available
-- if a critical asset reaches `unresolved`, stop and ask
+- if a critical asset cannot be satisfied by original, project existing, or generated asset paths, stop and ask
 
 ### 4. Emit Mandatory Pre-Implementation Brief
 

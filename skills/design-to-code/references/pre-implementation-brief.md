@@ -47,8 +47,9 @@ Emit this before any page code. Wait for user confirmation.
 
 ### `Asset Compression Plan`
 - asset role summary for new or changed bitmap assets
-- which assets should stay original, be optimized, or be replaced with vector/CSS output
+- which assets should stay original, be optimized, be regenerated with `gpt image2`, or be replaced with vector/CSS output
 - fallback asset status
+- generated asset target size and basis, if applicable
 - exemption candidates and reasons
 
 ### `Layout Implementation Plan`
