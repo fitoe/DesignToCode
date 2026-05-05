@@ -31,7 +31,7 @@ Emit this before any page code. Wait for user confirmation.
 - shell scope vs inner container scope when a section is full-bleed
 
 ### `Input Mode`
-- chosen mode: `image-only mode` / `metadata-assisted mode` / `figma-assisted mode`
+- chosen mode: `image-only mode` / `metadata-assisted mode` / `figma-direct mode` / `figma-assisted mode`
 - why this mode applies
 - confidence limits implied by this mode
 

@@ -20,7 +20,6 @@ Default behavior:
 - verify result with Playwright section screenshot diff
 
 Do not use this skill for:
-- Figma-node to code workflows
 - generic “make something inspired by this” requests
 - framework-agnostic pseudo-code output
 - backend, routing, or data-layer generation
@@ -47,12 +46,14 @@ Select one input mode before implementation:
 
 - `image-only mode`: only screenshots or cropped design fragments are available
 - `metadata-assisted mode`: screenshots are available plus explicit structure notes, layer maps, or section maps
+- `figma-direct mode`: a Figma node or frame is available as the primary source of truth and may be implemented directly from Figma-derived context/assets
 - `figma-assisted mode`: screenshots are constrained by structured Figma-derived context, but the deliverable remains code rather than Figma edits
 
 Rules:
 - explicitly name the chosen mode in the `Pre-Implementation Brief`
 - do not imply node-level certainty while in `image-only mode`
 - in `metadata-assisted mode`, let explicit structure override weak visual inference
+- in `figma-direct mode`, treat Figma node structure, variables, and exported assets as the highest-precision implementation source, while still verifying the final code output against the rendered design
 - in `figma-assisted mode`, use Figma-derived structure to constrain implementation, but still follow this skill's code-generation and verification rules
 
 ## Workflow
