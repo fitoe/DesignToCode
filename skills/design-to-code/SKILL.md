@@ -12,6 +12,13 @@ Use this skill when the user wants image-based design sections turned into produ
 ## Keep It Light
 The main skill should stay short. Use references for the details.
 
+Minimal enhancement set:
+- extract visual anchors first: headline, main visual, CTA, boundaries, spacing rhythm
+- build in two layers: skeleton first, details second
+- state relative position constraints explicitly: above / below / left / right / aligned / centered / fixed gap
+- judge output with four layers: structure, proportion, style, detail
+- after diff, repair only the top 1-3 mismatches first
+
 Core loop:
 1. inspect the project
 2. choose the input mode

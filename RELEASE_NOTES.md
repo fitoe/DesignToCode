@@ -1,5 +1,17 @@
 # Release Notes
 
+## v1.3.6 - 2026-05-07
+
+Added a minimal fidelity enhancement set to the DesignToCode skill.
+
+Highlights:
+- kept the main skill lightweight while adding the smallest useful visual rules
+- added visual anchors, two-layer implementation, explicit relative-position constraints, four-layer acceptance, and top-3 repair guidance
+- preserved the existing core loop and reference-driven structure
+
+Published files:
+- `skills/design-to-code/SKILL.md`
+
 ## v1.3.5 - 2026-05-07
 
 Lightened the DesignToCode skill while keeping the high-fidelity workflow intact.
