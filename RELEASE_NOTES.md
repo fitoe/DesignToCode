@@ -1,5 +1,25 @@
 # Release Notes
 
+## v1.3.5 - 2026-05-07
+
+Lightened the DesignToCode skill while keeping the high-fidelity workflow intact.
+
+Highlights:
+- shortened the main skill and moved detailed rules into references
+- kept the core loop focused on input mode detection, brief generation, confirmation, and screenshot verification
+- preserved the stronger visual constraints only where they materially improve fidelity
+
+Published files:
+- `skills/design-to-code/SKILL.md`
+- `skills/design-to-code/references/pre-implementation-brief.md`
+- `skills/design-to-code/references/visual-checklist.md`
+- `skills/design-to-code/references/media-role-classification.md`
+- `skills/design-to-code/references/framework-resolution.md`
+- `skills/design-to-code/references/width-normalization.md`
+- `skills/design-to-code/references/playwright-section-diff.md`
+- `skills/design-to-code/references/vue-astro-unocss-output-rules.md`
+- `skills/design-to-code/references/asset-compression-rules.md`
+
 ## v1.3.4 - 2026-04-30
 
 Rewrote the README files to be more formal, more approachable, and more clearly oriented around general skill usage.

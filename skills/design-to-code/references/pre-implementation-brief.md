@@ -1,6 +1,6 @@
 # Pre-Implementation Brief
 
-Emit this before any page code. Wait for user confirmation.
+Emit this before any page code. Keep it short. Wait for user confirmation.
 
 ## Required Shape
 
@@ -10,59 +10,49 @@ Emit this before any page code. Wait for user confirmation.
 ## Input Mode
 ## Reuse Mapping
 ## Media Role Decisions
-## Asset Compression Plan
 ## Layout Implementation Plan
 ## Framework/Output Plan
 ## Known Ambiguities
 ## Verification Plan
 ```
 
-## Section Guidance
+## Guidance
 
 ### `Page Understanding`
 - page purpose
-- user attention flow
 - main hierarchy
+- what must feel closest to the source
 
 ### `Section Breakdown`
 - section order
-- purpose of each section
+- what each section does
 - primary content vs decoration
-- shell scope vs inner container scope when a section is full-bleed
 
 ### `Input Mode`
-- chosen mode: `image-only mode` / `metadata-assisted mode` / `figma-direct mode` / `figma-assisted mode`
-- why this mode applies
-- confidence limits implied by this mode
+- chosen mode
+- why it fits
+- its confidence limits
 
 ### `Reuse Mapping`
-- section or pattern -> existing component / layout primitive / token
-- mark bespoke implementations explicitly
-- note ambiguous mappings that need confirmation
+- section/pattern -> existing component / shell / token
+- mark bespoke parts explicitly
+- note only the important ambiguities
 
 ### `Media Role Decisions`
 - which visuals are `background`
-- which visuals are `content image`
-- asset fallback assumptions
-
-### `Asset Compression Plan`
-- asset role summary for new or changed bitmap assets
-- which assets should stay original, be optimized, or be replaced with vector/CSS output
-- fallback asset status
-- exemption candidates and reasons
+- which are `content image`
+- fallback assumptions
 
 ### `Layout Implementation Plan`
 - layout system per section
-- shell ownership of background layers, if any
-- inner container width/alignment
-- shared container width assumptions
+- shell vs inner container
+- shared width/alignment assumptions
 - spacing rhythm
-- likely responsive constraints
 
 ### `Framework/Output Plan`
 - resolved framework
-- expected output file type/location
-- repo conventions to match
+- output file type/location
+- repo conventions to follow
 
 ### `Known Ambiguities`
 - unresolved text
@@ -72,9 +62,9 @@ Emit this before any page code. Wait for user confirmation.
 
 ### `Verification Plan`
 - which sections will be diffed
-- which sections need shell coverage checks
-- which must-not-miss points get manual attention
-- which reuse or approximation decisions need special checking
+- what must match closely
+- what can tolerate small variance
+- what should be checked manually
 
 ## Hard Rule
 

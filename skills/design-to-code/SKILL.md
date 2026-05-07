@@ -6,321 +6,119 @@ license: MIT
 
 # DesignToCode
 
-## Overview
+## Purpose
+Use this skill when the user wants image-based design sections turned into production-style page code with UnoCSS.
 
-Use this skill when user wants to turn image-based design sections into high-fidelity page code with UnoCSS.
+## Keep It Light
+The main skill should stay short. Use references for the details.
 
-Default behavior:
-- inspect current project first
-- resolve target framework from repo: Vue or Astro
-- normalize section images to target page width before analysis
-- classify media as `background` vs `content image`
-- emit mandatory `Pre-Implementation Brief`
-- wait for user confirmation before writing page code
-- verify result with Playwright section screenshot diff
+Core loop:
+1. inspect the project
+2. choose the input mode
+3. write a brief
+4. wait for confirmation
+5. generate code
+6. verify with Playwright section diffs
 
-Do not use this skill for:
-- generic “make something inspired by this” requests
-- framework-agnostic pseudo-code output
-- backend, routing, or data-layer generation
+If the task is mostly about design style, structure, or assets, keep the reasoning in the brief instead of expanding the main skill.
 
-## Input Precision Ladder
+## Use When
+- user provides screenshots, cropped sections, or Figma-derived context
+- target output is Vue or Astro page code
+- fidelity to the reference matters
+- a verification pass is expected
 
-Not all design inputs have the same reliability. Resolve implementation confidence in this order:
+## Do Not Use When
+- the user only wants inspiration or pseudo-code
+- the task is backend/routing/data work
+- the framework target is unrelated to the current repo
 
-1. Figma node or frame with structured context
-2. High-level metadata / explicit layer map
-3. Full-page screenshot
-4. Ordered section screenshots
-5. Cropped visual fragments
+## Input Priority
+Prefer stronger input first:
+1. Figma node / frame
+2. explicit metadata / layer map
+3. full-page screenshot
+4. ordered section screenshots
+5. cropped fragments
 
-Rules:
-- prefer the highest-precision input available
-- when multiple input types exist, use higher-precision inputs to constrain lower-precision ones
-- do not treat screenshot inference as equivalent to node-level structure
-- if the available input is low precision, increase explicit assumptions and verification strictness
+If input quality is weak, state the limits clearly and keep assumptions explicit.
 
-## Input Modes
+## Lightweight Workflow
+### 1) Inspect the project
+Resolve only the essentials:
+- framework: Vue or Astro
+- page/container width
+- reusable components/tokens worth keeping
 
-Select one input mode before implementation:
+### 2) Pick an input mode
+Choose one:
+- `image-only mode`
+- `metadata-assisted mode`
+- `figma-direct mode`
+- `figma-assisted mode`
 
-- `image-only mode`: only screenshots or cropped design fragments are available
-- `metadata-assisted mode`: screenshots are available plus explicit structure notes, layer maps, or section maps
-- `figma-direct mode`: a Figma node or frame is available as the primary source of truth and may be implemented directly from Figma-derived context/assets
-- `figma-assisted mode`: screenshots are constrained by structured Figma-derived context, but the deliverable remains code rather than Figma edits
+Name the mode in the brief.
 
-Rules:
-- explicitly name the chosen mode in the `Pre-Implementation Brief`
-- do not imply node-level certainty while in `image-only mode`
-- in `metadata-assisted mode`, let explicit structure override weak visual inference
-- in `figma-direct mode`, treat Figma node structure, variables, and exported assets as the highest-precision implementation source, while still verifying the final code output against the rendered design
-- in `figma-assisted mode`, use Figma-derived structure to constrain implementation, but still follow this skill's code-generation and verification rules
+### 3) Make a short reuse map
+Before code, map the page to existing primitives:
+- section -> shell / wrapper / component / token
+- mark any bespoke part explicitly
+- if several mappings are plausible, note the ambiguity instead of guessing
 
-## Workflow
+### 4) Classify media
+For each important visual, decide:
+- `background`
+- `content image`
 
-### 1. Gather Inputs
+Use the media-role reference. If a critical media role is ambiguous, stop and ask.
 
-Expect ordered section images plus notes. Read [references/prompt-shape.md](references/prompt-shape.md) for input contract.
+### 5) Emit a concise Pre-Implementation Brief
+Use the required brief format. Keep each section short and actionable.
+No code before the user confirms the brief.
 
-Resolve content sources in this order:
-1. user-provided text
-2. existing project text
-3. OCR
-4. stop and ask if still unclear
-
-### 2. Inspect Project First
-
-Inspect repo before deciding output shape. Read:
-- [references/framework-resolution.md](references/framework-resolution.md)
-- [references/width-normalization.md](references/width-normalization.md)
-- [references/vue-astro-unocss-output-rules.md](references/vue-astro-unocss-output-rules.md)
-
-Resolve, in order:
-1. target framework
-2. page/container width
-3. typography
-4. color/tokens
-5. existing page/component conventions worth reusing
-
-If framework cannot be resolved from project, stop and ask user to choose Vue or Astro.
-
-## Design System Reuse Rules
-
-Before generating page code, inspect the project for reusable implementation primitives.
-
-Resolve, in order:
-1. existing page/layout shell conventions
-2. reusable section primitives
-3. reusable UI components
-4. typography scale
-5. color tokens
-6. spacing/radius/shadow tokens
+### 6) Generate code
+After confirmation:
+- Vue repo -> Vue page/component
+- Astro repo -> Astro page/component
 
 Rules:
-- prefer existing components over one-off recreation
-- prefer existing tokens over hardcoded visual constants
-- if a section can be represented by existing primitives with only small overrides, reuse them
-- only implement bespoke markup when reuse would produce materially worse fidelity or complexity
-- document major reuse decisions in the `Pre-Implementation Brief`
-
-### 2a. Design System Mapping Pass
-
-Before generating any page code, produce a concrete reuse map for the page.
-
-Map, when possible:
-- inferred sections -> existing layout shells or wrappers
-- inferred UI patterns -> existing components
-- inferred typography -> existing type ramp or text primitives
-- inferred colors/surfaces -> existing color tokens
-- inferred spacing/radius/shadows -> existing layout or style tokens
-
-Rules:
-- do not start page code before this mapping pass is complete
-- if no suitable reusable primitive exists, mark the element as `bespoke`
-- if multiple reuse targets are plausible, record the ambiguity instead of picking silently
-
-### 3. Analyze Before Code
-
-For each section:
-- identify likely section type; see [references/section-taxonomy.md](references/section-taxonomy.md)
-- identify whether the section uses a full-bleed shell with an inner content container
-- identify layout system: `flex`, `grid`, or `overlay/absolute`
-- build internal layer stack; see [references/layer-stack-model.md](references/layer-stack-model.md)
-- classify visual media; see [references/media-role-classification.md](references/media-role-classification.md)
-- detect cross-section continuity; see [references/section-boundary-and-cross-section-rules.md](references/section-boundary-and-cross-section-rules.md)
-- identify assets that are original, crop-fallback, CSS-reproducible, or unresolved
-
-Scale each section image to canonical page width before making layout judgments. Do not rely on raw image width if it differs from page width.
-
-## Asset Provenance and Media Rules
-
-Every visual asset must be classified by both role and provenance.
-
-Required classifications:
-- role: `background` | `content image` | `icon` | `illustration` | `logo` | `texture` | `decorative overlay`
-- provenance: `provided original` | `project existing` | `crop fallback` | `css reproducible` | `unresolved`
-
-Rules:
-- if a real asset is available, use it; do not silently replace it
-- do not invent logos, icons, or illustrations without explicit permission
-- do not silently downgrade missing assets into placeholders
-- remote Figma or CDN asset URLs are not allowed in final page code
-- when a Figma-derived image, svg, icon, or illustration is used, download it into local project files first, then reference that file
-- svg assets must be stored as `.svg` files and referenced as files; do not inline raw svg markup into page code
-- if crop fallback is used, record it explicitly
-- unresolved critical assets are a hard stop
-- background visuals should become CSS background layers when appropriate
-- semantic content images should remain `<img>` or `<picture>`
-
-## Asset Compression Policy
-
-Large bitmap assets must follow role-based compression rules in addition to provenance rules.
-
-Use [references/asset-compression-rules.md](references/asset-compression-rules.md).
-
-Rules:
-- classify bitmap assets as `critical content image`, `decorative bitmap`, `ui/icon-like asset`, or `crop fallback / temporary asset`
-- prefer `webp` for bitmap content unless fidelity or transparency constraints justify an exception
-- prefer `svg` for icon-like assets where vector output is available
-- run repository-local asset scanning before merge when new bitmap assets are introduced
-- record fallback and exemption cases explicitly in the brief and final report
-- do not silently keep oversized originals when a compliant optimized asset is expected
-
-## Asset Resolution Escalation
-
-Resolve assets in this order:
-
-1. `provided original`
-2. `project existing`
-3. `crop fallback`
-4. `css reproducible`
-5. `unresolved`
-
-Rules:
-- always choose the highest-fidelity available asset source
-- if moving down the escalation ladder, record the downgrade explicitly
-- do not skip directly to placeholder-like output when a higher rung is available
-- if a critical asset reaches `unresolved`, stop and ask
-
-### 4. Emit Mandatory Pre-Implementation Brief
-
-Before generating any page code, output a `Pre-Implementation Brief` using [references/pre-implementation-brief.md](references/pre-implementation-brief.md).
-
-Required sections:
-- `Page Understanding`
-- `Section Breakdown`
-- `Input Mode`
-- `Reuse Mapping`
-- `Media Role Decisions`
-- `Asset Compression Plan`
-- `Layout Implementation Plan`
-- `Framework/Output Plan`
-- `Known Ambiguities`
-- `Verification Plan`
-
-Rules:
-- `Reuse Mapping` must list the intended mapping between inferred design elements and existing project components, layout primitives, and tokens
-- `Input Mode` must state the chosen mode and its confidence limits
-- `Asset Compression Plan` must summarize asset roles, planned compression actions, fallback status, and exemption candidates
-- no code generation before user confirms brief
-- if critical ambiguity remains, do not proceed
-- user corrections override prior inference
-
-### 5. Generate Page Code
-
-After confirmation, generate one page file in project-matching framework:
-- Vue project -> Vue page/component
-- Astro project -> Astro page/component
-
-Follow [references/vue-astro-unocss-output-rules.md](references/vue-astro-unocss-output-rules.md).
-
-Hard rules:
 - UnoCSS first
-- minimal scoped style only when utilities are not enough
-- use `data-section="..."` anchors for each major section
-- content images get semantic `<img>` or `<picture>`
-- background visuals become CSS background layers
-- do not reference remote asset URLs in final output
-- do not inline svg source in page markup; reference local svg files instead
-- preserve minimum accessibility floor
-- keep abstractions minimal; only factor repeated structure when same pattern repeats 3 or more times
+- use local assets only
+- keep scoped CSS minimal
+- use `data-section="..."` anchors on major sections
+- reuse existing tokens/components when they fit
+- avoid unnecessary abstractions
 
-## Deviation Policy
+### 7) Verify and repair
+Use Playwright section screenshot diffs.
+If it fails, repair only the biggest mismatch first.
+Do not rewrite the whole page unless the error is structural.
 
-When the implementation cannot match the design literally, prefer project conventions over one-off exactness.
+## What to Pay Attention To
+- structure and proportions before decoration
+- typography and spacing before tiny polish
+- section boundaries and shell/container split
+- background vs content-image role
+- asset provenance and whether a crop fallback is needed
 
-Rules:
-- prefer existing project tokens over raw one-off values when the visual result remains acceptably close
-- if project tokens differ from the source design, allow only minimal spacing or sizing compensation
-- report every material deviation in `Approximations` or `Known mismatches`
-- do not silently introduce a parallel token system inside page code
-
-### 6. Verify
-
-Verify with Playwright section screenshot diff using [references/playwright-section-diff.md](references/playwright-section-diff.md).
-
-Structure checks:
-- section order matches the intended reading flow
-- full-bleed section shells remain full-width when the evidence supports them
-- inner content containers stay aligned to canonical page/container width
-- no horizontal overflow
-- no obvious text overlap
-- no broken section hierarchy
-- cross-section continuity is preserved where intended
-
-Visual checks:
-- section screenshot matches scaled reference
-- no image distortion
-- no invisible main CTA
-- typography and spacing remain within acceptable visual tolerance
-
-Reuse checks:
-- token reuse is preferred wherever visual parity is preserved
-- asset substitutions, if any, are explicitly reported
-- asset size/format compliance is explicitly reported for new or changed bitmap assets
-- implementation does not introduce unnecessary one-off abstractions
-
-Also run [references/visual-checklist.md](references/visual-checklist.md).
-
-### 7. Report or Repair
-
-If verification fails:
-- first report failed sections, likely causes, assumptions, approximations, known mismatches
-- optional local repair only; never silently regenerate whole page by default
-
-See:
-- [references/failure-handling.md](references/failure-handling.md)
-- [references/repair-loop-policy.md](references/repair-loop-policy.md)
-- [references/confidence-and-escalation.md](references/confidence-and-escalation.md)
-
-## Scoped Fallback Strategy
-
-When the design is too large, too ambiguous, or too lossy for safe whole-page inference, reduce scope before implementation.
-
-Fallback order:
-1. whole page
-2. major section
-3. local subsection
-4. single component block
-
-Rules:
-- do not force whole-page generation when one or more sections remain structurally ambiguous
-- if a section has unresolved hierarchy, infer only that section and keep the rest stable
-- when confidence drops, narrow the active implementation scope instead of increasing abstraction
-- if section boundaries, cross-section continuity, or layer ownership remain unclear, stop and report the smallest blocked scope
-
-## Hard Stop Conditions
-
+## Stop Conditions
 Stop and ask when:
-- target framework unresolved
-- target width unresolved
-- required text unresolved
-- critical media role ambiguous
-- critical asset unavailable and crop fallback unusable
-- core layout relationship cannot be inferred safely
-- user has not confirmed `Pre-Implementation Brief`
-
-## Output Contract
-
-Default final output should include:
-- one page file in project-matching framework
-- `data-section` anchors
-- short `Input Mode`
-- short `Assumptions`
-- short `Approximations`
-- short `Known mismatches`
-- section diff summary if verification ran
+- framework is unclear
+- width is unclear
+- critical text is missing
+- a key media role is ambiguous
+- a required asset is unavailable
+- the user has not confirmed the brief
 
 ## References
-
-Load only what current step needs:
-- input contract: [references/prompt-shape.md](references/prompt-shape.md)
-- framework choice: [references/framework-resolution.md](references/framework-resolution.md)
-- pre-code confirmation: [references/pre-implementation-brief.md](references/pre-implementation-brief.md)
-- width scaling: [references/width-normalization.md](references/width-normalization.md)
-- image-role decisions: [references/media-role-classification.md](references/media-role-classification.md)
-- code generation rules: [references/vue-astro-unocss-output-rules.md](references/vue-astro-unocss-output-rules.md)
-- verification: [references/playwright-section-diff.md](references/playwright-section-diff.md)
-- failure handling: [references/failure-handling.md](references/failure-handling.md)
-- visual acceptance: [references/visual-checklist.md](references/visual-checklist.md)
-- examples: [references/examples.md](references/examples.md)
+Load details only when needed:
+- [references/prompt-shape.md](references/prompt-shape.md)
+- [references/framework-resolution.md](references/framework-resolution.md)
+- [references/width-normalization.md](references/width-normalization.md)
+- [references/media-role-classification.md](references/media-role-classification.md)
+- [references/pre-implementation-brief.md](references/pre-implementation-brief.md)
+- [references/vue-astro-unocss-output-rules.md](references/vue-astro-unocss-output-rules.md)
+- [references/playwright-section-diff.md](references/playwright-section-diff.md)
+- [references/failure-handling.md](references/failure-handling.md)
+- [references/visual-checklist.md](references/visual-checklist.md)
+- [references/examples.md](references/examples.md)
