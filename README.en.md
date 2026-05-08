@@ -116,6 +116,26 @@ Bitmap assets must follow role-based compression rules. Large assets should be s
 
 If a critical visual role or critical asset is ambiguous, the skill must stop and ask instead of guessing.
 
+## Asset Tools
+
+The repository includes lightweight asset utilities:
+
+```bash
+npm run scan-assets
+npm run optimize-assets -- --input assets/example.png --write
+npm run crop-atlas -- --manifest path/to/asset-fulfillment-manifest.json
+npm run validate-atlas -- --manifest path/to/asset-fulfillment-manifest.json
+```
+
+Suggested use:
+
+- `scan-assets`: check image role, format, and size policy
+- `optimize-assets`: convert selected images into suitable WebP assets
+- `crop-atlas`: crop independent files from an atlas using pixel coordinates
+- `validate-atlas`: check crop bounds, missing outputs, and output dimensions
+
+Asset fulfillment should happen after the brief identifies missing assets and before page code is written. Do not generate images one-by-one during implementation unless a confirmed brief missed a critical asset.
+
 ## Input Shape
 
 Canonical input:
@@ -182,5 +202,7 @@ This repository contains the skill specification, reference documents, asset sca
 - English README: [README.en.md](README.en.md)
 - Chinese skill overview: [README.md](README.md)
 - Skill spec: [skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
+- Asset fulfillment rules: [skills/design-to-code/references/asset-fulfillment-pipeline.md](skills/design-to-code/references/asset-fulfillment-pipeline.md)
+- Atlas rules: [skills/design-to-code/references/asset-atlas-generation.md](skills/design-to-code/references/asset-atlas-generation.md)
 - License: [LICENSE](LICENSE)
 - Release notes: [RELEASE_NOTES.md](RELEASE_NOTES.md)

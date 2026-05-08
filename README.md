@@ -116,6 +116,26 @@ DesignToCode 采用“项目优先”规则：
 
 如果关键视觉角色或关键资源存在歧义，skill 必须先停下来问，而不是猜。
 
+## 资源工具
+
+仓库内包含轻量资源工具：
+
+```bash
+npm run scan-assets
+npm run optimize-assets -- --input assets/example.png --write
+npm run crop-atlas -- --manifest path/to/asset-fulfillment-manifest.json
+npm run validate-atlas -- --manifest path/to/asset-fulfillment-manifest.json
+```
+
+使用建议：
+
+- `scan-assets`：检查图片尺寸、格式和角色策略
+- `optimize-assets`：将选定图片转为合适的 WebP 资源
+- `crop-atlas`：从 atlas 大图按像素坐标裁切独立图片
+- `validate-atlas`：检查 atlas 坐标越界、输出缺失和尺寸不匹配
+
+缺图补足的推荐时机是：先在 `Pre-Implementation Brief` 阶段整体盘点，再按策略批处理；不要写代码时遇到一张缺一张再临时生成。
+
 ## 输入格式
 
 推荐输入格式：
@@ -184,5 +204,7 @@ DesignToCode 采用“项目优先”规则：
 - 中文主文档：[README.md](README.md)
 - English README：[README.en.md](README.en.md)
 - skill 主规范：[skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
+- 缺图补足规则：[skills/design-to-code/references/asset-fulfillment-pipeline.md](skills/design-to-code/references/asset-fulfillment-pipeline.md)
+- atlas 图集规则：[skills/design-to-code/references/asset-atlas-generation.md](skills/design-to-code/references/asset-atlas-generation.md)
 - 许可证：[LICENSE](LICENSE)
 - 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
