@@ -12,6 +12,26 @@ Use this skill when the user wants image-based design sections turned into produ
 ## Standalone Rule
 This skill is standalone by default. It accepts approved design inputs from any source, including direct screenshots, Figma context, section images, or equivalent briefs. `PlanToDelivery` may route work into this skill, but `PlanToDelivery` is not required.
 
+## Input Gate
+Before code generation, verify:
+- approved persisted design source exists
+- target framework is resolved
+- page or section target is clear
+- required assets are available or fallback is approved
+- `Pre-Implementation Brief` is confirmed when confirmation is required
+
+If any item is missing, block code generation and ask for the missing artifact or approval.
+
+## Output Gate
+Before handoff, provide:
+- code changes
+- mapped source design path
+- section anchors when applicable
+- verification evidence or a clear reason verification could not run
+- mismatch and repair notes when visual diff was used
+
+When orchestrated, these may be summarized in an implementation handoff manifest.
+
 ## Keep It Light
 The main skill should stay short. Use references for the details.
 
