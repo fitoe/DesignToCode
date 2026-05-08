@@ -18,6 +18,7 @@ It is designed for image-to-code workflows where structural fidelity matters mor
 - turning segmented design screenshots into page code
 - handling layouts with clear layering and background relationships
 - producing a pre-implementation brief before code is written
+- planning image asset fulfillment before implementation when required assets are missing
 - verifying section-level output with Playwright screenshot diffs
 
 ## Intended Use
@@ -43,12 +44,13 @@ DesignToCode is not intended for:
 3. Resolve canonical page width from the repo, or fall back to user-provided `pageWidth`.
 4. Scale each section image to the target page width before analysis.
 5. Analyze section structure, media roles, assets, and implementation risks.
-6. Run a design-system mapping pass against the current project.
-7. Output a mandatory `Pre-Implementation Brief`.
-8. Wait for user confirmation.
-9. Generate page code that matches the project's conventions.
-10. Run Playwright section screenshot diff.
-11. Report mismatches and optional local repair opportunities.
+6. Output an `Asset Fulfillment Plan` when critical images are missing.
+7. Run a design-system mapping pass against the current project.
+8. Output a mandatory `Pre-Implementation Brief`.
+9. Wait for user confirmation.
+10. Generate page code that matches the project's conventions.
+11. Run Playwright section screenshot diff.
+12. Report mismatches and optional local repair opportunities.
 
 ## Pre-Implementation Brief
 
@@ -60,6 +62,7 @@ Before any code generation, the skill must output:
 ## Input Mode
 ## Reuse Mapping
 ## Media Role Decisions
+## Asset Fulfillment Plan
 ## Asset Compression Plan
 ## Layout Implementation Plan
 ## Framework/Output Plan
@@ -98,6 +101,16 @@ Asset resolution follows this order:
 - `crop fallback`
 - `css reproducible`
 - `unresolved`
+
+When image assets are missing, use `Asset Fulfillment` before code:
+
+- `existing/crop`: use existing assets or reliable crops
+- `css/svg`: implement simple visuals with CSS, SVG, or components
+- `single-generation`: generate hero, product, people, or complex illustration assets individually
+- `atlas-generation`: generate 2-8 same-family bitmap assets in one atlas and crop by coordinates
+- `formal-fallback`: use production-looking fallback content, never placeholder labels
+
+Atlas generation is only for multiple same-family small or medium bitmaps. Code must reference cropped independent files, not the atlas source image.
 
 Bitmap assets must follow role-based compression rules. Large assets should be scanned before merge, and fallback or exemption cases must be reported explicitly.
 
@@ -157,17 +170,12 @@ The skill must stop and ask when:
 - critical media role is ambiguous
 - critical asset is missing and crop fallback is unusable
 - key layout relationship cannot be inferred safely
+- critical image assets have no confirmed fulfillment strategy
 - user has not confirmed the pre-implementation brief
 
 ## Current Status
 
-This repository currently contains the skill specification and reference documents.
-
-It does not yet include:
-
-- a runnable implementation harness
-- automated validator scripts inside this repo
-- end-to-end example execution outputs
+This repository contains the skill specification, reference documents, asset scanning, compression, atlas cropping, and atlas validation scripts. It does not yet include end-to-end example execution outputs.
 
 ## Related Files
 

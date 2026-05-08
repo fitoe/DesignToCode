@@ -10,6 +10,8 @@ Emit this before any page code. Keep it short. Wait for user confirmation.
 ## Input Mode
 ## Reuse Mapping
 ## Media Role Decisions
+## Asset Fulfillment Plan
+## Asset Compression Plan
 ## Layout Implementation Plan
 ## Framework/Output Plan
 ## Known Ambiguities
@@ -42,6 +44,20 @@ Emit this before any page code. Keep it short. Wait for user confirmation.
 - which visuals are `background`
 - which are `content image`
 - fallback assumptions
+
+### `Asset Fulfillment Plan`
+- missing or required image assets
+- strategy: `existing/crop`, `css/svg`, `single-generation`, `atlas-generation`, or `formal-fallback`
+- display size and required pixel size
+- source path, output path, or generation note
+- temporary/final status
+- atlas manifest path when atlas is used
+
+### `Asset Compression Plan`
+- asset role summary
+- preferred output format
+- expected size risk
+- fallback or exemption status
 
 ### `Layout Implementation Plan`
 - layout system per section

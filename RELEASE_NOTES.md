@@ -1,5 +1,29 @@
 # Release Notes
 
+## v1.3.7 - 2026-05-08
+
+Added Asset Fulfillment planning for missing page images.
+
+Highlights:
+- added a lightweight asset fulfillment strategy before implementation
+- added atlas generation guidance for 2-8 same-family bitmap assets
+- added atlas crop and validation scripts backed by tests
+- updated the pre-implementation brief with `Asset Fulfillment Plan`
+
+Published files:
+- `package.json`
+- `scripts/asset-policy/`
+- `tests/asset-policy/`
+- `skills/design-to-code/SKILL.md`
+- `skills/design-to-code/references/asset-fulfillment-pipeline.md`
+- `skills/design-to-code/references/asset-atlas-generation.md`
+- `skills/design-to-code/references/pre-implementation-brief.md`
+- `skills/design-to-code/templates/asset-fulfillment-manifest-template.json`
+- `README.md`
+- `README.zh-CN.md`
+- `README.en.md`
+- `RELEASE_NOTES.md`
+
 ## v1.3.6 - 2026-05-07
 
 Added a minimal fidelity enhancement set to the DesignToCode skill.

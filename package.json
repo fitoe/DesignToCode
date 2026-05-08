@@ -5,7 +5,9 @@
   "scripts": {
     "test": "node --test tests/asset-policy/*.test.mjs",
     "scan-assets": "node scripts/asset-policy/scan-assets.mjs",
-    "optimize-assets": "node scripts/asset-policy/optimize-assets.mjs"
+    "optimize-assets": "node scripts/asset-policy/optimize-assets.mjs",
+    "crop-atlas": "node scripts/asset-policy/crop-atlas.mjs",
+    "validate-atlas": "node scripts/asset-policy/validate-atlas.mjs"
   },
   "dependencies": {
     "sharp": "^0.34.2"

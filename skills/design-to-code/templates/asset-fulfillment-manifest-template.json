@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "page": "页面名称",
+  "assets": [
+    {
+      "id": "hero-visual",
+      "section": "hero",
+      "usage": "主视觉内容图",
+      "mediaRole": "content image",
+      "strategy": "single-generation",
+      "displaySize": { "width": 560, "height": 420 },
+      "pixelSize": { "width": 1120, "height": 840 },
+      "outputPath": "src/assets/generated/hero-visual.webp",
+      "status": "planned",
+      "note": "正式产品主视觉，不使用占位说明文字"
+    }
+  ],
+  "atlases": [
+    {
+      "id": "card-visuals-atlas",
+      "sourcePath": "src/assets/generated/card-visuals-atlas.png",
+      "prompt": "中文说明：生成同一视觉家族的卡片图片图集，每块之间留出安全边距。",
+      "canvasRatio": "4:3",
+      "entries": [
+        {
+          "id": "card-visual-1",
+          "crop": { "x": 32, "y": 32, "width": 320, "height": 240 },
+          "displaySize": { "width": 160, "height": 120 },
+          "outputPath": "src/assets/generated/card-visual-1.webp",
+          "status": "planned",
+          "note": "从 atlas 裁切，代码只引用独立文件"
+        }
+      ]
+    }
+  ]
+}

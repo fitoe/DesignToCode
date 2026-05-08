@@ -17,10 +17,11 @@ Before code generation, verify:
 - approved persisted design source exists
 - target framework is resolved
 - page or section target is clear
-- required assets are available or fallback is approved
+- required assets are available, or an `Asset Fulfillment Plan` is confirmed
 - `Pre-Implementation Brief` is confirmed when confirmation is required
 
 If any item is missing, block code generation and ask for the missing artifact or approval.
+When a critical image asset is missing, do not improvise a messy page. Plan the asset source first: existing/crop, CSS/SVG substitute, single generation, atlas generation, or formal fallback.
 
 ## Output Gate
 Before handoff, provide:
@@ -102,11 +103,15 @@ For each important visual, decide:
 
 Use the media-role reference. If a critical media role is ambiguous, stop and ask.
 
-### 5) Emit a concise Pre-Implementation Brief
+### 5) Plan missing assets
+If required images are missing, include an `Asset Fulfillment Plan` in the brief.
+Use atlas generation only for 2-8 same-family bitmap assets; keep hero, product, people, icon, and CSS-reproducible visuals out of atlas.
+
+### 6) Emit a concise Pre-Implementation Brief
 Use the required brief format. Keep each section short and actionable.
 No code before the user confirms the brief.
 
-### 6) Generate code
+### 7) Generate code
 After confirmation:
 - Vue repo -> Vue page/component
 - Astro repo -> Astro page/component
@@ -114,12 +119,13 @@ After confirmation:
 Rules:
 - UnoCSS first
 - use local assets only
+- reference final independent asset files, not atlas source images
 - keep scoped CSS minimal
 - use `data-section="..."` anchors on major sections
 - reuse existing tokens/components when they fit
 - avoid unnecessary abstractions
 
-### 7) Verify and repair
+### 8) Verify and repair
 Use Playwright section screenshot diffs.
 If it fails, repair only the biggest mismatch first.
 Do not rewrite the whole page unless the error is structural.
@@ -130,6 +136,7 @@ Do not rewrite the whole page unless the error is structural.
 - section boundaries and shell/container split
 - background vs content-image role
 - asset provenance and whether a crop fallback is needed
+- whether missing assets need fulfillment before code
 
 ## Stop Conditions
 Stop and ask when:
@@ -138,6 +145,7 @@ Stop and ask when:
 - critical text is missing
 - a key media role is ambiguous
 - a required asset is unavailable
+- a critical missing image has no confirmed fulfillment strategy
 - the user has not confirmed the brief
 
 ## References
@@ -146,6 +154,8 @@ Load details only when needed:
 - [references/framework-resolution.md](references/framework-resolution.md)
 - [references/width-normalization.md](references/width-normalization.md)
 - [references/media-role-classification.md](references/media-role-classification.md)
+- [references/asset-fulfillment-pipeline.md](references/asset-fulfillment-pipeline.md)
+- [references/asset-atlas-generation.md](references/asset-atlas-generation.md)
 - [references/pre-implementation-brief.md](references/pre-implementation-brief.md)
 - [references/vue-astro-unocss-output-rules.md](references/vue-astro-unocss-output-rules.md)
 - [references/playwright-section-diff.md](references/playwright-section-diff.md)
