@@ -9,6 +9,9 @@ license: MIT
 ## Purpose
 Use this skill when the user wants image-based design sections turned into production-style page code with UnoCSS.
 
+## Standalone Rule
+This skill is standalone by default. It accepts approved design inputs from any source, including direct screenshots, Figma context, section images, or equivalent briefs. `PlanToDelivery` may route work into this skill, but `PlanToDelivery` is not required.
+
 ## Keep It Light
 The main skill should stay short. Use references for the details.
 
