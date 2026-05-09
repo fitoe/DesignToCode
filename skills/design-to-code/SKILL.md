@@ -20,6 +20,8 @@ Before code generation, verify:
 - required assets are available, or an `Asset Fulfillment Plan` is confirmed
 - high-fidelity work has page/section crops or equivalent processed inputs
 - `Pre-Implementation Brief` exists and is confirmed when confirmation is required
+- the brief declares visual source mode as `binding` or `directional`; default approved UI mockups are `binding` unless the user explicitly chose directional-only implementation
+- binding sources include visual-parity constraints: layout order, major proportions, card anatomy, color blocks, navigation labels/count, first-screen composition, spacing rhythm, and action hierarchy
 
 If any item is missing, block code generation and ask for the missing artifact or approval.
 When a critical image asset is missing, do not improvise a messy page. Plan the asset source first: existing/crop, CSS/SVG substitute, single generation, atlas generation, or formal fallback.
@@ -31,15 +33,19 @@ Before handoff, provide:
 - section anchors when applicable
 - verification evidence or a clear reason verification could not run
 - layered parity notes: structure, proportion, style, detail
+- screenshot-to-source comparison for binding visual sources
 - mismatch and repair notes when visual diff was used
 
 When orchestrated, these may be summarized in an implementation handoff manifest.
+
+For binding sources, do not accept "required regions exist" as success. The report must compare the implementation screenshot against the approved source on layout order, major proportions, card anatomy, color blocks, navigation labels/count, first-screen visible content, spacing rhythm, and primary/secondary action hierarchy.
 
 ## Keep It Light
 The main skill should stay short. Use references for the details.
 
 Minimal enhancement set:
 - extract visual anchors first: headline, main visual, CTA, boundaries, spacing rhythm
+- for approved UI mockups, extract binding visual anchors before code: screen order, dominant card shapes, first-screen composition, navigation labels/count, color blocks, density, and action hierarchy
 - build in two layers: skeleton first, details second
 - state relative position constraints explicitly: above / below / left / right / aligned / centered / fixed gap
 - judge output with four layers: structure, proportion, style, detail
@@ -53,7 +59,8 @@ Core loop:
 5. wait for confirmation when required
 6. generate code
 7. verify with Playwright section diffs
-8. run at least one repair loop for high-fidelity mode
+8. for binding visual sources, capture the implemented page screenshot and compare it directly to the approved source before accepting the checkpoint
+9. run at least one repair loop for high-fidelity mode
 
 If the task is mostly about design style, structure, or assets, keep the reasoning in the brief instead of expanding the main skill.
 
@@ -120,6 +127,8 @@ Use atlas generation only for 2-8 same-family bitmap assets; keep hero, product,
 Use the required brief format. Keep each section short and actionable.
 No code before the user confirms the brief.
 
+For approved UI mockups, the brief must explicitly state `visual_source_mode: binding` unless the user explicitly chose directional-only implementation. Binding briefs must list the visual anchors that code must preserve; do not reduce them to generic required regions.
+
 ### 7) Generate code
 After confirmation:
 - Vue repo -> Vue page/component
@@ -139,6 +148,7 @@ Use Playwright section screenshot diffs.
 If it fails, repair only the biggest mismatch first.
 Do not rewrite the whole page unless the error is structural.
 In high-fidelity mode, produce layered parity notes and run at least one repair loop unless blocked or waived.
+For binding visual sources, verification must include a direct screenshot-to-source comparison. If the implementation changes the source layout, navigation count/labels, first-screen composition, dominant card anatomy, or major color blocks without a recorded accepted deviation, stop and repair instead of committing.
 
 ## What to Pay Attention To
 - structure and proportions before decoration
