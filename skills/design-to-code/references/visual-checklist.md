@@ -1,6 +1,6 @@
 # Visual Checklist
 
-Use this after code generation and section diff.
+Use this after code generation and screenshot comparison.
 
 ## Core Fidelity
 
@@ -12,6 +12,14 @@ Use this after code generation and section diff.
 - spacing rhythm feels consistent
 - key alignments hold
 
+## Proportion
+
+- target viewport and page width are recorded
+- important section tops/heights match normalized measurements closely enough
+- overlapping elements overlap by the intended amount
+- first-screen density matches the reference intent
+- fixed footer/safe-area does not cover required content
+
 ## Text
 
 - heading wraps plausibly
@@ -19,18 +27,31 @@ Use this after code generation and section diff.
 - body text does not collide or clip
 - real text did not break card heights unexpectedly
 
-## Media
+## Media and Assets
 
 - background vs content-image choices still look correct
-- images not stretched
-- decorative layers not missing where visually critical
-- optimized assets still preserve acceptable visual fidelity
-- new bitmap assets use the expected local format where practical
+- images are not stretched
+- visually important assets are fulfilled or explicitly marked as accepted fallback
+- decorative layers are not missing where visually critical
+- optimized assets preserve acceptable visual fidelity
+- new bitmap assets use local project files
 
 ## Interaction
 
 - explicit buttons/links visible
 - focusable controls exist for explicit interactions
+- route/API behavior needed by the page still works
+
+## Layered Score
+
+Assign rough scores:
+- structure
+- proportion
+- style
+- detail
+- overall
+
+Do not call an output high-fidelity when only structure passes.
 
 ## Structural Smoke Checks
 

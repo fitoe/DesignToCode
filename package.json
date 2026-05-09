@@ -7,7 +7,8 @@
     "scan-assets": "node scripts/asset-policy/scan-assets.mjs",
     "optimize-assets": "node scripts/asset-policy/optimize-assets.mjs",
     "crop-atlas": "node scripts/asset-policy/crop-atlas.mjs",
-    "validate-atlas": "node scripts/asset-policy/validate-atlas.mjs"
+    "validate-atlas": "node scripts/asset-policy/validate-atlas.mjs",
+    "check-design-inputs": "node scripts/check-design-to-code-inputs.mjs"
   },
   "dependencies": {
     "sharp": "^0.34.2"

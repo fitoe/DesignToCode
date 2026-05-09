@@ -49,8 +49,9 @@ DesignToCode 不适用于：
 8. 输出强制性的 `Pre-Implementation Brief`。
 9. 等待用户确认。
 10. 按项目约定生成页面代码。
-11. 使用 Playwright 做区块截图 diff。
-12. 输出偏差说明，以及可选的局部修复建议。
+11. 使用 Playwright 做页面和区块截图 diff。
+12. 对高保真任务执行至少一轮 repair loop。
+13. 输出分层 parity report：structure / proportion / style / detail。
 
 ## Pre-Implementation Brief
 
@@ -58,16 +59,22 @@ DesignToCode 不适用于：
 
 ```md
 ## Page Understanding
+## Fidelity Target
+## Source Inputs
 ## Section Breakdown
 ## Input Mode
+## Visual Anchors
 ## Reuse Mapping
 ## Media Role Decisions
 ## Asset Fulfillment Plan
 ## Asset Compression Plan
+## Normalized Measurements
 ## Layout Implementation Plan
 ## Framework/Output Plan
+## Accepted Deviations
+## Not Accepted Deviations
 ## Known Ambiguities
-## Verification Plan
+## Verification and Repair Plan
 ```
 
 在用户确认这份 brief 之前，不应开始生成页面代码。
@@ -125,6 +132,7 @@ npm run scan-assets
 npm run optimize-assets -- --input assets/example.png --write
 npm run crop-atlas -- --manifest path/to/asset-fulfillment-manifest.json
 npm run validate-atlas -- --manifest path/to/asset-fulfillment-manifest.json
+npm run check-design-inputs -- path/to/design-to-code-inputs/manifest.json
 ```
 
 使用建议：
@@ -133,6 +141,7 @@ npm run validate-atlas -- --manifest path/to/asset-fulfillment-manifest.json
 - `optimize-assets`：将选定图片转为合适的 WebP 资源
 - `crop-atlas`：从 atlas 大图按像素坐标裁切独立图片
 - `validate-atlas`：检查 atlas 坐标越界、输出缺失和尺寸不匹配
+- `check-design-inputs`：检查 manifest、页面裁切图、section 裁切图和 pre-implementation brief 是否齐全
 
 缺图补足的推荐时机是：先在 `Pre-Implementation Brief` 阶段整体盘点，再按策略批处理；不要写代码时遇到一张缺一张再临时生成。
 

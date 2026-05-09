@@ -18,7 +18,8 @@ Before code generation, verify:
 - target framework is resolved
 - page or section target is clear
 - required assets are available, or an `Asset Fulfillment Plan` is confirmed
-- `Pre-Implementation Brief` is confirmed when confirmation is required
+- high-fidelity work has page/section crops or equivalent processed inputs
+- `Pre-Implementation Brief` exists and is confirmed when confirmation is required
 
 If any item is missing, block code generation and ask for the missing artifact or approval.
 When a critical image asset is missing, do not improvise a messy page. Plan the asset source first: existing/crop, CSS/SVG substitute, single generation, atlas generation, or formal fallback.
@@ -29,6 +30,7 @@ Before handoff, provide:
 - mapped source design path
 - section anchors when applicable
 - verification evidence or a clear reason verification could not run
+- layered parity notes: structure, proportion, style, detail
 - mismatch and repair notes when visual diff was used
 
 When orchestrated, these may be summarized in an implementation handoff manifest.
@@ -45,11 +47,13 @@ Minimal enhancement set:
 
 Core loop:
 1. inspect the project
-2. choose the input mode
-3. write a brief
-4. wait for confirmation
-5. generate code
-6. verify with Playwright section diffs
+2. choose the input mode and fidelity mode
+3. prepare or verify page/section inputs
+4. write a brief
+5. wait for confirmation when required
+6. generate code
+7. verify with Playwright section diffs
+8. run at least one repair loop for high-fidelity mode
 
 If the task is mostly about design style, structure, or assets, keep the reasoning in the brief instead of expanding the main skill.
 
@@ -81,14 +85,19 @@ Resolve only the essentials:
 - page/container width
 - reusable components/tokens worth keeping
 
-### 2) Pick an input mode
-Choose one:
+### 2) Pick an input mode and fidelity mode
+Choose one input mode:
 - `image-only mode`
 - `metadata-assisted mode`
 - `figma-direct mode`
 - `figma-assisted mode`
 
-Name the mode in the brief.
+Choose one fidelity mode:
+- `structural`: section anatomy only
+- `balanced`: structure + proportion + basic style
+- `high-fidelity`: structure + proportion + style + key details, with repair loop
+
+Name both modes in the brief.
 
 ### 3) Make a short reuse map
 Before code, map the page to existing primitives:
@@ -129,6 +138,7 @@ Rules:
 Use Playwright section screenshot diffs.
 If it fails, repair only the biggest mismatch first.
 Do not rewrite the whole page unless the error is structural.
+In high-fidelity mode, produce layered parity notes and run at least one repair loop unless blocked or waived.
 
 ## What to Pay Attention To
 - structure and proportions before decoration
@@ -153,12 +163,15 @@ Load details only when needed:
 - [references/prompt-shape.md](references/prompt-shape.md)
 - [references/framework-resolution.md](references/framework-resolution.md)
 - [references/width-normalization.md](references/width-normalization.md)
+- [references/visual-measurements.md](references/visual-measurements.md)
+- [references/high-fidelity-mode.md](references/high-fidelity-mode.md)
 - [references/media-role-classification.md](references/media-role-classification.md)
 - [references/asset-fulfillment-pipeline.md](references/asset-fulfillment-pipeline.md)
 - [references/asset-atlas-generation.md](references/asset-atlas-generation.md)
 - [references/pre-implementation-brief.md](references/pre-implementation-brief.md)
 - [references/vue-astro-unocss-output-rules.md](references/vue-astro-unocss-output-rules.md)
 - [references/playwright-section-diff.md](references/playwright-section-diff.md)
+- [references/parity-report.md](references/parity-report.md)
 - [references/failure-handling.md](references/failure-handling.md)
 - [references/visual-checklist.md](references/visual-checklist.md)
 - [references/examples.md](references/examples.md)
