@@ -112,6 +112,21 @@ Core loop:
 
 If the task is mostly about design style, structure, or assets, keep the reasoning in the brief instead of expanding the main skill.
 
+## Multi-page Design Parity Guard
+
+Route coverage is not design parity. Creating a route, showing realistic content, or passing smoke tests does not permit changing the approved page type.
+
+When implementing multiple pages from binding visual sources:
+- bind every route to its `page_id`, visual source, crop/brief/contract, and expected page type before claiming design compliance
+- preserve page type at every maturity level: a list mockup remains a list, a detail mockup renders a populated detail state, a form mockup remains a form, and a placeholder mockup remains a placeholder
+- do not reuse a workbench/dashboard template to replace list, detail, form, approval, editor, or placeholder anatomy unless an accepted deviation or refreshed visual contract explicitly allows it
+- do not use empty, not-found, fallback, or demo-only states as proof that a populated binding mockup was implemented; record them as blocked, debt, or FAIL until the populated state renders
+- do not expose debug/version/fallback/demo badges in a visual parity surface unless the approved source or accepted deviation includes them
+- if implementation upgrades product state, such as turning a placeholder into an active demo dashboard, stop the fidelity claim and record a design change request, accepted deviation, or route back to `idea-to-design` for a refreshed visual source
+- checkpoint parity with screenshot-to-source PASS/WARN/FAIL per page; smoke/navigation success only proves reachability, not fidelity
+
+For broad Coverage Pass, pages may be L1/L2 and not pixel-perfect, but their primary anatomy, module order, dominant cards, action hierarchy, and density must still follow the bound source. If a page intentionally uses a common dashboard shell, the visual contract must say so.
+
 ## Use When
 - user provides screenshots, cropped sections, or Figma-derived context
 - target output is Vue or Astro page code
