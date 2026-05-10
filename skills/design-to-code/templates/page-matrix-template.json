@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "maturity_levels": [
+    "L0 route-ready",
+    "L1 skeleton-ready",
+    "L2 content-ready",
+    "L3 system-styled",
+    "L4 core-fidelity",
+    "L5 functional-ready"
+  ],
+  "pages": [
+    {
+      "page_id": "home",
+      "route": "/",
+      "priority": "core",
+      "target_maturity": "L4",
+      "current_maturity": "L0",
+      "first_screen_priority": true,
+      "sections": ["hero", "quick-actions", "recent-list"],
+      "content_strategy": "near-production mock content",
+      "mock_status": "planned|in-use|replaced|not-needed",
+      "asset_level": "A|B|C|D",
+      "verification_level": "coverage|system|fidelity",
+      "open_debt_ids": []
+    }
+  ]
+}

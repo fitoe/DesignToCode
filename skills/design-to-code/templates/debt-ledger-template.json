@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "id": "asset-home-hero",
+      "page": "home",
+      "type": "asset_fallback",
+      "severity": "medium",
+      "revisit_pass": "fidelity",
+      "status": "open",
+      "note": "Temporary C/D-level fallback used until approved source asset is available."
+    }
+  ]
+}

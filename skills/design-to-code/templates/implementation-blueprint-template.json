@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "mode": "blueprint-driven",
+  "default_goal": "20% time for 80% visible coverage, then refine core fidelity",
+  "read_order": [
+    "implementation-blueprint.json",
+    "page-matrix.json",
+    "component-blueprint.json",
+    "debt-ledger.json"
+  ],
+  "pass_sequence": ["foundation", "coverage", "refinement", "fidelity"],
+  "current_pass": "foundation",
+  "reference_viewport": { "width": 390, "height": 844 },
+  "routes": [
+    { "page_id": "home", "route": "/", "priority": "core", "target_maturity": "L4" }
+  ],
+  "core_pages": ["home"],
+  "foundation_components": ["AppShell", "PageContainer", "BaseCard", "PrimaryButton"],
+  "verification_policy": {
+    "coverage": "all routes/pages/major sections",
+    "system": "tokens, shell, component consistency",
+    "fidelity": "core pages and first screens only unless user requests more"
+  },
+  "read_by_pass": {
+    "foundation": ["tokens.json", "component-blueprint.json"],
+    "coverage": ["page-matrix.json", "design-to-code-inputs/manifest.json"],
+    "refinement": ["component-blueprint.json", "debt-ledger.json"],
+    "fidelity": ["visual-contracts/<page-id>.json", "page-style-briefs/<page-id>.md"]
+  },
+  "accepted_engineering_deviations": ["minor copy length", "icon substitution", "responsive spacing adjustment"],
+  "stop_conditions": ["missing required route map", "core visual direction conflict", "A-level asset unavailable", "production safety risk"]
+}

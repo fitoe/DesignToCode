@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "tiers": {
+    "foundation_first": ["AppShell", "PageContainer", "BaseCard", "PrimaryButton", "StatusTag"],
+    "extract_after_repetition": ["StatsCard", "ListItem", "SectionHeader"],
+    "page_local_first": ["HomeHero"],
+    "deferred": ["RareModal"]
+  },
+  "rules": [
+    "first pass may duplicate page-local structures for coverage speed",
+    "extract repeated patterns after they appear 2-3 times",
+    "do not let abstraction block visible coverage",
+    "foundation components should obey tokens before page-specific decoration"
+  ],
+  "states_required": ["default", "loading", "empty", "error", "disabled"]
+}
