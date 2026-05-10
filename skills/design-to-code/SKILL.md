@@ -39,8 +39,11 @@ Use page maturity levels:
 
 ## Input Gate
 Before code generation, verify:
-- when `implementation-blueprint.json` exists: blueprint mode is `blueprint-driven`, routes/pages are listed, current pass is clear, page matrix exists, component blueprint exists, debt ledger exists, and required current-pass file refs are available
-- when no blueprint exists: approved persisted design source exists
+- when `implementation-blueprint.json` exists: blueprint mode is `blueprint-driven`, routes/pages are listed, current pass is clear, page matrix exists, component blueprint exists, and debt ledger exists
+- blueprint must be post-visual: `visual_freeze_ref.status = "approved"`, `visual_freeze_ref.post_visual_extraction_status = "complete"`, and the blueprint source version matches the approved visual source version when state/contract metadata is available
+- if the blueprint was generated before visual freeze, lacks `visual_freeze_ref`, or conflicts with approved image metadata, stop and route back to `idea-to-design` for Post-Visual Extraction refresh; do not reconcile stale text and images inside `design-to-code`
+- if approved image and blueprint disagree on visual style, component anatomy, or layout proportions, treat the blueprint as stale unless the difference is recorded as an accepted deviation
+- if no blueprint exists, approved persisted design source exists
 - target framework is resolved
 - page or section target is clear
 - required assets are available, or an `Asset Fulfillment Plan` is confirmed
@@ -226,6 +229,7 @@ When screenshot comparison is waived, explicitly state that waiver and verify fr
 ## Stop Conditions
 Stop and ask when:
 - blueprint is missing or contradictory for required routes/pages
+- blueprint lacks approved visual freeze metadata, predates visual approval, or was not refreshed by Post-Visual Extraction
 - framework is unclear
 - width/reference viewport is unclear and no safe project default exists
 - core visual direction conflicts with implementation constraints

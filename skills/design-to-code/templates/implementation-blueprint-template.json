@@ -1,6 +1,12 @@
 {
   "version": "1.0",
   "mode": "blueprint-driven",
+  "visual_freeze_ref": {
+    "status": "approved",
+    "source_version": "home-large-v2",
+    "post_visual_extraction_status": "complete"
+  },
+  "source_priority": ["user_requirement", "product_spec", "approved_image", "engineering_constraint", "accepted_deviation"],
   "default_goal": "20% time for 80% visible coverage, then refine core fidelity",
   "read_order": [
     "implementation-blueprint.json",

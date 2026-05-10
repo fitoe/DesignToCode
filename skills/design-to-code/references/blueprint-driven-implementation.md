@@ -4,6 +4,10 @@ Use this reference when `implementation-blueprint.json` is present or when conve
 
 ## Principle
 
+Do not interpret images repeatedly during execution. Implement the approved post-visual blueprint like a frontend engineer who already received a prepared handoff.
+
+A blueprint is valid only when it was refreshed after visual freeze. `implementation-blueprint.json` must include `visual_freeze_ref.status = "approved"` and `visual_freeze_ref.post_visual_extraction_status = "complete"`. If this is missing or stale, return to `idea-to-design`; do not let implementation choose between old text and approved images.
+
 Do not implement one page to high fidelity while the rest of the product is missing. Build like a human frontend engineer: establish the system, cover all routes, fill content, then refine and target fidelity.
 
 ## Required default read path
