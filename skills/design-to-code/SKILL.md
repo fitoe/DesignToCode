@@ -11,6 +11,8 @@ Use this skill when the user wants an approved implementation blueprint, visual 
 
 Default to blueprint-driven implementation when `implementation-blueprint.json` exists. Treat images and page briefs as traceability inputs for targeted fidelity work, not as the default reasoning source for every page.
 
+When `technical-decisions.json`, `feature-recipes.json`, or `verification-matrix.json` exist, treat them as the source of truth for dependencies, services, stores, composables, API seams, mock-to-real transitions, and functional verification.
+
 ## Standalone Rule
 This skill is standalone by default. It accepts approved design inputs from any source, including direct screenshots, Figma context, section images, or equivalent briefs. `PlanToDelivery` may route work into this skill, but `PlanToDelivery` is not required.
 
@@ -20,7 +22,7 @@ When `implementation-blueprint.json` exists and the implementation gate is open 
 
 Run implementation like a frontend engineer, from broad coverage to detail:
 
-1. `blueprint-intake`: read `implementation-blueprint.json`, then only files listed for the current pass.
+1. `blueprint-intake`: read `implementation-blueprint.json`, then current-scope technical files (`technical-decisions.json`, `feature-recipes.json`, `verification-matrix.json`) when present, then only files listed for the current pass.
 2. `foundation-pass`: implement global tokens, app shell, layout containers, navigation shell, and foundation components.
 3. `coverage-pass`: create every route/page, fill approved section order, realistic content/mock data, and visible states across the whole surface.
 4. `refinement-pass`: extract repeated components after patterns appear 2-3 times, normalize content/assets/fallbacks, and close medium debt.
@@ -42,6 +44,7 @@ Before code generation, verify:
 - when `implementation-blueprint.json` exists: blueprint mode is `blueprint-driven`, routes/pages are listed, current pass is clear, page matrix exists, component blueprint exists, and debt ledger exists
 - blueprint must be post-visual: `visual_freeze_ref.status = "approved"`, `visual_freeze_ref.post_visual_extraction_status = "complete"`, and the blueprint source version matches the approved visual source version when state/contract metadata is available
 - if the blueprint was generated before visual freeze, lacks `visual_freeze_ref`, or conflicts with approved image metadata, stop and route back to `idea-to-design` for Post-Visual Extraction refresh; do not reconcile stale text and images inside `design-to-code`
+- if current-scope technical blueprint files exist, dependency choices, feature recipes, mock-to-real seams, and verification expectations are followed; do not pick competing libraries or state architecture during coding unless the technical plan is blocked or user-waived
 - if approved image and blueprint disagree on visual style, component anatomy, or layout proportions, treat the blueprint as stale unless the difference is recorded as an accepted deviation
 - if no blueprint exists, approved persisted design source exists
 - target framework is resolved
