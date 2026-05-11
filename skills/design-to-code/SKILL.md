@@ -16,6 +16,8 @@ When `technical-decisions.json`, `feature-recipes.json`, or `verification-matrix
 ## Standalone Rule
 This skill is standalone by default. It accepts approved design inputs from any source, including direct screenshots, Figma context, section images, or equivalent briefs. `PlanToDelivery` may route work into this skill, but `PlanToDelivery` is not required.
 
+Ownership boundary: after a visual source is approved and the preparation owner has completed Visual Freeze, Post-Visual Extraction, and an implementation-ready handoff package or equivalent binding inputs, `design-to-code` owns implementation, visual extraction-for-code, fidelity repair, screenshot-to-source verification, and deviation reporting. Do not route routine implementation back to `idea-to-design` just to re-explain an approved mockup; only route back when the approved source is missing/stale, the handoff package predates approval, product scope changed, or a design change/new visual source is required.
+
 ## Default Blueprint-driven Workflow
 
 When `implementation-blueprint.json` exists and the implementation gate is open or user-waived, use it as the execution source of truth for scope, routes, pass order, and file refs. Do not re-analyze every design image during Foundation/Coverage. During Fidelity Pass, section repair, or any user-reported parity problem, reopen the bound mockup/crop and compare the implementation against the image-derived anatomy instead of relying on brief text alone.
@@ -137,9 +139,19 @@ Before coding or claiming `L4 core-fidelity` for a high-fidelity page/section, e
 
 Generic component drift guard: reuse existing shell/card/list/button primitives only when they preserve the approved section anatomy. If a generic component changes padding, title treatment, grid density, icon style, row count, dominant color block, or action hierarchy, build the first fidelity pass as a bespoke page-local section. Extract components only after visual parity is accepted and extraction does not change structure or spacing.
 
+Icon and interactive primitive guard: for icon-bearing UI, first inspect the target project's existing icon system and dependencies, such as Iconify/UnoCSS `presetIcons`, `i-mdi-*`, `i-carbon-*`, component-library icons, or local icon assets. Use semantically matched icons from that existing system instead of CSS-drawn pseudo-icons, text glyphs, emoji, Chinese-character placeholders, or improvised shapes. Only create CSS/SVG icons when the project has no usable icon source or the visual contract explicitly requires a custom mark, and record that as an asset fallback.
+
+Do not use native `<button>` elements for visual cards, KPI tiles, module-grid cells, or dashboard entry cards unless the approved design shows button behavior or the platform requires it. In uni-app/H5, native button defaults can change width, margin, border, padding, line-height, and pseudo-element borders, causing parity drift. Prefer the project's card/link/navigation primitive or a clickable `view`/router element that preserves the visual anatomy.
+
+UnoCSS/Iconify static-discovery rule: icon utility classes must be statically discoverable by the build. Do not rely on dynamic concatenation like ``:class="`i-mdi-${name}`"`` unless the full `i-mdi-*` classes also appear as literals or are safelisted. Prefer storing complete class names such as `i-mdi-server-network` in data, or add a safelist, then verify the icon visibly renders in dev.
+
 Evidence rule: text presence, route reachability, unit tests, smoke tests, or DOM audits are functional/coverage evidence, not visual-parity evidence. A parity PASS needs screenshot-to-source or section-by-section mismatch notes against the approved mockup/crop.
 
 User correction trigger: when the user says a page is not like the design, has low fidelity, shows no visible change, or differs greatly from the mockup, stop normal implementation. First verify dev freshness and viewport, reopen the bound mockup/crop, identify the top 1-3 section mismatches, explain the root cause without defending the current code, then repair those mismatches before continuing. Do not use "brief matches", "text exists", or "tests pass" as a rebuttal to visual feedback.
+
+Section-first repair loop: for L4/high-fidelity regions, do not jump directly from crop to Vue/CSS. First write a short implementation mapping for the target section: visual anchor -> DOM structure -> CSS/asset strategy. Repair one section at a time and keep a mismatch note with source observation, current deviation, and repair action. If the user says the same section is still unlike the source, update the mapping before editing more code.
+
+Asset strategy guard: complex GPT Image 2 decorations are not automatically CSS tasks. Before implementing a visually rich section, classify each visual element as: A source/crop asset required, B SVG/local vector, C CSS/gradient feasible, D Iconify/library icon, or E optional/deferred. Use CSS for geometry, rings, glass panels, grids, and light glows; prefer crop/SVG/asset for complex 3D, illustration, device, character, or photorealistic elements. Record visible deviations instead of silently replacing an asset-required element with generic div art.
 
 ## Multi-page Design Parity Guard
 
