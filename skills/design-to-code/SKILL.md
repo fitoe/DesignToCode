@@ -84,11 +84,15 @@ For each meaningful checkpoint, report:
 - Maintain a text inventory before coding. Every visible text fragment in the binding source must be mapped to a role (`title`, `label`, `value`, `unit`, `caption`, `status`, `link`) and an approximate position. Generation is incomplete if a visible label is omitted, merged into another role, or moved to a different hierarchy level.
 - Maintain an icon anatomy map before coding. For every icon-like mark, record source role, chosen library class, size, color, container/background yes/no, stroke/fill style, and inline alignment. If the source shows a bare icon, do not wrap it in a colored tile. If an inline dropdown/arrow/refresh is visible, use an icon library class instead of text glyphs like `⌄`, `›`, or `↻` unless the source is explicitly typographic.
 - Before full-page rewrites, run a pre-generation checklist: `tokens covered`, `text inventory covered`, `icon anatomy covered`, `asset backlog updated`, and `must-not-add effects listed`. If any is missing, create/update the brief first instead of guessing in code.
+- Before implementing visual elements that are functional controls, classify them with an IdeaToTech/project-pattern check. Tabs, segmented controls, search bars, filters, dropdowns, pickers, date/calendar filters, pagination, form fields, toggles, upload controls, and action list rows must map to existing project patterns or UI-library components when available. Do not implement them as decorative views unless the semantic fallback, state, interaction, and accepted deviation are recorded.
+- Icon anatomy must include icon-to-text/value relation, not only icon identity. For metric tiles and summaries, record whether the icon is above, left of the number, right of the number, or badge-like, and preserve that layout.
+- Filter/tab labels must not wrap unless the source explicitly wraps them. Use component sizing, nowrap, horizontal scroll, or overflow strategy before allowing labels like `申请类型` to break lines.
 
 ## Progressive Loading
 
 Load only when needed:
 - `references/full-page-regeneration-guard.md` — required before complete page rewrites from approved mockups; token table, text inventory, icon anatomy, and asset grouping map
+- `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other functional controls; use IdeaToTech/project-pattern checks before coding component semantics
 - `references/blueprint-driven-implementation.md` — blueprint-first implementation details
 - `references/visual-measurements.md` — extracting sizes, colors, density
 - `references/playwright-section-diff.md` — section screenshot comparison
