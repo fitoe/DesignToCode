@@ -9,7 +9,7 @@ license: MIT
 ## Purpose
 Use this skill when the user wants an approved implementation blueprint, visual contract package, screenshots, cropped sections, or Figma-derived context turned into production-style Vue/Astro page code with UnoCSS.
 
-Default to blueprint-driven implementation when `implementation-blueprint.json` exists. Treat images and page briefs as traceability inputs during Foundation/Coverage, but treat approved mockup images or persisted crops as binding visual-anatomy sources during Fidelity Pass, section repair, or any user-reported parity problem.
+Default to blueprint-driven implementation when `implementation-blueprint.json` exists. Treat images and page briefs as traceability inputs during Foundation/Coverage, but treat approved mockup images, persisted crops, and Visual IR files as binding visual-anatomy sources during Fidelity Pass, section repair, or any user-reported parity problem. Prefer structured Visual IR over prose whenever both exist.
 
 When `technical-decisions.json`, `feature-recipes.json`, or `verification-matrix.json` exist, treat them as the source of truth for dependencies, services, stores, composables, API seams, mock-to-real transitions, and functional verification.
 
@@ -20,7 +20,7 @@ Ownership boundary: after a visual source is approved and the preparation owner 
 
 ## Default Blueprint-driven Workflow
 
-When `implementation-blueprint.json` exists and the implementation gate is open or user-waived, use it as the execution source of truth for scope, routes, pass order, and file refs. Do not re-analyze every design image during Foundation/Coverage. During Fidelity Pass, section repair, or any user-reported parity problem, reopen the bound mockup/crop and compare the implementation against the image-derived anatomy instead of relying on brief text alone.
+When `implementation-blueprint.json` exists and the implementation gate is open or user-waived, use it as the execution source of truth for scope, routes, pass order, and file refs. Do not re-analyze every design image during Foundation/Coverage. During Fidelity Pass, section repair, or any user-reported parity problem, reopen the bound mockup/crop and compare the implementation against Visual IR and image-derived anatomy instead of relying on brief text alone.
 
 Run implementation like a frontend engineer, from broad coverage to detail:
 
@@ -53,6 +53,7 @@ Use page maturity levels:
 ## Input Gate
 Before code generation, verify:
 - when `implementation-blueprint.json` exists: blueprint mode is `blueprint-driven`, routes/pages are listed, current pass is clear, page matrix exists, component blueprint exists, and debt ledger exists
+- if Visual IR files exist, they are the primary implementation constraint for page type, section order, normalized section bounds, first-screen density, card/list anatomy, action hierarchy, must-not-do rules, and section anchors; prose briefs explain intent but do not override Visual IR
 - blueprint must be post-visual: `visual_freeze_ref.status = "approved"`, `visual_freeze_ref.post_visual_extraction_status = "complete"`, and the blueprint source version matches the approved visual source version when state/contract metadata is available
 - if the blueprint was generated before visual freeze, lacks `visual_freeze_ref`, or conflicts with approved image metadata, stop and route back to `idea-to-design` for Post-Visual Extraction refresh; do not reconcile stale text and images inside `design-to-code`
 - if current-scope technical blueprint files exist, dependency choices, feature recipes, mock-to-real seams, and verification expectations are followed; do not pick competing libraries or state architecture during coding unless the technical plan is blocked or user-waived
@@ -104,6 +105,7 @@ Minimal enhancement set:
 - use page maturity levels and debt ledger instead of binary complete/incomplete claims
 - use asset fallback levels: A source required, B crop/reuse allowed, C CSS/SVG/gradient allowed, D placeholder allowed with debt
 - use targeted visual anchors for fidelity: headline, main visual, CTA, boundaries, spacing rhythm
+- use Visual IR when available to avoid prose-only implementation: page type, section order, section bbox, first-screen density, card/list anatomy, action hierarchy, must-not-do rules, and section anchors
 - for approved UI mockups, preserve binding anchors: screen order, dominant card shapes, first-screen composition, navigation labels/count, color blocks, density, and action hierarchy
 - write explicit Non-negotiables only for core fidelity surfaces or when no blueprint exists
 - use the visual contract drift budget when present; treat layout, module order, and navigation drift as zero-budget unless the contract says otherwise
@@ -124,6 +126,31 @@ Core loop:
 10. for high-fidelity targets, run at least one repair loop unless blocked or waived
 
 If the task is mostly about design style, structure, or assets, keep the reasoning in the brief instead of expanding the main skill.
+
+## Visual IR and Section Diff Loop
+
+Do not depend on prose precision when structured visual data can be produced. Prefer this chain for binding PNG/mockup workflows:
+
+`approved mockup/crop -> Visual IR -> implementation mapping -> code with section anchors -> Playwright section screenshots -> parity report -> targeted repair`.
+
+Visual IR is a compact, machine-readable design intermediate representation. Keep v1 small and high-signal; it should prevent the common failures, not describe every pixel. Recommended fields:
+- `page_id`, `route`, `viewport`, `page_type`, and visual source refs
+- ordered `sections` with `name`, `bbox` or normalized bounds, expected anatomy, visible labels/counts, dominant color/card shape, and first-screen density
+- `section_anchors`: required `data-section` names that implementation must emit
+- `must_not_do`: concrete drift rules such as “do not replace list with dashboard” or “do not show empty state for populated mockup”
+- `asset_strategy`: A source/crop required, B SVG/vector, C CSS/gradient, D icon-library substitute, E optional/deferred
+
+Implementation rules:
+- read Visual IR before prose briefs when both exist
+- add stable `data-section="..."` anchors for each major section in implemented pages/components
+- if a section from Visual IR cannot be represented, record a visual debt or accepted deviation before claiming parity
+- use native screenshots/DOM only to support the diff loop; they do not replace the bound visual source
+
+Verification rules:
+- capture full viewport and the 2-5 most important `data-section` screenshots for core/fidelity pages
+- compare section order, normalized top/height/margins, first-screen density, card/list anatomy, color blocks, and action hierarchy
+- report PASS/WARN/FAIL per page and per major section
+- after a FAIL, repair only the biggest 1-3 mismatches first instead of rewriting the whole page
 
 ## Binding Section Parity Guard
 
