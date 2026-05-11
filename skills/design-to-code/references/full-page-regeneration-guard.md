@@ -21,12 +21,40 @@ Record source-derived values for the whole page and each major section:
 | primary content font floor | | | |
 | secondary/meta font floor | | | |
 
+For component-specific shapes, add rows instead of relying on one global radius:
+
+| section | element | source shape | width/height | radius model | padding | implementation value | deviation? |
+|---|---|---|---|---|---|---|---|
+| list | priority chip | capsule / rounded-rect / square-ish / circle | | | | | |
+| tabs | active tab pill | | | | | | |
+| card | hero panel | | | | | | |
+
+For complex hero/status cards, add a layer-stack table before coding:
+
+| section | layer | source observation | implementation strategy | DOM/SVG/asset | debt? |
+|---|---|---|---|---|---|
+| hero/status | base gradient | | | | |
+| hero/status | ring/chart geometry | | | | |
+| hero/status | metric columns/separators | | | | |
+| hero/status | decoration/background media | | | | |
+| hero/status | inner glow/shadow | | | | |
+
+For icon grids/action modules, add cell-alignment rows:
+
+| section | element | icon relation | cell alignment model | icon box | label alignment | implementation value | deviation? |
+|---|---|---|---|---|---|---|---|
+| module grid | module item | icon above label / left of label / badge | centered icon + centered label / left row | | | | |
+| quick action | action item | | | | | | |
+
 Rules:
 - Do not use generic dashboard defaults without filling this table.
 - If exact color cannot be sampled, describe it and choose the closest token deliberately.
 - Prefer fixing proportion/spacing before decorative effects.
 - Preserve the design hierarchy, but do not copy unreadably small typography for main content. On mobile/H5, primary readable text should generally stay at or above 12px, section/card titles at or above 13-14px, and 10-11px should be reserved for dense metadata, badges, timestamps, or units only when the source and available space require it.
 - If increasing tiny source text affects density, compensate with spacing/line-height/layout rather than shrinking important content below readability floors.
+- Do not infer small control shapes from page/card radius. Chips, priority labels, tab pills, and badges must keep their own source shape model and dimensions.
+- Do not convert centered module/action icon grids into left-aligned flex rows. Record and preserve the alignment model for the whole cell, not only the icon asset.
+- Complex hero/status/cockpit cards are not a single background rectangle. Map layers and decide which layers are DOM, SVG, or asset-backed before writing CSS.
 
 ## 2. Text inventory
 
@@ -52,15 +80,16 @@ Every icon-like mark must be mapped before coding.
 |---|---|---|---|---|---|---|---|
 | header | dropdown | | | | no | inline after role | |
 | header | refresh | | | | no | inline | |
-| KPI | primary icon | | | | yes/no from source | | |
-| grid | module icon | | | | yes/no from source | | |
-| action | action icon | | | | yes/no from source | | |
+| KPI | primary icon | | | | yes/no from source | left of value / above value / badge / centered | |
+| grid | module icon | | | | yes/no from source | centered in cell / left row / other | |
+| action | action icon | | | | yes/no from source | centered in cell / left row / other | |
 
 Rules:
 - Resolve from Iconify first; search existing project icon sets before drawing.
 - Source bare icon = no colored tile/background wrapper.
 - Inline dropdown/arrow/refresh icons must use icon classes, not glyph text (`⌄`, `›`, `↻`) unless the source is typographic.
 - Record icon color and stroke/fill style; do not infer color only from semantic meaning.
+- Record icon-to-text relation and cell alignment. If the source has centered module/action icons, implementation must center both icon and label within the cell unless an accepted deviation is recorded.
 
 ## 4. Asset grouping map
 

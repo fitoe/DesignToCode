@@ -44,6 +44,9 @@ Layered checks:
 - important illustration/icon fidelity
 - badge/divider/wave/ornament details
 - no distorted images
+- complex card layer stack: base, chart/ring, metrics, dividers, decorations, shadows/glows
+- chip/label shape class and dimensions, especially priority/status labels
+- module/action grid icon alignment: centered cell vs left row, icon-label relation
 
 ## Tolerated Differences
 

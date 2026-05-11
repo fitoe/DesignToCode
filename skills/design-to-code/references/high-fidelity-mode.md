@@ -88,6 +88,12 @@ Guidance:
 - style < 75: call it structural/balanced, not high fidelity
 - detail < 60: record asset/detail debt or continue repair
 
+Mandatory detail gates for common drift:
+- Complex hero/status cards: compare layer stack, not only outer card size. Base gradient, chart/ring geometry, metric columns, separators, decoration/media role, and glow/shadow treatment must each be PASS/WARN/FAIL.
+- Small labels/chips: compare shape class and dimensions, not only color/text. A capsule, rounded rectangle, square-ish tag, and circular badge are different components.
+- Module/action grids: compare icon cell alignment. Centered icon + centered label must not become a left-aligned row unless explicitly accepted.
+- Repeated separators and metric columns: count each visible divider and preserve its location before polishing effects.
+
 ## Mandatory Repair Loop
 
 High-fidelity pages require at least one screenshot repair loop:
