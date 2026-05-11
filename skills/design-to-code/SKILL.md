@@ -76,6 +76,10 @@ For each meaningful checkpoint, report:
 - Do not run broad lint/type/build repeatedly during active visual editing unless a failure signal or gate requires it.
 - Do not handwave “close enough”; record section-level debt.
 
+- Exactness beats style intuition: implement only effects visible in the binding source. Do not add glow, blur, glass, shadow, gradient intensity, decorations, or micro-effects because they feel consistent with the style. If the source ring has no outer glow, keep it clean; additive effects are visual drift unless recorded as an accepted enhancement.
+- Count repeated separators explicitly. Metric groups, segmented controls, tabs, lists, and grids must map every visible divider/separator before coding. Do not collapse two internal separators into one parent divider, and do not move group dividers to the section edge.
+- Do not hand-draw final substitutes for asset-required GPT Image 2 decorations. If a rich background/3D/resource-pool illustration is not feasible as CSS/SVG with high fidelity, add it to an asset backlog for a later GPT Image 2/image-asset pass with bbox, prompt notes, transparent-background requirement, export size, and layer placement. Treat attached grids, platforms, glow fields, and base shadows that visually belong to that illustration as part of the same asset unless the source clearly separates them as independent UI geometry. Temporary CSS/SVG placeholders must be low-emphasis and reported as debt, not parity-complete.
+
 ## Progressive Loading
 
 Load only when needed:
