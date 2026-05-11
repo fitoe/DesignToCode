@@ -9,7 +9,7 @@ license: MIT
 ## Purpose
 Use this skill when the user wants an approved implementation blueprint, visual contract package, screenshots, cropped sections, or Figma-derived context turned into production-style Vue/Astro page code with UnoCSS.
 
-Default to blueprint-driven implementation when `implementation-blueprint.json` exists. Treat images and page briefs as traceability inputs for targeted fidelity work, not as the default reasoning source for every page.
+Default to blueprint-driven implementation when `implementation-blueprint.json` exists. Treat images and page briefs as traceability inputs during Foundation/Coverage, but treat approved mockup images or persisted crops as binding visual-anatomy sources during Fidelity Pass, section repair, or any user-reported parity problem.
 
 When `technical-decisions.json`, `feature-recipes.json`, or `verification-matrix.json` exist, treat them as the source of truth for dependencies, services, stores, composables, API seams, mock-to-real transitions, and functional verification.
 
@@ -18,7 +18,7 @@ This skill is standalone by default. It accepts approved design inputs from any 
 
 ## Default Blueprint-driven Workflow
 
-When `implementation-blueprint.json` exists and the implementation gate is open or user-waived, use it as the execution source of truth. Do not re-analyze design images, rewrite page briefs, or ask for routine confirmations.
+When `implementation-blueprint.json` exists and the implementation gate is open or user-waived, use it as the execution source of truth for scope, routes, pass order, and file refs. Do not re-analyze every design image during Foundation/Coverage. During Fidelity Pass, section repair, or any user-reported parity problem, reopen the bound mockup/crop and compare the implementation against the image-derived anatomy instead of relying on brief text alone.
 
 Run implementation like a frontend engineer, from broad coverage to detail:
 
@@ -30,6 +30,15 @@ Run implementation like a frontend engineer, from broad coverage to detail:
 6. `handoff`: report page maturity, global system status, core first-screen fidelity, verification, and debt.
 
 Target: use roughly 20% of effort to complete 80% of visible coverage, then invest fidelity work where it changes user perception most.
+
+Use trust-first, checkpoint-based verification during implementation. Do not run full lint, full type-check, full build, or broad regression after every small edit. Preserve coding flow during Foundation, Coverage, and Refinement passes; verify at pass completion, core fidelity checkpoints, handoff, merge readiness, or when a high-risk foundation changes.
+
+High-risk foundation changes that justify earlier verification:
+- dependency manifests or lockfiles
+- build, bundler, lint, test, or TypeScript configuration
+- shared types, public APIs, routing foundations, or cross-module contracts
+- auth, permissions, payment, security, privacy, data mutation, schema, migration, or persistence code
+- broad refactors with cross-module blast radius
 
 Use page maturity levels:
 - `L0 route-ready`: route/page exists and is reachable.
@@ -74,6 +83,8 @@ Before handoff, provide:
 
 When orchestrated, these may be summarized in an implementation handoff manifest.
 
+Verification evidence may be layered by pass. Before final handoff, report which checks were intentionally deferred during active coding, which stage-gate checks were run, and whether any failures are current-scope blockers, baseline debt, environment issues, third-party issues, or deferred work.
+
 For binding sources under fidelity verification, do not accept "required regions exist" as success. The report must compare the implemented priority surface against the approved source on layout order, major proportions, card anatomy, color blocks, navigation labels/count, first-screen visible content, spacing rhythm, and primary/secondary action hierarchy.
 
 For non-core pages or passes before fidelity, success means coverage and system consistency: route exists, approved section order is present, content is realistic or mock-labeled, global tokens/components are used, and any missing asset/detail is recorded in the debt ledger.
@@ -111,6 +122,24 @@ Core loop:
 10. for high-fidelity targets, run at least one repair loop unless blocked or waived
 
 If the task is mostly about design style, structure, or assets, keep the reasoning in the brief instead of expanding the main skill.
+
+## Binding Section Parity Guard
+
+For binding mockups, brief text is not the visual source of truth. The source hierarchy is: user-approved mockup/crop > page visual contract/section contract > page brief > existing implementation > DOM text/unit/smoke tests. Lower levels cannot justify drift from higher levels.
+
+Before coding or claiming `L4 core-fidelity` for a high-fidelity page/section, extract or read a section-level contract for each priority region:
+- section name and source image/crop path
+- exact layout pattern such as 4-row list, 2x4 grid, hero + metrics, bottom action bar
+- required counts, labels, row/card order, and visible first-screen content
+- dominant card anatomy, color blocks, density, spacing rhythm, icon/image role, and action hierarchy
+- allowed approximations and accepted deviations
+- forbidden substitutions, especially replacing bespoke mockup anatomy with a generic card/list/dashboard component
+
+Generic component drift guard: reuse existing shell/card/list/button primitives only when they preserve the approved section anatomy. If a generic component changes padding, title treatment, grid density, icon style, row count, dominant color block, or action hierarchy, build the first fidelity pass as a bespoke page-local section. Extract components only after visual parity is accepted and extraction does not change structure or spacing.
+
+Evidence rule: text presence, route reachability, unit tests, smoke tests, or DOM audits are functional/coverage evidence, not visual-parity evidence. A parity PASS needs screenshot-to-source or section-by-section mismatch notes against the approved mockup/crop.
+
+User correction trigger: when the user says a page is not like the design, has low fidelity, shows no visible change, or differs greatly from the mockup, stop normal implementation. First verify dev freshness and viewport, reopen the bound mockup/crop, identify the top 1-3 section mismatches, explain the root cause without defending the current code, then repair those mismatches before continuing. Do not use "brief matches", "text exists", or "tests pass" as a rebuttal to visual feedback.
 
 ## Multi-page Design Parity Guard
 
@@ -228,6 +257,19 @@ Verify by layer:
 - Coverage Check: all planned routes/pages exist, major sections exist in approved order, page matrix maturity is updated.
 - System Check: global tokens, shell, base components, layout rhythm, and platform constraints are consistently applied.
 - Fidelity Check: run Playwright screenshot comparison only for core pages, first screens, key components, or explicit high-fidelity targets.
+
+Verification timing:
+- active editing: default to no command-driven verification unless a concrete failure signal appears
+- Foundation/Coverage/Refinement pass completion: run focused checks for touched or impacted routes/components
+- Fidelity pass: run targeted screenshot/parity checks only for core pages, first screens, key components, or requested high-fidelity regions
+- handoff, merge readiness, or release readiness: run full lint, full type-check, full build, and required regression unless explicitly waived with recorded risk
+
+Treat full lint, full type-check, full build, broad regression, and broad E2E as stage-gate checks. If a stage-gate check fails, classify it before fixing:
+- blocker: caused by current scope and prevents the current pass or handoff goal
+- baseline: pre-existing or unrelated project debt
+- environment: local setup, network, tool, or third-party issue
+- third-party: external package, service, or upstream type issue outside the current scope
+- deferred: real issue outside the current pass goal
 
 If a fidelity check fails, repair only the biggest mismatch first.
 Do not rewrite the whole page unless the error is structural.
