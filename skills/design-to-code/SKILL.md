@@ -1,6 +1,6 @@
 ---
 name: design-to-code
-description: Use when converting approved design sources, handoff packages, mockups, visual contracts, or UI blueprints into implementation code and visual parity evidence.
+description: Use when converting approved design sources, handoff packages, mockups, visual contracts, or UI blueprints into implementation code and visual parity evidence; also when visual implementation feels rough, stretched, under-specified, or needs section-level high-fidelity repair.
 ---
 
 # Design to Code
@@ -37,6 +37,7 @@ Keep high-fidelity capability, but activate heavy rules only around the current 
 - `strict-fidelity`: core screens, final visual acceptance, or user asks for exact/按图还原; load high-fidelity references and run screenshot repair loops.
 - `repair`: existing implementation drifted; compare current screenshot to source and fix the largest 1-3 gaps per pass.
 - `regenerate`: complete page rewrite; load full-page regeneration guard before coding.
+- `section-strict`: rough, stretched, or only half-accurate visual implementation; load section-driven high-fidelity plus atlas rules before coding.
 - `asset`: complex illustration/icon/background work; use asset fulfillment references and record asset debt.
 
 In `standard-fidelity`, prefer cached Visual IR and source/screenshot paths over long vision prose. Load heavier references only when the mode or a failed parity check requires them.
@@ -50,6 +51,9 @@ These rules are always active for GPT Image 2/mockup work:
 - do not replace populated designs with empty states unless the source says so
 - do not claim parity from DOM/text smoke alone; use screenshot or section evidence
 - maintain or create lightweight Visual IR for the active page/section
+- for high-fidelity page rewrites, enrich Visual IR to section-level layout/asset contracts before coding
+- generated media must match its final display role and aspect ratio; do not hide asset mismatch with `object-fit` or background-position tricks
+- atlas generation is for creation efficiency only; crop atlas outputs into independent files before implementation
 - fix the largest 1-3 visual gaps per pass and record remaining debt
 
 ## Default Workflow
@@ -60,6 +64,30 @@ These rules are always active for GPT Image 2/mockup work:
 4. **Section Anchors**: add stable `data-section` markers for key sections.
 5. **Fidelity Loop**: compare source vs implementation by section; fix the largest 1-3 gaps per pass.
 6. **Handoff**: report page maturity, evidence, debt, and deviations.
+
+## Section-Strict Trigger
+
+When the user says the implementation is rough, only half done, stretched, not precise enough, needs richer IR, or should be restored section-by-section, switch to section-strict/regenerate mode. Before coding, load:
+
+- `references/full-page-regeneration-guard.md`
+- `references/section-driven-high-fidelity.md`
+- `references/asset-atlas-generation.md` when multiple related images are missing
+
+Section-strict requires a richer IR than the lightweight minimum: each major section needs layout ratios, final media role/aspect, crop/asset strategy, text safe areas, section screenshot target, pass criteria, and must-not-do rules.
+
+## Asset Strategy Kernel
+
+Use generated media by role:
+
+| role | strategy |
+|---|---|
+| hero main visual | generate as an independent asset |
+| CTA/banner background | generate as an independent asset |
+| repeated card thumbnails | atlas generation allowed, then crop to independent files |
+| application/factory scene groups | atlas generation allowed, then crop to independent files |
+| certificates, logos, nav, buttons, labels | render with HTML/CSS/SVG/Iconify; do not bake into images |
+
+Hard rule: an atlas is never a production UI asset. Final code must reference the cropped output files, not use CSS `background-position` against the atlas to fake separate images.
 
 ## Visual IR Minimum
 
@@ -106,7 +134,9 @@ For each meaningful checkpoint, report:
 
 Load only when needed:
 - `references/high-fidelity-rules.md` — strict visual details: exactness, text/icon/shape inventory, asset/layer rules, functional-control escalation
-- `references/full-page-regeneration-guard.md` — required before complete page rewrites from approved mockups; token table, text inventory, icon anatomy, and asset grouping map
+- `references/full-page-regeneration-guard.md` — required before complete page rewrites from approved mockups; token table, text inventory, icon anatomy, asset grouping map, and section-level asset plan
+- `references/section-driven-high-fidelity.md` — required for rough/half-accurate/stretched pages, section-by-section restoration, and strict visual repair
+- `references/asset-atlas-generation.md` — required when generating multiple related bitmap assets; atlas must be cropped before implementation
 - `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other controls with non-trivial API/state/platform semantics
 - `references/blueprint-driven-implementation.md` — blueprint-first implementation details
 - `references/visual-measurements.md` — extracting sizes, colors, density
@@ -122,3 +152,6 @@ Load only when needed:
 | Broad route smoke treated as visual pass | Require section screenshots for parity claims |
 | Reusing a dashboard template everywhere | Preserve page type and first-screen anatomy |
 | Pixel-chasing before coverage | Cover routes first, then L4/L5 selected pages |
+| IR only names sections | Add section layout ratios, media role/aspect, crop strategy, text safe area, screenshot targets |
+| Using one generated atlas as many CSS backgrounds | Crop atlas into independent files and reference cropped assets only |
+| Hero/banner mixed into thumbnail atlas | Generate hero/CTA as independent assets with final safe areas |

@@ -1,0 +1,46 @@
+{
+  "atlas_id": "category-atlas",
+  "source_path": "docs/design/generated-assets/category-atlas.png",
+  "generation_prompt": "same-role no-text assets...",
+  "canvas": {
+    "width": 1536,
+    "height": 1024,
+    "ratio": "3:2"
+  },
+  "policy": {
+    "generation_only": true,
+    "production_must_reference_crops_only": true,
+    "no_baked_text": true,
+    "no_baked_logos": true,
+    "no_unrelated_roles": true
+  },
+  "crops": [
+    {
+      "id": "hand-tools",
+      "section": "product-categories",
+      "component": "category-card",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "safe_padding": 12,
+      "output_path": "public/assets/generated/home/categories/hand-tools.webp",
+      "final_size": {
+        "width": 768,
+        "height": 512
+      },
+      "intended_display_size": "card 4:3",
+      "aspect_ratio": "4:3",
+      "object_fit": "cover",
+      "object_position": "center",
+      "validation": {
+        "output_exists": false,
+        "no_text_or_logo": false,
+        "no_edge_pollution": false,
+        "matches_display_ratio": false
+      }
+    }
+  ]
+}

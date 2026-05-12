@@ -1,0 +1,57 @@
+{
+  "page_id": "home",
+  "route": "/",
+  "mode": "section-strict",
+  "viewport": {
+    "width": 1440,
+    "height": 1200
+  },
+  "source_refs": [
+    "docs/design/approved/source.png"
+  ],
+  "tokens": {
+    "container_width": "1280px",
+    "page_background": "",
+    "section_gap": "",
+    "grid_gap": "",
+    "radius_model": "",
+    "shadow_model": "",
+    "type_scale": {}
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "order": 1,
+      "layout": {
+        "shell": "full-bleed",
+        "height": "",
+        "container_width": "",
+        "grid": "",
+        "padding": ""
+      },
+      "media": {
+        "role": "hero-main-visual",
+        "strategy": "independent-image",
+        "required_ratio": "",
+        "final_files": [],
+        "object_fit": "cover",
+        "object_position": "",
+        "forbidden": ["atlas cell", "baked text", "baked logo"]
+      },
+      "text_inventory": [],
+      "icon_inventory": [],
+      "text_safe_area": "",
+      "screenshot_target": "[data-section='hero']",
+      "pass_criteria": []
+    }
+  ],
+  "asset_plan_refs": [],
+  "must_not_do": [
+    "do not implement from prose only",
+    "do not use a generated atlas directly as multiple CSS backgrounds",
+    "do not bake UI text, logos, certificates, or buttons into images",
+    "do not hide wrong image ratios with heavy object-fit cropping"
+  ],
+  "accepted_deviations": [],
+  "section_evidence": []
+}

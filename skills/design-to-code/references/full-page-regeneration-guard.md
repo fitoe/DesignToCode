@@ -1,6 +1,6 @@
 # Full-page Regeneration Guard
 
-Use before a complete page rewrite from approved mockups. Do not start coding until the brief has these four artifacts.
+Use before a complete page rewrite from approved mockups. Do not start coding until the brief has the artifacts below.
 
 ## 0. Approved visual source gate
 
@@ -103,16 +103,36 @@ Rules:
 - Record icon color and stroke/fill style; do not infer color only from semantic meaning.
 - Record icon-to-text relation and cell alignment. If the source has centered module/action icons, implementation must center both icon and label within the cell unless an accepted deviation is recorded.
 
-## 4. Asset grouping map
+## 4. Section-level regeneration contract
 
-For generated imagery, record whether it is an independent UI geometry or part of a background asset group.
+For high-fidelity page rewrites, every major section must have an implementation contract before coding:
 
-| section | visual group | bbox | strategy | include together | exclude |
-|---|---|---|---|---|---|
-| hero/card | right-lower background | | GPT Image 2 asset | grid/platform/glow/base shadow/3D objects | text, metric values, full card background |
+| section | bbox/height | shell/background | inner container | grid/layout | media role/aspect | text safe area | screenshot target | pass criteria |
+|---|---|---|---|---|---|---|---|---|
+| hero | | | | | independent hero asset / final ratio | | | |
+| categories | | | | | atlas crops / card ratio | | | |
 
 Rules:
-- Do not split attached grid/platform/glow/base shadows from their generated illustration group.
+- A section name is not enough. Record proportions, media role, and verification target.
+- If the current page looks only half-accurate, stretched, or rough, enrich the IR here before more CSS.
+- Treat adjacent sections jointly when a background field, decoration, or rhythm crosses their boundary.
+- Each section must have a stable `data-section` anchor for screenshots.
+
+## 5. Asset role and atlas plan
+
+For generated imagery, record whether each asset is independent, atlas-generated then cropped, CSS/SVG, or HTML text.
+
+| section | visual group | bbox | strategy | include together | exclude | final files |
+|---|---|---|---|---|---|---|
+| hero | main product visual | | independent image | product composition, shadows, safe area | text, logos, buttons | |
+| categories | card thumbnails | | atlas -> cropped files | same family category photos | text, logos, UI labels | |
+
+Rules:
+- Hero/CTA/banner assets are independent files, not atlas cells.
+- Repeated card/application/factory images may use an atlas, but the atlas must be cropped into independent files before implementation.
+- Final code must not use one atlas with CSS `background-position` as separate UI images.
+- Images must match final display aspect ratio closely; do not rely on heavy object-fit cropping to hide a wrong source ratio.
+- Text, labels, nav, buttons, certificates, logos, and partner names are rendered in HTML/CSS/SVG/Iconify, not baked into AI images.
 - Temporary CSS/SVG placeholders must stay low-emphasis and be reported as debt.
 - Do not claim parity complete while asset-required groups are pending.
 
@@ -123,7 +143,8 @@ All must be true before coding a full-page rewrite:
 - [ ] Visual token table filled
 - [ ] Text inventory filled
 - [ ] Icon anatomy inventory filled
-- [ ] Asset grouping map/backlog updated
+- [ ] Section-level regeneration contract filled for each major section
+- [ ] Asset role/atlas plan filled; atlas crops have final output paths
 - [ ] Must-not-add effects listed
 - [ ] Known accepted deviations listed
 
