@@ -28,6 +28,30 @@ Return to `idea-to-design` only when the approved source is missing/stale, scope
 
 Prose briefs are supporting context, not the source of truth.
 
+## Fidelity Modes
+
+Keep high-fidelity capability, but activate heavy rules only around the current page/section.
+
+- `quick`: non-visual or minor UI changes; use project conventions and do not claim design parity.
+- `standard-fidelity` (default for GPT Image 2/mockup UI): preserve approved source, page type, section order, density, and top visual gaps while keeping context small.
+- `strict-fidelity`: core screens, final visual acceptance, or user asks for exact/按图还原; load high-fidelity references and run screenshot repair loops.
+- `repair`: existing implementation drifted; compare current screenshot to source and fix the largest 1-3 gaps per pass.
+- `regenerate`: complete page rewrite; load full-page regeneration guard before coding.
+- `asset`: complex illustration/icon/background work; use asset fulfillment references and record asset debt.
+
+In `standard-fidelity`, prefer cached Visual IR and source/screenshot paths over long vision prose. Load heavier references only when the mode or a failed parity check requires them.
+
+## Fidelity Kernel
+
+These rules are always active for GPT Image 2/mockup work:
+- approved visual source is the source of truth; prose only supports it
+- preserve page type, section order, first-screen density, card/list/form anatomy, and action hierarchy
+- do not convert list/detail/form/product pages into generic dashboards
+- do not replace populated designs with empty states unless the source says so
+- do not claim parity from DOM/text smoke alone; use screenshot or section evidence
+- maintain or create lightweight Visual IR for the active page/section
+- fix the largest 1-3 visual gaps per pass and record remaining debt
+
 ## Default Workflow
 
 1. **Intake**: identify source of truth, target routes/files, framework constraints, current maturity target.
@@ -75,26 +99,15 @@ For each meaningful checkpoint, report:
 - Do not convert list/detail/form pages into generic dashboards.
 - Do not run broad lint/type/build repeatedly during active visual editing unless a failure signal or gate requires it.
 - Do not handwave “close enough”; record section-level debt.
-
-- Exactness beats style intuition: implement only effects visible in the binding source. Do not add glow, blur, glass, shadow, gradient intensity, decorations, or micro-effects because they feel consistent with the style. If the source ring has no outer glow, keep it clean; additive effects are visual drift unless recorded as an accepted enhancement.
-- Count repeated separators explicitly. Metric groups, segmented controls, tabs, lists, and grids must map every visible divider/separator before coding. Do not collapse two internal separators into one parent divider, and do not move group dividers to the section edge.
-- Resolve page icons from Iconify first. Search existing project Iconify sets for the closest semantic/visual match before drawing anything. If no suitable installed icon exists, install the smallest appropriate Iconify package/set rather than inventing a custom icon. For simple multicolor icons, recreate a small inline/local SVG only when Iconify cannot match the source. For complex colorful icons, group them with other generated visual assets in the GPT Image 2/image-asset pass and record prompt notes, bbox, transparent-background requirement, export size, and layer placement.
-- Do not hand-draw final substitutes for asset-required GPT Image 2 decorations. If a rich background/3D/resource-pool illustration is not feasible as CSS/SVG with high fidelity, add it to an asset backlog for a later GPT Image 2/image-asset pass with bbox, prompt notes, transparent-background requirement, export size, and layer placement. Treat attached grids, platforms, glow fields, and base shadows that visually belong to that illustration as part of the same asset unless the source clearly separates them as independent UI geometry. Temporary CSS/SVG placeholders must be low-emphasis and reported as debt, not parity-complete.
-- Extract visual tokens before full-page regeneration. For each page/section, record source-derived background color, border visibility/color, radius, shadow strength, horizontal/vertical padding, grid gaps, row heights, section spacing, and readable typography floors for primary content. Do not replace these with generic dashboard defaults unless explicitly accepted as a deviation; however, do not copy source text sizes below platform readability floors for main content just because the mockup uses tiny text.
-- Maintain a text inventory before coding. Every visible text fragment in the binding source must be mapped to a role (`title`, `label`, `value`, `unit`, `caption`, `status`, `link`) and an approximate position. Generation is incomplete if a visible label is omitted, merged into another role, or moved to a different hierarchy level.
-- Maintain an icon anatomy map before coding. For every icon-like mark, record source role, chosen library class, size, color, container/background yes/no, stroke/fill style, and inline alignment. If the source shows a bare icon, do not wrap it in a colored tile. If an inline dropdown/arrow/refresh is visible, use an icon library class instead of text glyphs like `⌄`, `›`, or `↻` unless the source is explicitly typographic.
-- Before full-page rewrites, run a pre-generation checklist: `tokens covered`, `text inventory covered`, `icon anatomy covered`, `asset backlog updated`, and `must-not-add effects listed`. If any is missing, create/update the brief first instead of guessing in code.
-- Before implementing visual elements that are functional controls, classify them with an IdeaToTech/project-pattern check. Tabs, segmented controls, search bars, filters, dropdowns, pickers, date/calendar filters, pagination, form fields, toggles, upload controls, and action list rows must map to existing project patterns or UI-library components when available. Do not implement them as decorative views unless the semantic fallback, state, interaction, and accepted deviation are recorded.
-- Icon anatomy must include icon-to-text/value relation, not only icon identity. For metric tiles and summaries, record whether the icon is above, left of the number, right of the number, badge-like, or centered in a grid cell, and preserve that layout. Grid/action icons must record the alignment model for the whole cell (`centered icon + centered label`, `left icon + right text`, etc.); do not default to left alignment just because the implementation uses flex rows.
-- Shape tokens must be component-specific, not only global. Status chips, priority labels, tabs, pills, cards, and hero panels each need their own radius/height/padding entry. A “radius 10-12px” page token is insufficient for small labels such as 高/中/低; record whether the source chip is capsule, rounded-rect, square-ish, or circular, plus approximate width/height.
-- Complex hero/status cards require a layer-stack contract before coding. For cockpit/resource/3D/illustration-heavy cards, record base gradient, inner shadows, glows, ring/chart geometry, separators, metric layout, decoration/media role, and which layers are dynamic DOM vs generated/static asset. If a decoration cannot be faithfully reproduced in CSS/SVG, use a low-emphasis placeholder and mark the section WARN/debt instead of presenting it as parity.
-- Filter/tab labels must not wrap unless the source explicitly wraps them. Use component sizing, nowrap, horizontal scroll, or overflow strategy before allowing labels like `申请类型` to break lines.
+- Do not invent visual effects or decorative assets beyond the approved source; when strict detail is needed, load `references/high-fidelity-rules.md`.
+- Functional controls must follow existing project/UI-library patterns first; load `IdeaToTech` only when API/state/permission/cross-platform/verification risk is non-trivial.
 
 ## Progressive Loading
 
 Load only when needed:
+- `references/high-fidelity-rules.md` — strict visual details: exactness, text/icon/shape inventory, asset/layer rules, functional-control escalation
 - `references/full-page-regeneration-guard.md` — required before complete page rewrites from approved mockups; token table, text inventory, icon anatomy, and asset grouping map
-- `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other functional controls; use IdeaToTech/project-pattern checks before coding component semantics
+- `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other controls with non-trivial API/state/platform semantics
 - `references/blueprint-driven-implementation.md` — blueprint-first implementation details
 - `references/visual-measurements.md` — extracting sizes, colors, density
 - `references/playwright-section-diff.md` — section screenshot comparison
