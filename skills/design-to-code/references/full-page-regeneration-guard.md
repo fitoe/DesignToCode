@@ -2,6 +2,18 @@
 
 Use before a complete page rewrite from approved mockups. Do not start coding until the brief has these four artifacts.
 
+## 0. Approved visual source gate
+
+Before full-page regeneration, confirm the target page has an approved/bindable visual source, such as a persisted page mockup, Figma frame, board crop, or equivalent screenshot/design image.
+
+If the page has only prose briefs, route lists, product notes, or a generic board that does not show the target page clearly, do **not** implement from prose. First generate or obtain a page-level effect image/mockup (for this workflow, GPT Image 2 is the default), persist it under the project design artifacts, and treat that approved image as the visual source for the rest of DesignToCode.
+
+Rules:
+- No approved/bindable effect image = no full-page coding, unless the user explicitly waives visual-source generation for that page.
+- A page brief can guide prompt content, but it is not a substitute for a visual source.
+- When generating a missing effect image, include real product copy, mobile viewport, design-system constraints, and the page's required information order in the prompt.
+- Record the generated image path in Visual IR/source refs before implementation.
+
 ## 1. Visual token table
 
 Record source-derived values for the whole page and each major section:
