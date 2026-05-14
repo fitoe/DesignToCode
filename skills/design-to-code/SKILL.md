@@ -39,8 +39,14 @@ Keep high-fidelity capability, but activate heavy rules only around the current 
 - `regenerate`: complete page rewrite; load full-page regeneration guard before coding.
 - `section-strict`: rough, stretched, or only half-accurate visual implementation; load section-driven high-fidelity plus atlas rules before coding.
 - `asset`: complex illustration/icon/background work; use asset fulfillment references and record asset debt.
+- `responsive-basic`: small changes, admin/backoffice, or non-core pages; ensure no overflow and usable controls, but do not claim strong mobile conversion quality.
+- `mobile-recomposition` (default when only a PC/desktop design exists but mobile quality matters): first preserve desktop design intent, then recompose mobile layout by section type, content density, scroll rhythm, and touch usability.
+- `mobile-strict`: homepage, core landing page, mobile-heavy page, complex responsive composition, or repeated mobile failure; create or update Mobile IR before claiming mobile quality.
+- `mobile-repair`: existing mobile implementation is too long, too single-column, overflowing, or mechanically adapted; fix the largest 1-3 mobile experience issues first.
 
 In `standard-fidelity`, prefer cached Visual IR and source/screenshot paths over long vision prose. Load heavier references only when the mode or a failed parity check requires them.
+
+When the source is desktop-only, do not treat mobile as a pixel-shrunk desktop. Use `mobile-recomposition` unless the task is clearly `responsive-basic`; escalate to `mobile-strict` when a core page needs a recoverable Mobile IR or repeated mobile repair fails.
 
 ## Fidelity Kernel
 
@@ -56,14 +62,33 @@ These rules are always active for GPT Image 2/mockup work:
 - atlas generation is for creation efficiency only; crop atlas outputs into independent files before implementation
 - fix the largest 1-3 visual gaps per pass and record remaining debt
 
+## Mobile Recomposition Pass
+
+When only a PC/desktop design exists, PC high fidelity does not mean mobile mechanical replication. Preserve design intent, hierarchy, brand language, critical content, CTA priority, and trust signals; recompose layout for mobile scroll rhythm and touch usability.
+
+Default to `mobile-recomposition` for desktop-only websites, B2B pages, marketing pages, product pages, and landing sections that need good mobile output. Use `responsive-basic` only for small changes, admin/backoffice, or non-core pages. Escalate to `mobile-strict` and create Mobile IR for homepage/core landing pages, mobile-heavy pages, complex mobile composition, or repeated mobile failure.
+
+Hard rules:
+- do not preserve desktop coordinates, large gaps, side-by-side layout, or image ratios blindly on mobile;
+- do not convert desktop 4×1, 4×2, or 3×2 grids into long one-column lists by default;
+- classify repeated items by content density before choosing 2-column grid, 2-3 column stats/logo layout, compact one-column card, horizontal scroller, featured carousel, grouping, or show-more;
+- preserve critical content, CTA, trust proof, legal/pricing/risk details, and required form information;
+- summarize/fold/hide only secondary or decorative content, and record accepted mobile deviations;
+- validate mobile with scroll rhythm, touch usability, no horizontal overflow, and section-level evidence, not just CSS breakpoints.
+
+For detailed density rules, content compression rules, and Mobile IR schema, load `references/mobile-recomposition.md`.
+
 ## Default Workflow
 
-1. **Intake**: identify source of truth, target routes/files, framework constraints, current maturity target.
+1. **Intake**: identify source of truth, target routes/files, framework constraints, current maturity target, and mobile mode.
 2. **Foundation**: map tokens/shell/base components before page-specific polish.
 3. **Coverage**: make every in-scope route/page visibly present before deep fidelity work.
-4. **Section Anchors**: add stable `data-section` markers for key sections.
-5. **Fidelity Loop**: compare source vs implementation by section; fix the largest 1-3 gaps per pass.
-6. **Handoff**: report page maturity, evidence, debt, and deviations.
+4. **Desktop Fidelity Pass**: preserve the approved desktop/source design, section order, visible content inventory, and major visual hierarchy.
+5. **Section Anchors**: add stable `data-section` markers for key sections.
+6. **Mobile Recomposition Pass**: when mobile is in scope and the source is PC/desktop-first, recompose sections by type and content density instead of mechanically stacking desktop grids.
+7. **Fidelity Loop**: compare source vs implementation by section; fix the largest 1-3 gaps per pass.
+8. **Mobile Acceptance Pass**: check no horizontal overflow, mobile scroll rhythm, touch usability, non-mechanical repeated grids, and accepted deviations for 390/414/768 or relevant project viewports.
+9. **Handoff**: report page maturity, mobile mode, evidence, debt, and deviations.
 
 ## Section-Strict Trigger
 
@@ -144,6 +169,14 @@ For each meaningful checkpoint, report:
 - largest remaining visual gaps and whether they are debt or accepted deviation
 - verification actually run; do not claim checks that were skipped
 
+When mobile work is in scope, also report:
+- mobile mode: `responsive-basic`, `mobile-recomposition`, `mobile-strict`, or `mobile-repair`;
+- viewports checked, usually 390/414/768 plus 320 when narrow overflow risk exists;
+- section mobile results: PASS/WARN/FAIL for hero, grids, cards, CTA, forms, or other major sections;
+- grid decisions such as "8 feature cards -> 2-column compact grid" or "6 case cards -> horizontal scroller";
+- accepted mobile deviations such as decorative layer removed, description line-clamped, or secondary tags folded;
+- remaining mobile debt and evidence paths/screenshots.
+
 ## Hard Rules
 
 - Do not claim design parity from DOM/text smoke alone.
@@ -162,6 +195,7 @@ Load only when needed:
 - `references/section-driven-high-fidelity.md` — required for rough/half-accurate/stretched pages, section-by-section restoration, and strict visual repair
 - `references/asset-atlas-generation.md` — required when generating multiple related bitmap assets; atlas must be cropped before implementation
 - `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other controls with non-trivial API/state/platform semantics
+- `references/mobile-recomposition.md` — required when desktop/PC-only source must produce good mobile output, mobile feels mechanical/too long, repeated grids collapse to one column, or `mobile-strict` Mobile IR is needed
 - `references/blueprint-driven-implementation.md` — blueprint-first implementation details
 - `references/visual-measurements.md` — extracting sizes, colors, density
 - `references/playwright-section-diff.md` — section screenshot comparison
@@ -179,3 +213,8 @@ Load only when needed:
 | IR only names sections | Add section layout ratios, media role/aspect, crop strategy, text safe area, screenshot targets |
 | Using one generated atlas as many CSS backgrounds | Crop atlas into independent files and reference cropped assets only |
 | Hero/banner mixed into thumbnail atlas | Generate hero/CTA as independent assets with final safe areas |
+| Treating PC fidelity as fixed mobile coordinates | Preserve intent and hierarchy, but run Mobile Recomposition Pass for desktop-only sources |
+| Converting every desktop repeated grid to one-column mobile | Classify item density; use 2-column compact grids, 2-3 column stats/logos, horizontal scrollers, grouping, or show-more where appropriate |
+| Stacking all desktop content until mobile becomes too long | Preserve critical content; summarize, fold, or re-express secondary content with accepted deviations |
+| Checking only for no horizontal overflow | Also verify scroll rhythm, touch usability, CTA visibility, and non-mechanical grid density |
+| Letting decorative desktop layers dominate mobile first screen | Reduce or re-express decorative layers so headline, CTA, and trust signals stay prominent |
