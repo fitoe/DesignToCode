@@ -63,6 +63,7 @@ These rules are always active for GPT Image 2/mockup work:
 - do not claim parity from DOM/text smoke alone; use screenshot or section evidence
 - maintain or create lightweight Visual IR for the active page/section
 - for high-fidelity page rewrites, enrich Visual IR to section-level layout/asset contracts before coding
+- every source-visible text, CTA, badge, icon group, statistic, label, and feature item must be inventoried before implementation; missing content is a fidelity failure, not a polish detail
 - generated media must match its final display role and aspect ratio; do not hide asset mismatch with `object-fit` or background-position tricks
 - design-source fonts must be restored by role, licensing, and performance budget; do not blindly load every source font or collapse all typography to generic sans
 - do not use commercial or unknown-license fonts without project authorization; choose close free/open-source substitutes when unavailable or not free
@@ -71,6 +72,26 @@ These rules are always active for GPT Image 2/mockup work:
 - homepage-first typography creates provisional role slots and open questions, not a final locked site-wide font system
 - atlas generation is for creation efficiency only; crop atlas outputs into independent files before implementation
 - fix the largest 1-3 visual gaps per pass and record remaining debt
+
+## Source Content Inventory
+
+Before implementing or repairing a section, extract a compact inventory of all visible source content and interaction targets:
+
+- headings and line breaks that affect composition
+- subtitles, descriptions, eyebrow text, captions, and helper text
+- primary/secondary CTAs and link text
+- badges, feature chips, trust markers, statistics, and icon-label groups
+- repeated items and expected counts, such as "4 feature badges" or "8 category cards"
+- source-visible icons and their semantic role
+- content that must stay HTML/CSS text rather than being baked into images
+
+Treat any source-visible content missing from the implementation as a section parity `FAIL` until one of these is true:
+
+1. it is implemented in code,
+2. it is explicitly recorded as accepted deviation/debt, or
+3. the user/design source confirms it should be omitted.
+
+Do not let a visually attractive background, card, or layout hide missing content. For hero/banner sections specifically, verify headline line count, CTA count, badge/feature count, and right/left content balance before judging the section visually acceptable.
 
 ## Mobile Recomposition Pass
 
@@ -140,6 +161,65 @@ Use generated media by role:
 
 Hard rule: an atlas is never a production UI asset. Final code must reference the cropped output files, not use CSS `background-position` against the atlas to fake separate images.
 
+## Fixed-Ratio Asset Contract
+
+Before generating or coding any bitmap asset, define the final display slot:
+
+- route/section and asset role
+- CSS display ratio and target export size
+- text-safe area and product/object safe area
+- subject safe-area inset: keep important objects away from crop edges, usually at least 8-12% per side for card thumbnails and 12-18% for hero/banner focal objects
+- crop coordinates or `object-position` policy
+- forbidden baked content: text, logos, labels, certifications, partner names, buttons
+- source priority: real product/catalog photos, existing/old-site assets, approved design, then AI generation
+- final production output path
+
+Do not generate generic `landscape` images for fixed-ratio UI slots. A hero rendered at 1920×581 must be generated or composed for that ratio; a category card rendered at 16:9 must be generated/cropped as 16:9. `object-cover` is not a substitute for correct composition.
+
+If the image tool cannot output the target ratio, use one of these:
+
+1. **safe-frame generation**: prompt a larger canvas with the target ratio declared as the center safe band; top/bottom/side padding must contain no key objects; keep main subjects inside an inner safe box so later `object-cover` crops do not cut them off.
+2. **same-ratio atlas/contact sheet**: generate same-role, same-ratio cells, then crop independent files.
+3. **layered composition**: generate background and foreground separately, then compose.
+4. **real-source composition**: use real product/catalog photos and AI only for background/lighting.
+
+Regenerate when key objects fall outside the final crop, the crop includes gutters/black bars/letterboxing, important objects touch the frame edge after object-cover, or the visible image no longer matches the UI slot.
+
+## Atlas Cropping Rules
+
+Atlases are generation sources only. Production code must reference independent cropped files.
+
+- Use atlases for same-role, same-ratio repeated assets.
+- Category cards must use cells matching the final card ratio, usually 16:9.
+- Hero/banner assets should not share an atlas with thumbnail cards unless each cell has an explicit ratio/crop contract.
+- Do not crop atlas gutters, separators, black borders, or letterbox padding into final files.
+- Before accepting each cropped file, inspect the first/last rows and columns or visually spot-check for black/gutter borders; recrop inward or regenerate if visible.
+- For card thumbnails and application/factory scenes, crop slightly inside the generated cell and preserve an inner subject safe area so the UI slot can use `object-cover` without feeling overfilled.
+- If generated cells include frames or black margins, crop inside the content area or regenerate without gutters.
+
+## Product Authenticity Rule
+
+For B2B/product websites, real product material outranks AI invention.
+
+Priority:
+1. client/catalog/product photos
+2. existing/old-site product assets
+3. licensed stock/reference photos
+4. AI-generated environment/background
+5. AI-generated product-like visuals as provisional placeholders only
+
+Do not present invented AI product images, certifications, partner logos, factory exteriors, or capability proof as factual evidence. Hero and category imagery may use AI for mood, but product shapes must be plausible and should be replaced with real assets when available.
+
+## Failed AI Asset Recovery
+
+If a generated asset is visibly less realistic than the approved design source:
+
+- Do not use the failed generated asset as the next visual reference.
+- Restart from the approved design/source contract or real product material.
+- Generate multiple independent candidates, not one chain of variants.
+- If repeated candidates fail on material realism or product structure, switch to layered composition or source real product photos.
+- Record failed assets as rejected; do not let them become the new source of truth.
+
 ## Visual IR Minimum
 
 Use or create a lightweight Visual IR for PNG/GPT Image 2/mockup sources when fidelity matters:
@@ -155,12 +235,15 @@ Use or create a lightweight Visual IR for PNG/GPT Image 2/mockup sources when fi
     {"name": "topbar", "order": 1, "bbox": [0,0,390,72]},
     {"name": "card-list", "order": 4, "density": "2.5 cards visible"}
   ],
+  "content_inventory": [
+    {"section": "hero", "required": ["3-line headline", "subtitle", "2 CTAs", "4 feature badges"]}
+  ],
   "section_anchors": ["topbar", "card-list"],
   "must_not_do": ["do not replace list with dashboard"]
 }
 ```
 
-Do not over-model every pixel. Capture page type, section order, bbox, first-screen density, card/list anatomy, action hierarchy, must-not-do, and asset strategy.
+Do not over-model every pixel. Capture page type, section order, bbox, first-screen density, card/list anatomy, action hierarchy, source-visible content inventory, must-not-do, and asset strategy.
 
 
 ## PlanToDelivery Project-State Collaboration
@@ -247,8 +330,15 @@ Load only when needed:
 | Reusing a dashboard template everywhere | Preserve page type and first-screen anatomy |
 | Pixel-chasing before coverage | Cover routes first, then L4/L5 selected pages |
 | IR only names sections | Add section layout ratios, media role/aspect, crop strategy, text safe area, screenshot targets |
+| Missing source-visible text, badges, CTAs, or feature chips | Create a source content inventory before coding; missing content is section parity FAIL unless accepted as debt |
+| Beautiful background hides missing hero content | Verify headline line count, CTA count, badge/feature count, and icon-label groups before visual PASS |
 | Using one generated atlas as many CSS backgrounds | Crop atlas into independent files and reference cropped assets only |
-| Hero/banner mixed into thumbnail atlas | Generate hero/CTA as independent assets with final safe areas |
+| Hero/banner mixed into thumbnail atlas | Prefer separate atlases; if mixed, define explicit ratio/crop contracts per cell |
+| Generic landscape image forced into a fixed-ratio slot | Generate to the final ratio or use a declared safe-frame crop; do not rely on `object-cover` |
+| Cropping atlas gutters, black borders, or letterboxing into final assets | Crop inside the content cell, inspect edge pixels/visual borders before accepting, or regenerate the atlas without frames/padding |
+| Generated thumbnail subject fills the slot edge-to-edge and then gets clipped by `object-cover` | Add a subject safe-area inset to the asset contract; generate with important objects 8-12% inside card edges, then crop to the final ratio |
+| Iterating from a low-quality AI image | Reject it and restart from the approved source/real product material; do not make it the new reference |
+| Invented B2B product/factory/certification visuals treated as factual proof | Use real source material first; mark AI product-like visuals as provisional unless approved |
 | Treating PC fidelity as fixed mobile coordinates | Preserve intent and hierarchy, but run Mobile Recomposition Pass for desktop-only sources |
 | Converting every desktop repeated grid to one-column mobile | Classify item density; use 2-column compact grids, 2-3 column stats/logos, horizontal scrollers, grouping, or show-more where appropriate |
 | Stacking all desktop content until mobile becomes too long | Preserve critical content; summarize, fold, or re-express secondary content with accepted deviations |
