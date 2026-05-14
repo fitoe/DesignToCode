@@ -44,6 +44,11 @@ Keep high-fidelity capability, but activate heavy rules only around the current 
 - `mobile-strict`: homepage, core landing page, mobile-heavy page, complex responsive composition, or repeated mobile failure; create or update Mobile IR before claiming mobile quality.
 - `mobile-repair`: existing mobile implementation is too long, too single-column, overflowing, or mechanically adapted; fix the largest 1-3 mobile experience issues first.
 
+- `font-basic`: small/non-core pages where typography is not a main parity target; use project/system stack, record obvious deviations, and do not claim font fidelity.
+- `font-fidelity` (default when design sources contain multiple fonts or typography affects visual parity): inventory fonts, choose exact/free substitute/project-stack/asset/css/deviation decisions, consolidate, self-host, and record a manifest.
+- `font-strict`: homepage, core landing page, brand-heavy page, or explicit typography fidelity; require font manifest, screenshot evidence, and reason/waiver for over-budget choices.
+- `font-pipeline`: multilingual, CJK-specific, many-weight, or performance-sensitive typography; use subsetting, preload, budget, fallback metrics, and LCP/CLS checks where needed.
+
 In `standard-fidelity`, prefer cached Visual IR and source/screenshot paths over long vision prose. Load heavier references only when the mode or a failed parity check requires them.
 
 When the source is desktop-only, do not treat mobile as a pixel-shrunk desktop. Use `mobile-recomposition` unless the task is clearly `responsive-basic`; escalate to `mobile-strict` when a core page needs a recoverable Mobile IR or repeated mobile repair fails.
@@ -59,6 +64,11 @@ These rules are always active for GPT Image 2/mockup work:
 - maintain or create lightweight Visual IR for the active page/section
 - for high-fidelity page rewrites, enrich Visual IR to section-level layout/asset contracts before coding
 - generated media must match its final display role and aspect ratio; do not hide asset mismatch with `object-fit` or background-position tricks
+- design-source fonts must be restored by role, licensing, and performance budget; do not blindly load every source font or collapse all typography to generic sans
+- do not use commercial or unknown-license fonts without project authorization; choose close free/open-source substitutes when unavailable or not free
+- production font files must be self-hosted in the project; do not rely on Google Fonts CDN, unofficial mirrors, or user-local fonts as the implementation
+- multi-font designs must be consolidated before adding assets; first-screen font budget defaults to <=2 families and <=3 files unless waived
+- homepage-first typography creates provisional role slots and open questions, not a final locked site-wide font system
 - atlas generation is for creation efficiency only; crop atlas outputs into independent files before implementation
 - fix the largest 1-3 visual gaps per pass and record remaining debt
 
@@ -78,17 +88,33 @@ Hard rules:
 
 For detailed density rules, content compression rules, and Mobile IR schema, load `references/mobile-recomposition.md`.
 
+
+## Font Fidelity Pass
+
+When a source design uses multiple fonts or typography affects parity, restore fonts through role-based decisions instead of copying every font or falling back to generic sans. Default to `font-fidelity`; use `font-basic` only when typography is not a main visual target, and escalate to `font-strict` or `font-pipeline` for brand-heavy, multilingual, CJK, or performance-sensitive work.
+
+Hard rules:
+- inventory visible font roles: brand/logo, hero/display, heading, body, UI/nav/button/form, numeric/stat/price, decorative, and CJK/multilingual;
+- commercial, unavailable, or unknown-license source fonts must use close free/open-source substitutes unless project authorization and files are provided;
+- all production font files must live in the project and be self-hosted; do not depend on Google Fonts CDN or user-local fonts for production;
+- consolidate multi-font designs before adding assets; avoid turning 5-8 source fonts into 5-8 webfonts;
+- homepage-first work creates Font System v0.1 with provisional role slots, confidence, future page policy, and open questions;
+- later pages introducing new fonts must pass Font Governance Gate before adding global or page-specific font assets.
+
+For detailed matching criteria, manifest shape, homepage-first governance, and subsetting/pipeline escalation, load `references/font-fidelity.md`.
+
 ## Default Workflow
 
 1. **Intake**: identify source of truth, target routes/files, framework constraints, current maturity target, and mobile mode.
 2. **Foundation**: map tokens/shell/base components before page-specific polish.
 3. **Coverage**: make every in-scope route/page visibly present before deep fidelity work.
-4. **Desktop Fidelity Pass**: preserve the approved desktop/source design, section order, visible content inventory, and major visual hierarchy.
+4. **Desktop Fidelity Pass**: preserve the approved desktop/source design, section order, visible content inventory, typography roles, and major visual hierarchy.
 5. **Section Anchors**: add stable `data-section` markers for key sections.
 6. **Mobile Recomposition Pass**: when mobile is in scope and the source is PC/desktop-first, recompose sections by type and content density instead of mechanically stacking desktop grids.
 7. **Fidelity Loop**: compare source vs implementation by section; fix the largest 1-3 gaps per pass.
 8. **Mobile Acceptance Pass**: check no horizontal overflow, mobile scroll rhythm, touch usability, non-mechanical repeated grids, and accepted deviations for 390/414/768 or relevant project viewports.
-9. **Handoff**: report page maturity, mobile mode, evidence, debt, and deviations.
+9. **Font Fidelity Pass**: when typography is in scope, inventory font roles, choose exact/free substitute/project-stack/asset/css/deviation decisions, consolidate, self-host project font files, and record manifest/debt.
+10. **Handoff**: report page maturity, mobile mode, font mode, evidence, debt, and deviations.
 
 ## Section-Strict Trigger
 
@@ -177,6 +203,15 @@ When mobile work is in scope, also report:
 - accepted mobile deviations such as decorative layer removed, description line-clamped, or secondary tags folded;
 - remaining mobile debt and evidence paths/screenshots.
 
+When font work is in scope, also report:
+- font mode: `font-basic`, `font-fidelity`, `font-strict`, or `font-pipeline`;
+- font system status: provisional, active, or locked;
+- role slots and font decision table or manifest path;
+- chosen implementation per role: exact-self-hosted, substitute-self-hosted, project-stack, asset-rendered, css-feature, or deviation;
+- font file paths, sizes, weights/styles, `font-display`, preload strategy, and fallback stack;
+- budget result, open questions for future pages, accepted font deviations, and remaining font debt.
+
+
 ## Hard Rules
 
 - Do not claim design parity from DOM/text smoke alone.
@@ -196,6 +231,7 @@ Load only when needed:
 - `references/asset-atlas-generation.md` — required when generating multiple related bitmap assets; atlas must be cropped before implementation
 - `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other controls with non-trivial API/state/platform semantics
 - `references/mobile-recomposition.md` — required when desktop/PC-only source must produce good mobile output, mobile feels mechanical/too long, repeated grids collapse to one column, or `mobile-strict` Mobile IR is needed
+- `references/font-fidelity.md` — required when a design source has multiple fonts, typography is a parity concern, source fonts are commercial/unknown, homepage-first typography must govern later pages, CJK fonts are involved, or subsetting/budget decisions are needed
 - `references/blueprint-driven-implementation.md` — blueprint-first implementation details
 - `references/visual-measurements.md` — extracting sizes, colors, density
 - `references/playwright-section-diff.md` — section screenshot comparison
@@ -218,3 +254,11 @@ Load only when needed:
 | Stacking all desktop content until mobile becomes too long | Preserve critical content; summarize, fold, or re-express secondary content with accepted deviations |
 | Checking only for no horizontal overflow | Also verify scroll rhythm, touch usability, CTA visibility, and non-mechanical grid density |
 | Letting decorative desktop layers dominate mobile first screen | Reduce or re-express decorative layers so headline, CTA, and trust signals stay prominent |
+| Turning every design-source font into a production webfont | Run Font Consolidation Pass; preserve critical roles and map low-priority typography to project stack |
+| Using commercial or unknown-license fonts without files/authorization | Use close free/open-source substitutes and record the deviation |
+| Writing `font-family` names without self-hosted project files | Add authorized/free font files to the project or use project-stack explicitly |
+| Loading full CJK font packages by default | Use system/project CJK fallback, subset, or record waiver |
+| Treating homepage typography as final site-wide typography before other pages exist | Create Font System v0.1 with provisional role slots and open questions |
+| Letting every later page add new fonts freely | Use Font Governance Gate and classify new fonts as existing slot, page-specific, substitute, or rejected |
+| Genericizing logo/display typography | Check brand assets first and preserve display mood with role-weighted substitute matching |
+| Omitting font substitute/deviation notes | Record exact/substitute/project-stack/asset/css/deviation in the font manifest or handoff |
