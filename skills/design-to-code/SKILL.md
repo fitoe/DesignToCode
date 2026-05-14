@@ -111,6 +111,30 @@ Use or create a lightweight Visual IR for PNG/GPT Image 2/mockup sources when fi
 
 Do not over-model every pixel. Capture page type, section order, bbox, first-screen density, card/list anatomy, action hierarchy, must-not-do, and asset strategy.
 
+
+## PlanToDelivery Project-State Collaboration
+
+When routed by `PlanToDelivery`, consume the active task from `project-state/execution-progress.json` and required inputs from `project-state/artifact-manifest.json`. `routing.input_artifact_refs` and manifest paths outrank prose summaries.
+
+Implementation inputs should normally include approved design artifacts and any technical blueprint artifacts:
+- `implementation_blueprint`, `page_matrix`, `component_blueprint`, `visual_ir`, and design debt
+- `technical_decisions`, `feature_recipes`, `verification_matrix`, API/state/mock plans when referenced
+
+Produce implementation artifacts, usually under `project-state/implementation/` or project-approved paths:
+- code changes in the application source tree
+- `parity-report.md`
+- `screenshot-evidence/*` when visual parity is claimed
+- `accepted-deviations.json`
+- `implementation-handoff.md`
+
+Return compact suggestions to `PlanToDelivery`:
+- `suggested_manifest_entries` for parity reports, screenshots, accepted deviations, and implementation handoff
+- `suggested_progress_updates` for task state, verification state, and remaining debt
+- evidence entries for commands, files, browser checks, screenshots, commits, or notes
+- blockers when approved design sources are missing/stale, technical assumptions are wrong, auth/API access is unavailable, or required assets are not available
+
+Do not pass global gates yourself. Do not claim design parity from DOM/text smoke alone. If the approved design source is missing, stale, or conflicts with requirements, recommend routing back to `idea-to-design`; if the technical plan is wrong or incomplete, recommend routing back to `IdeaToTech`.
+
 ## Required Output Evidence
 
 For each meaningful checkpoint, report:
