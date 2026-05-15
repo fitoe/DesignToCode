@@ -1,14 +1,10 @@
 # Section-Driven High Fidelity
 
-Use when a page technically exists but the user reports it is rough, only half restored, stretched, under-specified, not close enough to the approved source, or when a homepage/marketing/brand-heavy first screen needs close visual restoration from an approved image.
+Use when a page technically exists but the user reports it is rough, only half restored, stretched, under-specified, or not close enough to the approved source.
 
 ## Core Rule
 
 Do not keep polishing a rough full page from vague IR. Stop, enrich the IR, fulfill assets by role, then implement and verify section by section.
-
-This is not a low-fidelity mode. Section scope is smaller so observation can be deeper: preserve proportions, density, required content, media role/aspect, typography role, icon/shape anatomy, and cross-section rhythm for the active section.
-
-For first implementation or regeneration, build the full active section structure and required content before applying the "largest 1-3 gaps" repair limit. The 1-3 gap rule is for post-implementation repair passes only.
 
 ## Required Artifacts Before Coding
 
@@ -56,36 +52,16 @@ Each major section needs:
 - Do not mix unrelated roles in one atlas.
 - Do not use a wrong-ratio image and hope `object-fit` hides it; regenerate or crop correctly.
 
-## Repair Loop Budget
-
-Default budget for a single-section repair:
-
-1. Diagnose once: compare approved source/crop or Visual IR against the current section screenshot, then name the largest 1-3 gaps.
-2. Implement once: fix those gaps without expanding scope.
-3. Verify once: capture the post-fix section screenshot and classify `PASS`, `PASS/WARN`, or `FAIL`.
-
-Stop on `PASS` or `PASS/WARN`. Record WARN items as debt; do not start another polish loop just because a non-blocking difference remains.
-
-Exceed this budget only when:
-- the section is still `FAIL`;
-- required content, CTA, layout structure, or media slot is missing;
-- mobile/desktop has horizontal overflow or unreadable critical content;
-- the user explicitly asks for another precision pass;
-- the active slice is asset selection/generation, not ordinary section repair.
-
-Replacement media budget: inspect at most 1-2 candidate assets by default. If neither fits, record asset debt or route to asset fulfillment instead of browsing many candidates inside the section repair.
-
-## Section Loop
+## Section Implementation Loop
 
 For each section:
 
 1. Read section IR and asset manifest.
-2. Inspect the approved source/crop if the IR lacks proportions, tokens, media slot/aspect, typography roles, icon/shape anatomy, or content counts.
-3. Implement the full section structure, required content, media slots, density, and shared tokens/components.
-4. Capture a section screenshot.
-5. Compare against source/IR.
-6. Fix the largest 1-3 section gaps per repair pass.
-7. Record remaining debt before moving on.
+2. Implement only that section and its shared tokens/components.
+3. Capture a section screenshot.
+4. Compare against source/IR.
+5. Fix the largest 1-3 section gaps.
+6. Record remaining debt before moving on.
 
 After all sections pass locally, capture a full-page screenshot for rhythm/boundary checks.
 
@@ -119,6 +95,4 @@ Stop and enrich IR/assets when:
 - a single atlas is used directly in production CSS for many cards
 - hero/CTA/category/application assets are mixed together
 - section screenshots are skipped
-- first implementation stops after only 1-3 obvious fixes while section structure/content/proportions are still incomplete
-- standard-fidelity was chosen only because the task is routed through PlanToDelivery, not because the source/page risk is simple
 - parity is claimed from text smoke tests only

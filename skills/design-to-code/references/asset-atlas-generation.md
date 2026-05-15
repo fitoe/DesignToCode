@@ -76,7 +76,7 @@ Use pixel coordinates only. Do not use percentages.
 | hero main visual | no | generate independently with final safe area |
 | CTA/banner background | no | generate independently with overlay/safe area |
 | product detail hero | usually no | individual quality matters |
-| logos/certificates/text marks | no | render as source-matched HTML/SVG/CSS/Iconify marks; do not add bordered cards, badge frames, or decorative containers unless the approved source shows them |
+| logos/certificates/text marks | no | render with HTML/SVG/CSS/Iconify |
 
 ## Commands
 
