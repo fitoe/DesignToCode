@@ -140,6 +140,8 @@ Load only when needed:
 - `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other controls with non-trivial API/state/platform semantics
 - `references/blueprint-driven-implementation.md` — blueprint-first implementation details
 - `references/visual-measurements.md` — extracting sizes, colors, density
+- `references/width-normalization.md` — canonical page width, responsive/H5 viewport metrics, and real mobile screenshot evidence
+- `references/mobile-recomposition.md` — mobile layout adaptation, mobile grids, and approved mobile structure preservation
 - `references/playwright-section-diff.md` — section screenshot comparison
 - `references/high-fidelity-mode.md` — strict visual repair loops
 - `references/main-skill-full-reference.md` — full legacy detail if this compact guide is insufficient

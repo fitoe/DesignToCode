@@ -13,6 +13,17 @@ Always analyze against canonical page width, not raw screenshot width.
 - page shell components
 - responsive breakpoints
 - existing landing-page or marketing-page conventions
+- runtime viewport metrics: `innerWidth`, `documentElement.clientWidth/scrollWidth`, `body.clientWidth/scrollWidth`, and key container bounding boxes
+
+## Mobile H5 Screenshot Rule
+For H5/mobile web visual acceptance, a screenshot is only width evidence when the browser viewport is explicitly emulated as the target device. Prefer Chrome DevTools Protocol or Playwright mobile context:
+
+- `width`: target CSS viewport, commonly 390
+- `height`: target viewport, commonly 844
+- `deviceScaleFactor`: usually 2
+- `mobile`: true / touch enabled
+
+Do not trust plain `chromium --headless --window-size=390,844` alone; Chromium can produce a different CSS `innerWidth` (for example 500px) even when the PNG pixel width looks plausible. Always print viewport and scroll metrics with the screenshot.
 
 ## Scaling Rule
 For each section image:

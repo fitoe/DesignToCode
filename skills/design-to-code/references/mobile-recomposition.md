@@ -74,6 +74,8 @@ Never mechanically convert desktop repeated grids:
 - PC 4x2 -> mobile 1x8
 - PC 3x2 -> mobile 1x6
 
+But do not use recomposition as permission to change an approved mobile/mockup structure. If the source itself is a mobile design or explicitly shows a business-critical row/grid (for example a 1×4 KPI strip), preserve that structure first. Solve narrow screens by reducing padding, gap, icon size, typography, label length, or decoration overlap. Only change 1×4 to 2×2/scroll/stack after recording the overflow evidence and getting user/design approval.
+
 Classify item density instead:
 
 | Density | Content | Mobile Strategy |
