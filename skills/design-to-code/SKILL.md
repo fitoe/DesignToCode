@@ -19,16 +19,43 @@ Turn an approved visual source into maintainable code without relying on prose p
 
 Return to `idea-to-design` only when the approved source is missing/stale, scope changed, the handoff predates approval, or the user asks for a design change.
 
+## Non-Skippable Execution Gates
+
+Low-context routing controls breadth and reporting only. It cannot skip the input gate, observation contract, required pass order, output evidence, or state/debt updates.
+
+Before coding, verify the current slice has:
+- approved source of truth: implementation blueprint, Visual IR/section contract, approved source/crop, Figma context, or persisted mockup;
+- target route/page/section/component group and framework constraints;
+- fidelity mode, mobile mode when relevant, and current maturity target;
+- required assets or an explicit asset fallback/debt decision;
+- technical decisions/recipes/verification matrix when API, state, dependency, permission, platform, or functional behavior is non-trivial.
+
+Block implementation and route back when:
+- the approved source is missing, stale, or conflicts with the brief/blueprint;
+- a blueprint predates Visual Freeze/Post-Visual Extraction or lacks required current-scope artifacts;
+- the active slice cannot be identified;
+- a critical asset or functional contract is required but unavailable and no fallback/waiver exists;
+- a requested parity claim cannot be backed by source/crop/Visual IR plus screenshot or section evidence.
+
+Mandatory order:
+1. **Input Gate**: resolve artifacts and classify mode/risk.
+2. **Observation Contract**: inspect source/crop/Visual IR and extract content, proportions, tokens, media slots, type roles, must-not-do items.
+3. **Implementation Pass**: Foundation before page polish, Coverage before deep fidelity, then Refinement/Fidelity/Repair as scoped.
+4. **Evidence Gate**: report changed files, maturity, section anchors, PASS/WARN/FAIL evidence, skipped checks, debt/deviations, and suggested state/manifest updates.
+
 ## Low-Context Fidelity Loop
 
-When routed by `PlanToDelivery`, implement or repair only the active slice named in the invocation brief: one route, page, section, component group, visual repair pass, or asset role. Do not re-audit the entire site unless the active gate is release/final parity or the source contract is globally stale.
+When routed by `PlanToDelivery`, implement or repair only the active slice named in the invocation brief: one route, page, section, component group, visual repair pass, or asset role. Do not re-audit the entire site unless the active gate is release/final parity or the source contract is globally stale. Low-context routing reduces breadth only; it must not skip direct source inspection, token/content inventory, or section-level visual evidence for the active slice.
 
 Rules:
 - resolve inputs through `artifact-manifest.json` and `routing.input_artifact_refs`; artifact paths outrank pasted summaries;
-- read only the implementation blueprint, Visual IR/source, technical recipe, and nearby code needed for the active slice;
+- read only the implementation blueprint, Visual IR/source, technical recipe, nearby code, and gate/evidence files needed for the active slice;
 - save heavy screenshot analysis, section diff, browser snapshots, vision notes, and parity reports as files; keep chat output to PASS/WARN/FAIL and artifact paths;
 - in each repair pass, fix the largest 1-3 gaps only, then record remaining debt instead of expanding scope;
-- load heavy references only when the active fidelity mode requires them or a failed parity check triggers escalation;
+- for single-section repair, default to a two-round visual budget: one source-vs-current diagnosis and one post-fix screenshot verification; stop on `PASS` or `PASS/WARN` and record WARN as debt instead of polishing again;
+- only exceed the two-round visual budget when the section is still `FAIL`, required content/CTA/layout is missing, responsive overflow exists, the user explicitly asks for more precision, or the active task is an asset-selection/generation task;
+- when choosing replacement media for a repair, inspect at most 1-2 candidate assets by default; do not turn a section repair into open-ended asset exploration unless asset fulfillment is the active slice;
+- load heavy references only when the active fidelity mode, a non-skippable gate, or a failed parity check requires them;
 - never carry rejected AI assets or stale mockups forward as source truth; mark them rejected/stale in artifact suggestions;
 - return a compact delta response for `PlanToDelivery`, not a narrative implementation report.
 
@@ -63,10 +90,10 @@ Prose briefs are supporting context, not the source of truth.
 Keep high-fidelity capability, but activate heavy rules only around the current page/section.
 
 - `quick`: non-visual or minor UI changes; use project conventions and do not claim design parity.
-- `standard-fidelity` (default for GPT Image 2/mockup UI): preserve approved source, page type, section order, density, and top visual gaps while keeping context small.
-- `strict-fidelity`: core screens, final visual acceptance, or user asks for exact/按图还原; load high-fidelity references and run screenshot repair loops.
-- `repair`: existing implementation drifted; compare current screenshot to source and fix the largest 1-3 gaps per pass.
-- `regenerate`: complete page rewrite; load full-page regeneration guard before coding.
+- `standard-fidelity` (default for GPT Image 2/mockup UI): preserve approved source, page type, section order, density, layout ratios, visual tokens, content inventory, media slots, and top visual gaps while keeping context small.
+- `strict-fidelity`: core screens, homepage/marketing hero pages, final visual acceptance, or user asks for exact/按图还原; load high-fidelity references and run screenshot repair loops.
+- `repair`: existing implementation drifted; compare current screenshot to source and fix the largest 1-3 gaps per pass. This 1-3 gap limit applies to repair passes only, not first implementation or full regeneration.
+- `regenerate`: complete page rewrite or first implementation from a rich approved mockup; load full-page regeneration guard before coding.
 - `section-strict`: rough, stretched, or only half-accurate visual implementation; load section-driven high-fidelity plus atlas rules before coding.
 - `asset`: complex illustration/icon/background work; use asset fulfillment references and record asset debt.
 - `responsive-basic`: small changes, admin/backoffice, or non-core pages; ensure no overflow and usable controls, but do not claim strong mobile conversion quality.
@@ -81,19 +108,27 @@ Keep high-fidelity capability, but activate heavy rules only around the current 
 
 In `standard-fidelity`, prefer cached Visual IR and source/screenshot paths over long vision prose. Load heavier references only when the mode or a failed parity check requires them.
 
+Minimum floor for `standard-fidelity`: before coding, still extract source-visible content, section order, first-screen density, layout ratios, media slots/aspects, major colors/radius/shadow/spacing, typography roles, and must-not-do items for the active slice. `standard-fidelity` means smaller scope and shorter context, not weaker observation. If this minimum cannot be recovered from cached IR/brief, inspect the approved visual source or source crop before implementation.
+
+Default escalation: homepage, marketing/landing pages, brand-heavy first screens, rich hero sections, dense product/category pages, or any task described as "还原/按图/像设计稿" should start in `strict-fidelity` or `section-strict`, not `standard-fidelity`. Use `standard-fidelity` only when the design is straightforward, the Visual IR is already detailed, and the user did not ask for exact visual restoration.
+
 When the source is desktop-only, do not treat mobile as a pixel-shrunk desktop. Use `mobile-recomposition` unless the task is clearly `responsive-basic`; escalate to `mobile-strict` when a core page needs a recoverable Mobile IR or repeated mobile repair fails.
 
 ## Fidelity Kernel
 
 These rules are always active for GPT Image 2/mockup work:
 - approved visual source is the source of truth; prose only supports it
+- observe before coding: inspect the approved source/crop or a sufficiently detailed Visual IR, then extract the active slice's layout ratios, visible content, visual tokens, media slots, typography roles, and must-not-do items
+- exactness beats style intuition: do not add glow, blur, glass, shadow, gradient intensity, decorations, or micro-effects that are not visible in the approved source unless recorded as accepted enhancement/debt
 - preserve page type, section order, first-screen density, card/list/form anatomy, and action hierarchy
+- preserve the whole active slice, not only the most noticeable decorative layer; missing required content, wrong proportions, or wrong density is a parity failure even if the style feels close
 - do not convert list/detail/form/product pages into generic dashboards
 - do not replace populated designs with empty states unless the source says so
 - do not claim parity from DOM/text smoke alone; use screenshot or section evidence
 - maintain or create lightweight Visual IR for the active page/section
 - for high-fidelity page rewrites, enrich Visual IR to section-level layout/asset contracts before coding
 - every source-visible text, CTA, badge, icon group, statistic, label, and feature item must be inventoried before implementation; missing content is a fidelity failure, not a polish detail
+- inventory source icon/shape anatomy for visible icon groups, chips, tabs, metric groups, and controls: size, color, container/background, stroke/fill, alignment, separator count, radius, padding, and relation to nearby text/value
 - generated media must match its final display role and aspect ratio; do not hide asset mismatch with `object-fit` or background-position tricks
 - design-source fonts must be restored by role, licensing, and performance budget; do not blindly load every source font or collapse all typography to generic sans
 - do not use commercial or unknown-license fonts without project authorization; choose close free/open-source substitutes when unavailable or not free
@@ -101,7 +136,7 @@ These rules are always active for GPT Image 2/mockup work:
 - multi-font designs must be consolidated before adding assets; first-screen font budget defaults to <=2 families and <=3 files unless waived
 - homepage-first typography creates provisional role slots and open questions, not a final locked site-wide font system
 - atlas generation is for creation efficiency only; crop atlas outputs into independent files before implementation
-- fix the largest 1-3 visual gaps per pass and record remaining debt
+- first implementation/regeneration should establish overall section structure and proportions before polishing; repair passes then fix the largest 1-3 visual gaps and record remaining debt
 
 ## Source Content Inventory
 
@@ -156,20 +191,22 @@ For detailed matching criteria, manifest shape, homepage-first governance, and s
 
 ## Default Workflow
 
-1. **Intake**: identify source of truth, target routes/files, framework constraints, current maturity target, and mobile mode.
-2. **Foundation**: map tokens/shell/base components before page-specific polish.
-3. **Coverage**: make every in-scope route/page visibly present before deep fidelity work.
-4. **Desktop Fidelity Pass**: preserve the approved desktop/source design, section order, visible content inventory, typography roles, and major visual hierarchy.
-5. **Section Anchors**: add stable `data-section` markers for key sections.
-6. **Mobile Recomposition Pass**: when mobile is in scope and the source is PC/desktop-first, recompose sections by type and content density instead of mechanically stacking desktop grids.
-7. **Fidelity Loop**: compare source vs implementation by section; fix the largest 1-3 gaps per pass.
-8. **Mobile Acceptance Pass**: check no horizontal overflow, mobile scroll rhythm, touch usability, non-mechanical repeated grids, and accepted deviations for 390/414/768 or relevant project viewports.
-9. **Font Fidelity Pass**: when typography is in scope, inventory font roles, choose exact/free substitute/project-stack/asset/css/deviation decisions, consolidate, self-host project font files, and record manifest/debt.
-10. **Handoff**: report page maturity, mobile mode, font mode, evidence, debt, and deviations.
+1. **Intake**: identify source of truth, target routes/files, framework constraints, current maturity target, fidelity mode, and mobile mode. If the invocation does not specify fidelity mode, choose it from the source/page risk; do not silently default exact/homepage/marketing work to `standard-fidelity`.
+2. **Observation Contract**: inspect the approved visual source, source crop, or detailed Visual IR before coding; extract content inventory, layout ratios, visual tokens, media slots/aspects, icon/shape anatomy, typography roles, and must-not-do items for the active slice.
+3. **Foundation**: map tokens/shell/base components before page-specific polish.
+4. **Coverage**: make every in-scope route/page visibly present before deep fidelity work.
+5. **First Implementation / Regeneration**: establish the full active slice structure, section proportions, density, action hierarchy, and required content before limiting work to small repair gaps.
+6. **Desktop Fidelity Pass**: preserve the approved desktop/source design, section order, visible content inventory, typography roles, and major visual hierarchy.
+7. **Section Anchors**: add stable `data-section` markers for key sections.
+8. **Mobile Recomposition Pass**: when mobile is in scope and the source is PC/desktop-first, recompose sections by type and content density instead of mechanically stacking desktop grids.
+9. **Fidelity Repair Loop**: after first implementation exists, compare source vs implementation by section; fix the largest 1-3 gaps per repair pass.
+10. **Mobile Acceptance Pass**: check no horizontal overflow, mobile scroll rhythm, touch usability, non-mechanical repeated grids, and accepted deviations for 390/414/768 or relevant project viewports.
+11. **Font Fidelity Pass**: when typography is in scope, inventory font roles, choose exact/free substitute/project-stack/asset/css/deviation decisions, consolidate, self-host project font files, and record manifest/debt.
+12. **Handoff**: report page maturity, fidelity mode, mobile mode, font mode, evidence, debt, and deviations.
 
 ## Section-Strict Trigger
 
-When the user says the implementation is rough, only half done, stretched, not precise enough, needs richer IR, or should be restored section-by-section, switch to section-strict/regenerate mode. Before coding, load:
+When the user says the implementation is rough, only half done, stretched, not precise enough, needs richer IR, should be restored section-by-section, or when a homepage/marketing/brand-heavy first screen must closely match an approved image, switch to section-strict/regenerate mode. Before coding, load:
 
 - `references/full-page-regeneration-guard.md`
 - `references/section-driven-high-fidelity.md`
@@ -252,7 +289,7 @@ If a generated asset is visibly less realistic than the approved design source:
 
 ## Visual IR Minimum
 
-Use or create a lightweight Visual IR for PNG/GPT Image 2/mockup sources when fidelity matters:
+Use or create a lightweight Visual IR for PNG/GPT Image 2/mockup sources when fidelity matters. For homepage, marketing, strict, regenerate, or section-strict work, this lightweight minimum is only a starting point; enrich each active section with layout ratios, token notes, media slot/aspect, text safe areas, icon/shape anatomy, and pass criteria before coding:
 
 ```json
 {
@@ -278,7 +315,7 @@ Do not over-model every pixel. Capture page type, section order, bbox, first-scr
 
 ## PlanToDelivery Project-State Collaboration
 
-When routed by `PlanToDelivery`, consume the active task from `project-state/execution-progress.json` and required inputs from `project-state/artifact-manifest.json`. `routing.input_artifact_refs` and manifest paths outrank prose summaries.
+When routed by `PlanToDelivery`, consume the active task from `project-state/execution-progress.json` and required inputs from `project-state/artifact-manifest.json`. `routing.input_artifact_refs` and manifest paths outrank prose summaries. If the active task lacks `fidelity_mode`, infer and report one; homepage/marketing/exact visual tasks default to `strict-fidelity` or `section-strict`, not `standard-fidelity`.
 
 Implementation inputs should normally include approved design artifacts and any technical blueprint artifacts:
 - `implementation_blueprint`, `page_matrix`, `component_blueprint`, `visual_ir`, and design debt
@@ -307,6 +344,7 @@ Do not pass global gates yourself. Do not claim design parity from DOM/text smok
 
 For each meaningful checkpoint, report:
 - route/page coverage
+- fidelity mode used and why it was sufficient for the page/source risk
 - maturity level: L0 route-ready, L1 skeleton, L2 content, L3 system-styled, L4 core-fidelity, L5 functional
 - section parity: PASS/WARN/FAIL for major sections when fidelity is claimed
 - largest remaining visual gaps and whether they are debt or accepted deviation
@@ -336,7 +374,9 @@ When font work is in scope, also report:
 - Do not convert list/detail/form pages into generic dashboards.
 - Do not run broad lint/type/build repeatedly during active visual editing unless a failure signal or gate requires it.
 - Do not handwave “close enough”; record section-level debt.
-- Do not invent visual effects or decorative assets beyond the approved source; when strict detail is needed, load `references/high-fidelity-rules.md`.
+- Do not invent visual effects or decorative assets beyond the approved source; exactness beats style intuition. Load `references/high-fidelity-rules.md` for strict detail, but do not ignore exactness in standard mode.
+- Do not treat `standard-fidelity` as permission to implement from prose or a vague brief. If the active slice lacks enough visual detail to recover content, proportions, tokens, media slots, and type roles, inspect the approved source/crop or escalate mode.
+- Do not apply the "largest 1-3 gaps" repair limit to first implementation or regeneration; first establish the full active slice structure and required content.
 - Functional controls must follow existing project/UI-library patterns first; load `IdeaToTech` only when API/state/permission/cross-platform/verification risk is non-trivial.
 
 ## Progressive Loading
@@ -360,9 +400,12 @@ Load only when needed:
 | Pitfall | Fix |
 |---|---|
 | Implementing from prose only | Build/read Visual IR and source crops |
+| Treating standard-fidelity as low fidelity | Keep scope small, but still inspect source/crop and extract content, proportions, visual tokens, media slots, and type roles |
+| Leaving fidelity mode unspecified in PlanToDelivery handoff | Infer/report mode; homepage/marketing/exact visual tasks default to strict-fidelity or section-strict |
 | Broad route smoke treated as visual pass | Require section screenshots for parity claims |
 | Reusing a dashboard template everywhere | Preserve page type and first-screen anatomy |
 | Pixel-chasing before coverage | Cover routes first, then L4/L5 selected pages |
+| Applying 1-3 gap repair limit to first build | First establish full active slice structure/proportions/content, then use 1-3 gap loops for repair |
 | IR only names sections | Add section layout ratios, media role/aspect, crop strategy, text safe area, screenshot targets |
 | Missing source-visible text, badges, CTAs, or feature chips | Create a source content inventory before coding; missing content is section parity FAIL unless accepted as debt |
 | Beautiful background hides missing hero content | Verify headline line count, CTA count, badge/feature count, and icon-label groups before visual PASS |
