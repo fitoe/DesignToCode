@@ -19,6 +19,36 @@ Turn an approved visual source into maintainable code without relying on prose p
 
 Return to `idea-to-design` only when the approved source is missing/stale, scope changed, the handoff predates approval, or the user asks for a design change.
 
+## Low-Context Fidelity Loop
+
+When routed by `PlanToDelivery`, implement or repair only the active slice named in the invocation brief: one route, page, section, component group, visual repair pass, or asset role. Do not re-audit the entire site unless the active gate is release/final parity or the source contract is globally stale.
+
+Rules:
+- resolve inputs through `artifact-manifest.json` and `routing.input_artifact_refs`; artifact paths outrank pasted summaries;
+- read only the implementation blueprint, Visual IR/source, technical recipe, and nearby code needed for the active slice;
+- save heavy screenshot analysis, section diff, browser snapshots, vision notes, and parity reports as files; keep chat output to PASS/WARN/FAIL and artifact paths;
+- in each repair pass, fix the largest 1-3 gaps only, then record remaining debt instead of expanding scope;
+- load heavy references only when the active fidelity mode requires them or a failed parity check triggers escalation;
+- never carry rejected AI assets or stale mockups forward as source truth; mark them rejected/stale in artifact suggestions;
+- return a compact delta response for `PlanToDelivery`, not a narrative implementation report.
+
+Default delta response:
+
+```json
+{
+  "result": "completed | partial | blocked",
+  "changed_files": [],
+  "produced_artifacts": [],
+  "suggested_manifest_entries": [],
+  "suggested_progress_updates": [],
+  "suggested_blockers": [],
+  "suggested_gate_updates": [],
+  "evidence": [],
+  "largest_remaining_gaps": [],
+  "next_recommended_task": ""
+}
+```
+
 ## Input Priority
 
 1. `implementation-blueprint.json` + `page-matrix.json` + `component-blueprint.json` + `debt-ledger.json`
@@ -261,11 +291,15 @@ Produce implementation artifacts, usually under `project-state/implementation/` 
 - `accepted-deviations.json`
 - `implementation-handoff.md`
 
-Return compact suggestions to `PlanToDelivery`:
+Return compact delta suggestions to `PlanToDelivery`:
+- `result`: `completed`, `partial`, or `blocked`
+- `changed_files` and `produced_artifacts` for code/evidence artifacts created or updated
 - `suggested_manifest_entries` for parity reports, screenshots, accepted deviations, and implementation handoff
 - `suggested_progress_updates` for task state, verification state, and remaining debt
 - evidence entries for commands, files, browser checks, screenshots, commits, or notes
 - blockers when approved design sources are missing/stale, technical assumptions are wrong, auth/API access is unavailable, or required assets are not available
+- `largest_remaining_gaps`, limited to the most important visual/functional gaps for the active slice
+- `next_recommended_task` when the next repair/verification/technical refresh is clear
 
 Do not pass global gates yourself. Do not claim design parity from DOM/text smoke alone. If the approved design source is missing, stale, or conflicts with requirements, recommend routing back to `idea-to-design`; if the technical plan is wrong or incomplete, recommend routing back to `IdeaToTech`.
 
