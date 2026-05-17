@@ -28,19 +28,30 @@ Return to `idea-to-design` only when the approved source is missing/stale, scope
 
 Prose briefs are supporting context, not the source of truth.
 
-## Fidelity Modes
+## Fidelity Path
 
-Keep high-fidelity capability, but activate heavy rules only around the current page/section.
+D2C has one default path: **highest-fidelity-regeneration**.
 
-- `quick`: non-visual or minor UI changes; use project conventions and do not claim design parity.
-- `standard-fidelity` (default for GPT Image 2/mockup UI): preserve approved source, page type, section order, density, and top visual gaps while keeping context small.
-- `strict-fidelity`: core screens, final visual acceptance, or user asks for exact/按图还原; load high-fidelity references and run screenshot repair loops.
-- `repair`: existing implementation drifted; compare current screenshot to source and fix the largest 1-3 gaps per pass.
-- `regenerate`: complete page rewrite; load full-page regeneration guard before coding.
-- `section-strict`: rough, stretched, or only half-accurate visual implementation; load section-driven high-fidelity plus atlas rules before coding.
-- `asset`: complex illustration/icon/background work; use asset fulfillment references and record asset debt.
+Use D2C only when converting or repairing against an approved visual source and the expected result is the highest practical design-source fidelity. Do not downgrade to `quick`, `standard`, or "structure-first" modes unless the user explicitly waives fidelity for that specific task.
 
-In `standard-fidelity`, prefer cached Visual IR and source/screenshot paths over long vision prose. Load heavier references only when the mode or a failed parity check requires them.
+For every visual D2C page/section:
+- approved visual source is the source of truth; prose only supports it
+- load the highest-fidelity references before coding, not after a mismatch appears
+- extract executable section-level IR before implementation
+- inventory visible text, icons, shapes, tokens, assets, and controls before coding
+- implement from the inventory/IR, then generate left-design/right-live evidence
+- any shortcut, placeholder, missing icon, or simplified asset is debt and must be named before showing the result
+
+Required references for visual D2C work:
+- `references/design-extraction-analysis-gate.md`
+- `references/full-page-regeneration-guard.md`
+- `references/high-fidelity-rules.md`
+- `references/section-driven-high-fidelity.md`
+- `references/executable-visual-ir.md`
+- `references/asset-atlas-generation.md` when multiple related bitmap assets are needed
+- `references/functional-component-handoff-guard.md` when controls/forms/tabs/pickers affect behavior
+
+Non-visual or minor project-convention edits should not use D2C and must not claim design parity.
 
 ## Fidelity Kernel
 
@@ -51,7 +62,9 @@ These rules are always active for GPT Image 2/mockup work:
 - do not replace populated designs with empty states unless the source says so
 - do not claim parity from DOM/text smoke alone; use screenshot or section evidence
 - maintain or create lightweight Visual IR for the active page/section
-- for high-fidelity page rewrites, enrich Visual IR to section-level layout/asset contracts before coding
+- before strict visual repair, perform design extraction and analysis from the approved source; load `references/design-extraction-analysis-gate.md` when fidelity depends on a screenshot/mockup
+- for high-fidelity page rewrites, enrich Visual IR to executable section-level layout/asset/anatomy/token contracts before coding
+- if visual repair keeps producing "similar but not restored", treat under-specified IR as the blocker and load `references/executable-visual-ir.md` before more CSS
 - generated media must match its final display role and aspect ratio; do not hide asset mismatch with `object-fit` or background-position tricks
 - atlas generation is for creation efficiency only; crop atlas outputs into independent files before implementation
 - fix the largest 1-3 visual gaps per pass and record remaining debt
@@ -65,15 +78,11 @@ These rules are always active for GPT Image 2/mockup work:
 5. **Fidelity Loop**: compare source vs implementation by section; fix the largest 1-3 gaps per pass.
 6. **Handoff**: report page maturity, evidence, debt, and deviations.
 
-## Section-Strict Trigger
+## Highest-Fidelity Gate
 
-When the user says the implementation is rough, only half done, stretched, not precise enough, needs richer IR, or should be restored section-by-section, switch to section-strict/regenerate mode. Before coding, load:
+Before coding any visual D2C page/section, the required references above must be loaded and applied. Section-level executable IR is mandatory: each major section needs bbox/height or density, component anatomy, text/icon/shape inventory, token targets, media/asset role, crop strategy, text safe areas, screenshot target, pass criteria, and must-not-substitute rules.
 
-- `references/full-page-regeneration-guard.md`
-- `references/section-driven-high-fidelity.md`
-- `references/asset-atlas-generation.md` when multiple related images are missing
-
-Section-strict requires a richer IR than the lightweight minimum: each major section needs layout ratios, final media role/aspect, crop/asset strategy, text safe areas, section screenshot target, pass criteria, and must-not-do rules.
+If any required field is missing, stop and enrich the IR/brief before changing code.
 
 ## Asset Strategy Kernel
 
@@ -130,21 +139,22 @@ For each meaningful checkpoint, report:
 - Do not invent visual effects or decorative assets beyond the approved source; when strict detail is needed, load `references/high-fidelity-rules.md`.
 - Functional controls must follow existing project/UI-library patterns first; load `IdeaToTech` only when API/state/permission/cross-platform/verification risk is non-trivial.
 
-## Progressive Loading
+## Mandatory Reference Loading
 
-Load only when needed:
-- `references/high-fidelity-rules.md` — strict visual details: exactness, text/icon/shape inventory, asset/layer rules, functional-control escalation
-- `references/full-page-regeneration-guard.md` — required before complete page rewrites from approved mockups; token table, text inventory, icon anatomy, asset grouping map, and section-level asset plan
-- `references/section-driven-high-fidelity.md` — required for rough/half-accurate/stretched pages, section-by-section restoration, and strict visual repair
-- `references/asset-atlas-generation.md` — required when generating multiple related bitmap assets; atlas must be cropped before implementation
-- `references/functional-component-handoff-guard.md` — required when mockups include tabs, search, filters, dropdowns, pickers, pagination, forms, or other controls with non-trivial API/state/platform semantics
-- `references/blueprint-driven-implementation.md` — blueprint-first implementation details
+For visual D2C work, load these before coding; they are not optional or deferred:
+- `references/high-fidelity-rules.md` — exactness, text/icon/shape inventory, asset/layer rules, functional-control escalation
+- `references/design-extraction-analysis-gate.md` — design extraction from screenshots/mockups into section IR, component anatomy, asset roles, token targets, must-not-substitute rules, and pass criteria
+- `references/full-page-regeneration-guard.md` — complete-page token table, text inventory, icon anatomy, asset grouping map, and section-level asset plan
+- `references/section-driven-high-fidelity.md` — section-by-section restoration and strict visual repair
+- `references/executable-visual-ir.md` — executable section-level layout/asset/anatomy/token contracts
+- `references/asset-atlas-generation.md` — when multiple related bitmap assets are present or may be needed
+- `references/functional-component-handoff-guard.md` — when controls/forms/tabs/pickers affect behavior
+- `references/blueprint-driven-implementation.md` — when project blueprint files exist
 - `references/visual-measurements.md` — extracting sizes, colors, density
 - `references/width-normalization.md` — canonical page width, responsive/H5 viewport metrics, and real mobile screenshot evidence
-- `references/mobile-recomposition.md` — mobile layout adaptation, mobile grids, and approved mobile structure preservation
-- `references/playwright-section-diff.md` — section screenshot comparison and Mobile H5 visual audit pack
-- `references/high-fidelity-mode.md` — strict visual repair loops
-- `references/main-skill-full-reference.md` — full legacy detail if this compact guide is insufficient
+- `references/mobile-recomposition.md` — when desktop/PC-only sources must become mobile
+- `references/playwright-section-diff.md` — screenshot comparison and Mobile H5 visual audit pack
+- `references/main-skill-full-reference.md` — if the compact guide is insufficient
 
 ## Common Pitfalls
 
@@ -154,6 +164,8 @@ Load only when needed:
 | Broad route smoke treated as visual pass | Require section screenshots for parity claims |
 | Reusing a dashboard template everywhere | Preserve page type and first-screen anatomy |
 | Pixel-chasing before coverage | Cover routes first, then L4/L5 selected pages |
-| IR only names sections | Add section layout ratios, media role/aspect, crop strategy, text safe area, screenshot targets |
+| Coding starts before extracting design | Stop; run design extraction and analysis, then write executable IR before implementation |
+| IR only names sections | Add executable IR: bbox/height, density, component anatomy, asset role, token targets, pass criteria, and must-not-substitute rules |
+| Repeated CSS tuning still feels unlike source | Stop coding; classify mismatch as asset/structure/anatomy/token/verification and enrich `references/executable-visual-ir.md` fields first |
 | Using one generated atlas as many CSS backgrounds | Crop atlas into independent files and reference cropped assets only |
 | Hero/banner mixed into thumbnail atlas | Generate hero/CTA as independent assets with final safe areas |
