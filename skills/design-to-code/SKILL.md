@@ -58,6 +58,7 @@ Non-visual or minor project-convention edits should not use D2C and must not cla
 These rules are always active for GPT Image 2/mockup work:
 - approved visual source is the source of truth; prose only supports it
 - preserve page type, section order, first-screen density, card/list/form anatomy, and action hierarchy
+- for mobile H5 / phone-width work, preserve readability floors as part of fidelity; do not copy or generate tiny 10-12px-equivalent text for meaningful content just to match density
 - do not convert list/detail/form/product pages into generic dashboards
 - do not replace populated designs with empty states unless the source says so
 - do not claim parity from DOM/text smoke alone; use screenshot or section evidence
@@ -80,7 +81,7 @@ These rules are always active for GPT Image 2/mockup work:
 
 ## Highest-Fidelity Gate
 
-Before coding any visual D2C page/section, the required references above must be loaded and applied. Section-level executable IR is mandatory: each major section needs bbox/height or density, component anatomy, text/icon/shape inventory, token targets, media/asset role, crop strategy, text safe areas, screenshot target, pass criteria, and must-not-substitute rules.
+Before coding any visual D2C page/section, the required references above must be loaded and applied. Section-level executable IR is mandatory: each major section needs bbox/height or density, component anatomy, text/icon/shape inventory, token targets including mobile typography floors, media/asset role, crop strategy, text safe areas, screenshot target, pass criteria, and must-not-substitute rules.
 
 If any required field is missing, stop and enrich the IR/brief before changing code.
 

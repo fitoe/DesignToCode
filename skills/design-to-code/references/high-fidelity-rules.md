@@ -8,6 +8,21 @@ Use this reference only when the current slice is in `strict-fidelity`, `regener
 - Count repeated separators explicitly. Metric groups, segmented controls, tabs, lists, and grids must map every visible divider/separator before coding. Do not collapse two internal separators into one parent divider, and do not move group dividers to the section edge.
 - Extract visual tokens before full-page regeneration. For each page/section, record source-derived background color, border visibility/color, radius, shadow strength, horizontal/vertical padding, grid gaps, row heights, section spacing, and readable typography floors for primary content. Do not replace these with generic dashboard defaults unless explicitly accepted as a deviation; however, do not copy source text sizes below platform readability floors for main content just because the mockup uses tiny text.
 
+## Mobile Typography Readability Floors
+
+- For mobile H5 / mini-program / phone-width web, fidelity must include usability: do not copy or generate tiny text that falls below readable platform floors just to match density. Treat typography below the floor as a design-source issue or implementation debt, not as a parity target.
+- **Scope (default): all mobile pages that carry business information.** This includes homepage, TabBar pages, lists, details, forms, pricing/spec/KPI/status cards, navigation, search, filters, CTAs, and any page where the user must read, decide, or act. Purely decorative splash/ornamental text may be an exception only if recorded as non-critical.
+- **Unit convention: write rpx + px together.** Before coding mobile pages, convert `rpx`/design units to CSS pixels at the target viewport. For uni-app 750-design-width math, `font_px = rpx * viewport_width / 750`; examples: `28rpx ≈ 14px @375`, `26rpx ≈ 13px @375`, `24rpx ≈ 12px @375`, `22rpx ≈ 11px @375`, `20rpx ≈ 10px @375`.
+- Default mobile floors unless the project explicitly defines stronger tokens:
+  - primary body / card subtitle / form label: **>= 28rpx ≈ 14px @375** preferred, **>= 26rpx ≈ 13px @375** minimum;
+  - secondary label / status chip / metadata: **>= 24-26rpx ≈ 12-13px @375**, avoid large-area use below 26rpx;
+  - page/card titles: **30-34rpx+ ≈ 15-17px+ @375**; page hero titles usually **40-48rpx+ ≈ 20-24px+ @375**;
+  - functional controls and inputs: text **>= 26-28rpx ≈ 13-14px @375**, touch target near **44px** when feasible.
+- **Tiered gate:** decision-critical business text is a hard gate. Page/section titles, body/description, CTA, form labels/placeholders/errors, prices, specs, quantities, status, KPI labels/values, navigation, search, filters, and operation entries must not render below the floor. Decorative kicker text, sparse non-critical metadata, and tiny labels inside illustrations may be warning-only exceptions, but must be explicitly recorded in the debt/parity report.
+- Text below **24rpx ≈ 12px @375** may only be decorative, non-critical, or extremely sparse. It must not carry decision-critical labels, prices, specs, form hints, status, CTA text, or long reading content.
+- Implementation artifacts must include `typography_floor` in Visual IR or the parity report: target viewport(s), rpx-to-px examples, project overrides, hard-gate violations, warning exceptions, and post-implementation screenshot/DOM sampled font sizes.
+- When increasing tiny text, rebalance the component instead of merely scaling fonts: adjust line-height, padding, grid columns, card density, label copy length, truncation, progressive disclosure, or horizontal scrolling. Do not solve readability by causing overflow.
+
 ## Text, Icon, And Shape Inventory
 
 - Maintain a text inventory before coding. Every visible text fragment in the binding source must be mapped to a role (`title`, `label`, `value`, `unit`, `caption`, `status`, `link`) and an approximate position. Generation is incomplete if a visible label is omitted, merged into another role, or moved to a different hierarchy level.

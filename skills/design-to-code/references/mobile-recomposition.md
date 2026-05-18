@@ -24,7 +24,17 @@ PC high fidelity does not mean mobile mechanical replication. Preserve design in
    For each section classify: section type, item count, content density, visual priority, primary action, scroll cost, touch needs, and compression options.
 
 3. Mobile Acceptance Pass
-   Check design intent, critical content, non-mechanical layout, scroll rhythm, touch usability, no horizontal overflow, and accepted deviations.
+   Check design intent, critical content, non-mechanical layout, scroll rhythm, readable typography floors, touch usability, no horizontal overflow, and accepted deviations.
+
+## Mobile Typography And Density Rules
+
+Mobile recomposition must protect readability, not only responsiveness:
+
+- Establish a `typography_floor` before implementing or repairing mobile pages. For 750-width `rpx` projects, explicitly convert critical sizes at 375/390px viewport and write rpx + px together, e.g. `26rpx ≈ 13px @375`, `24rpx ≈ 12px @375`.
+- Do not use repeated 19-23rpx labels for meaningful content on phone H5. At common mobile widths they render around 9.5-12px and feel uncomfortable even if technically legible. For business-information pages, this is a hard gate for decision-critical text and a recorded warning for purely decorative/sparse metadata.
+- Prefer these default floors when no project token system overrides them: body/card descriptions/forms **26-28rpx ≈ 13-14px @375** minimum; secondary labels/chips **24-26rpx ≈ 12-13px @375**; titles **30rpx+ ≈ 15px+ @375**; hero/page titles **40rpx+ ≈ 20px+ @375**.
+- If a mobile layout only works by making text tiny, the layout is over-dense. Fix structure first: reduce columns, shorten labels, group secondary specs, use cards/accordions, or move less important information below the fold.
+- When preserving an approved mobile structure such as a KPI strip, compress padding/gaps/icons/decorations before reducing text below the floor. If it still fails, record overflow evidence and ask for a layout change.
 
 ## Section Strategies
 
@@ -145,6 +155,7 @@ Minimum Mobile IR:
   ],
   "global_mobile_rules": [
     "touch targets >= 44px",
+    "typography_floor records rpx + px conversions, e.g. body/card text >= 26-28rpx ≈ 13-14px @375; critical labels never below 24rpx ≈ 12px @375",
     "no horizontal overflow at 320px",
     "avoid mechanical 1-column conversion for repeated grids"
   ]
@@ -156,6 +167,7 @@ Minimum Mobile IR:
 When mobile work is in scope, report:
 - mobile mode;
 - viewports checked, usually 390/414/768 and 320 when risk exists;
+- `typography_floor` checked, including rpx + px conversion, hard-gate violations, warning-only sub-floor exceptions, and screenshot/DOM sampled font sizes;
 - section result PASS/WARN/FAIL;
 - grid decisions;
 - accepted deviations;

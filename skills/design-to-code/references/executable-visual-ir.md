@@ -144,3 +144,25 @@ Otherwise update IR first. Do not "just tune CSS" when the gap is caused by miss
 | Fixing CSS when component roles are missing | Update component anatomy then reimplement structure |
 | Only comparing whole-page screenshots | Use section crops and first-screen density counts |
 | Saying "close enough" after content matches | Require source-visible roles and asset class match |
+
+## Typography Floor Field
+
+Every mobile/phone-width section IR that carries business information must include `typography_floor`:
+
+```json
+{
+  "typography_floor": {
+    "viewport": "375/390px",
+    "unit_convention": "rpx + px",
+    "conversion": "font_px = rpx * viewport_width / 750",
+    "primary_body": "26-28rpx ≈ 13-14px @375",
+    "secondary_label": "24-26rpx ≈ 12-13px @375",
+    "hard_gate_roles": ["title", "body", "CTA", "form", "price", "spec", "status", "KPI", "navigation", "search", "filter"],
+    "warning_exceptions": ["decorative kicker", "sparse non-critical metadata", "tiny illustration label"],
+    "post_implementation_check": "screenshot or DOM sampled font sizes"
+  }
+}
+```
+
+If the source design uses 10-12px-equivalent text for critical business content, do not copy it blindly; recompose spacing/layout first and record the source issue/debt.
+
