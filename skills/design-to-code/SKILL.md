@@ -38,7 +38,7 @@ For every visual D2C page/section:
 - approved visual source is the source of truth; prose only supports it
 - load the highest-fidelity references before coding, not after a mismatch appears
 - extract executable section-level IR before implementation
-- inventory visible text, icons, shapes, tokens, assets, and controls before coding
+- inventory visible text, icons, shapes, tokens, assets, and controls before coding; for mobile pages include icon anatomy, icon size tokens, and Iconify visual compensation
 - implement from the inventory/IR, then generate left-design/right-live evidence
 - any shortcut, placeholder, missing icon, or simplified asset is debt and must be named before showing the result
 
@@ -58,6 +58,7 @@ Non-visual or minor project-convention edits should not use D2C and must not cla
 These rules are always active for GPT Image 2/mockup work:
 - approved visual source is the source of truth; prose only supports it
 - preserve page type, section order, first-screen density, card/list/form anatomy, and action hierarchy
+- preserve icon anatomy and icon size tokens: box size, glyph size, container/radius/color/alignment, and Iconify visual compensation must be explicit before L4/L5 claims
 - for mobile H5 / phone-width work, preserve readability floors as part of fidelity; do not copy or generate tiny 10-12px-equivalent text for meaningful content just to match density
 - do not convert list/detail/form/product pages into generic dashboards
 - do not replace populated designs with empty states unless the source says so
