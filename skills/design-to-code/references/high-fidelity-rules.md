@@ -39,22 +39,6 @@ Use this reference only when the current slice is in `strict-fidelity`, `regener
 - When a user reports “icons do not match the design,” do an Icon Fidelity Pass before more broad layout polish: inventory icon roles, normalize tokens, fix the largest inconsistent icon classes first, and record remaining icon debt.
 
 
-## Mobile Icon Fidelity Floors
-
-- Mobile visual fidelity requires icon anatomy parity, not only semantic icon choice. Before coding or repairing mobile pages, record each icon-like mark as: `role`, `source kind`, `box size`, `glyph size`, `stroke/fill weight`, `container yes/no`, `container radius`, `color`, `alignment relation`, and whether it is `UI control`, `feature icon`, `status/meta icon`, or `hero/decorative asset`.
-- **Use rpx + px double notation for icon tokens**, same as typography. Example: `feature icon box 56rpx ≈ 28px @375; glyph 32rpx ≈ 16px @375`.
-- Separate **box size** from **glyph size**. `font-size` on Iconify controls glyph scale only; it is not the same as the visible container/tile size. Do not compare or tune icons using `font-size` alone.
-- Default mobile icon token classes unless the project provides stronger design tokens:
-  - navigation/action icon: box `48-56rpx ≈ 24-28px @375`, glyph `26-32rpx ≈ 13-16px @375`;
-  - quick-entry / grid icon: box `52-60rpx ≈ 26-30px @375`, glyph `30-36rpx ≈ 15-18px @375`;
-  - feature/card icon: box `56-64rpx ≈ 28-32px @375`, glyph `32-38rpx ≈ 16-19px @375`;
-  - list/status/meta icon: box `32-48rpx ≈ 16-24px @375`, glyph `20-28rpx ≈ 10-14px @375`;
-  - hero/decorative icon: exempt from UI icon tokens; treat as asset/layer anatomy and record its bbox/role separately.
-- Iconify glyphs are not visually equal at the same `font-size` because viewBox padding, stroke width, and fill/stroke style differ. Apply small per-icon compensation (`+/-2-4rpx` or transform scale) only after assigning the icon to a token class, and record the compensation as implementation detail.
-- Do not wrap a bare source icon in a colored tile, and do not remove a source tile/container, unless recorded as accepted deviation. Container anatomy is part of fidelity.
-- Icon grids must preserve alignment model: centered icon + centered label, left icon + right copy, badge next to value, etc. Do not convert centered grid icons into row icons just because it is easier in CSS.
-- A visual parity report or Visual IR for mobile pages must include `icon_size_tokens` and an `icon_anatomy` sample for all critical icon groups. If icon sizes are page-local ad hoc values without tokens, the page cannot be claimed L4/L5.
-
 ## Text, Icon, And Shape Inventory
 
 - Maintain a text inventory before coding. Every visible text fragment in the binding source must be mapped to a role (`title`, `label`, `value`, `unit`, `caption`, `status`, `link`) and an approximate position. Generation is incomplete if a visible label is omitted, merged into another role, or moved to a different hierarchy level.

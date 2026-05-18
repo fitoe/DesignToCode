@@ -202,34 +202,6 @@ Every mobile/phone-width Visual IR for pages with icon-like marks must include `
 
 A page is not ready for strict fidelity coding if it has many icons but no icon inventory/token mapping. Do not assume semantic Iconify replacement is visually faithful; semantic fit and visual anatomy are separate checks.
 
-## Icon Size Token Field
-
-Every mobile/phone-width Visual IR with icon-like marks should include `icon_size_tokens` and representative `icon_anatomy` entries:
-
-```json
-{
-  "icon_size_tokens": {
-    "unit_convention": "rpx + px",
-    "conversion": "icon_px = rpx * viewport_width / 750",
-    "navigation_action": { "box": "48-56rpx ≈ 24-28px @375", "glyph": "26-32rpx ≈ 13-16px @375" },
-    "quick_entry": { "box": "52-60rpx ≈ 26-30px @375", "glyph": "30-36rpx ≈ 15-18px @375" },
-    "feature_card": { "box": "56-64rpx ≈ 28-32px @375", "glyph": "32-38rpx ≈ 16-19px @375" },
-    "list_meta": { "box": "32-48rpx ≈ 16-24px @375", "glyph": "20-28rpx ≈ 10-14px @375" },
-    "hero_decorative": "asset/layer bbox, not tokenized as UI icon"
-  },
-  "icon_anatomy": [
-    {
-      "role": "service category icon",
-      "token": "feature_card",
-      "source_kind": "colored tile + white line icon",
-      "box": "58rpx ≈ 29px @375",
-      "glyph": "34rpx ≈ 17px @375",
-      "container": "rounded rect, gradient",
-      "alignment": "left icon + right title/desc",
-      "compensation": "thin stroke +2rpx if using Iconify"
-    }
-  ]
-}
 ```
 
 If current implementation uses ad hoc icon sizes per page, mark icon fidelity as WARN/debt and run an Icon Fidelity Pass before claiming L4/L5.
