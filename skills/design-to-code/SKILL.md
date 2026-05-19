@@ -28,6 +28,33 @@ Return to `idea-to-design` only when the approved source is missing/stale, scope
 
 Prose briefs are supporting context, not the source of truth.
 
+## Kanban Provider Mode
+
+Use this mode when invoked through a `kanban-capability-task/v1` envelope, a provider registry entry, or Javis/PlanToDelivery kanban dispatch. In this mode, `design-to-code` is a visual implementation provider, not the project orchestrator and not the design authority.
+
+Advertised capability:
+- `visual_implementation`: convert approved visual/design handoff artifacts into code changes, screenshots, parity evidence, and implementation debt records for the active slice.
+
+Provider rules:
+- consume only the task envelope's active slice, target routes/files, input artifact refs, expected evidence, allowed side effects, and output root;
+- require an approved visual source or implementation-ready handoff before visual implementation; if missing/stale, return `blocked` or `review_required` with exact missing refs instead of guessing;
+- preserve D2C's L5-first fidelity rules inside the bounded task, but return kanban-shaped results rather than long visual prose;
+- produce code changes, page contracts/Visual IR updates, screenshots, parity reports, and debt ledgers under the project-approved locations;
+- return a `kanban-capability-result/v1`-shaped manifest with `capability`, `result`, `changed_files`, `produced_artifacts`, `evidence`, `blockers`, `debts`, `review_required`, and `next_recommended_task`;
+- do not mark global implementation or visual gates passed; recommend gate updates and let the orchestrator record them.
+
+Result semantics:
+- `completed`: the active visual implementation slice has code/evidence ready for orchestrator review;
+- `partial`: meaningful code/evidence exists, but named parity gaps, product states, or verification checks remain;
+- `blocked`: approved source, target route, required assets, build/runtime access, or non-waivable product/technical input is missing.
+
+Review semantics:
+- set `review_required: true` when visual parity evidence, major deviations, generated assets, implementation debt, or user-facing screenshots need human/orchestrator review;
+- do not convert normal visual review into generic `blocked`; reserve `blocked` for missing inputs or unsafe execution;
+- if only part of the slice is blocked, return `partial` with usable artifacts and precise next capability request.
+
+Keep prompts and results artifact-path based. Put screenshots, diffs, parity reports, and detailed repair notes in files; the chat summary should identify route, maturity, evidence paths, top gaps fixed, remaining debt, and next action.
+
 ## Fidelity Path
 
 D2C has one default path: **highest-fidelity-regeneration**.
