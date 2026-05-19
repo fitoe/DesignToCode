@@ -1,0 +1,17 @@
+{
+  "schema_version": "provider-manifest/v1",
+  "provider_id": "design-to-code",
+  "display_name": "DesignToCode",
+  "capabilities": [
+    "visual_implementation"
+  ],
+  "input_schema_refs": {
+    "visual_implementation": "contracts/visual-implementation-task-v1.md"
+  },
+  "result_schema_ref": "contracts/visual-implementation-result-v1.md",
+  "review_policy_notes": [
+    "Visual parity review is review_required, not blocked.",
+    "Use blocked for missing approved source, inaccessible project path, or unavailable required tool/dependency."
+  ],
+  "standalone_supported": true
+}
