@@ -108,6 +108,16 @@ Typical artifacts:
 
 Set `review_required: true` for visual parity evidence, major deviations, generated assets, implementation debt, or user-facing screenshots. This routes to review, not generic blocked.
 
+## Collaboration boundary
+
+- Upstream owner: PlanToDelivery/Javis provides the active slice, artifact refs, review policy, blocking policy, allowed side effects, and canonical state.
+- Upstream design source: IdeaToDesign provides approved visual sources, Visual IR, page matrices, and Level-3 handoff artifacts.
+- Upstream technical source: IdeaToTech provides implementation recipes, API/state/mock plans, dependency decisions, and verification expectations when the slice is not pure visual/static work.
+- DesignToCode must not reinterpret missing or stale design direction; recommend `visual_source_creation` or return `blocked` when approved source is absent.
+- DesignToCode must not make unresolved architecture/API decisions; recommend `technical_blueprint` or `implementation_planning` when those are required.
+- Provider output is advisory until PlanToDelivery ingests the manifest and records canonical state.
+- See `docs/provider-collaboration-v2.md` in the source repository for the full provider boundary.
+
 ## Gate discipline
 
 - Providers recommend; Javis/PlanToDelivery records canonical gates.

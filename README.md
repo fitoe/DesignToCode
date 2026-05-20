@@ -11,6 +11,14 @@ npx skills add fitoe/DesignToCode
 
 DesignToCode 是一个通用 Codex skill，用于把分段设计稿图片转成基于 UnoCSS 的高保真页面代码。
 
+## Javis / PlanToDelivery V2 provider mode
+
+DesignToCode 现在也是 Javis/Kanban V2 的 visual implementation provider kernel。它通过 `contracts/provider-manifest.json` 暴露：
+
+- `visual_implementation`
+
+在 provider mode 中，它只处理已批准的 visual/design handoff：approved visual source、Visual IR、page contract、Level-3 handoff 或技术计划引用。PlanToDelivery 负责 provider registry、canonical gates、review 和 progress；DesignToCode 负责当前 active slice 的代码、截图、parity evidence 和 debt。详细协作边界见 [docs/provider-collaboration-v2.md](docs/provider-collaboration-v2.md)。
+
 它适合处理结构清晰、视觉要求明确的图片转代码任务，重点是保留页面层次、背景关系、媒体语义和可维护的实现方式。
 
 ## 它能帮你做什么
@@ -213,6 +221,11 @@ npm run check-design-inputs -- path/to/design-to-code-inputs/manifest.json
 - 中文主文档：[README.md](README.md)
 - English README：[README.en.md](README.en.md)
 - skill 主规范：[skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
+- Provider manifest：[contracts/provider-manifest.json](contracts/provider-manifest.json)
+- visual implementation task contract：[contracts/visual-implementation-task-v1.md](contracts/visual-implementation-task-v1.md)
+- visual implementation result contract：[contracts/visual-implementation-result-v1.md](contracts/visual-implementation-result-v1.md)
+- V2 provider 协作边界：[docs/provider-collaboration-v2.md](docs/provider-collaboration-v2.md)
+- V2 provider 规划：[docs/superpowers/plans/2026-05-20-kanban-capable-provider.md](docs/superpowers/plans/2026-05-20-kanban-capable-provider.md)
 - 缺图补足规则：[skills/design-to-code/references/asset-fulfillment-pipeline.md](skills/design-to-code/references/asset-fulfillment-pipeline.md)
 - atlas 图集规则：[skills/design-to-code/references/asset-atlas-generation.md](skills/design-to-code/references/asset-atlas-generation.md)
 - 许可证：[LICENSE](LICENSE)
