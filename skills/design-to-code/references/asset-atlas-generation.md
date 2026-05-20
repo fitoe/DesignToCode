@@ -33,10 +33,11 @@ Forbidden final implementation patterns:
 - using percentages as crop definitions
 - stretching atlas fragments with arbitrary `background-size`
 - hiding wrong aspect ratios behind `object-fit` without recording accepted deviation
+- claiming the atlas is complete before independent crop files exist and are dimension-checked
 
 Allowed implementation pattern:
 
-- generate atlas → crop to independent `.webp`/`.png` files → use each file with explicit `width/height` or `aspect-ratio` → section screenshot verifies no stretch/crop pollution
+- generate atlas → save raw atlas locally → verify atlas readability/dimensions → crop to independent `.webp`/`.png` files → verify every crop path/dimension → use each file with explicit `width/height` or `aspect-ratio` → section screenshot verifies no stretch/crop pollution
 
 ## Atlas Plan
 
@@ -44,7 +45,10 @@ Record:
 
 - atlas source path
 - atlas generation prompt
+- raw generation URL/path, if any
+- saved local raw atlas path
 - atlas canvas pixel size and ratio
+- atlas verification result: exists, non-zero bytes, readable dimensions
 - each crop id
 - crop coordinates: `x`, `y`, `width`, `height`
 - safe padding around each block
@@ -54,6 +58,7 @@ Record:
 - intended aspect ratio
 - object-fit/object-position strategy
 - section and component that consumes the crop
+- crop verification result: exists, non-zero bytes, exact dimensions
 
 Use pixel coordinates only. Do not use percentages.
 
@@ -65,6 +70,7 @@ Use pixel coordinates only. Do not use percentages.
 - Keep enough spacing to avoid edge pollution between crops.
 - Ensure each crop has no text, logo, watermark, UI labels, certificate names, or button copy unless the approved source explicitly uses a photographic sign.
 - If a crop needs a text safe area, mark it and verify the crop after generation.
+- Preserve the raw atlas until final verification is complete; it is evidence and the source for repeat cropping.
 
 ## Role Decision Table
 
@@ -89,3 +95,14 @@ npm run validate-atlas -- --manifest path/to/asset-fulfillment-manifest.json
 `validate-atlas` checks source readability, crop bounds, output existence, and output dimensions.
 
 If project scripts do not exist, use a small local script but keep the same manifest fields and verification outputs.
+
+## Verification Checklist
+
+Before implementation or handoff:
+
+1. Raw atlas is saved locally and readable.
+2. Manifest crop coordinates are pixel-based and within atlas bounds.
+3. Every final crop exists as an independent file.
+4. Every crop has the expected dimensions/aspect ratio.
+5. Code references only final independent crop files, never the atlas sheet.
+6. Rendered section screenshot shows no neighboring-tile bleed, stretching, or wrong crop.

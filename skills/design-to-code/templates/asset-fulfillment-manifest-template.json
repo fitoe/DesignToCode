@@ -1,6 +1,13 @@
 {
-  "version": 1,
+  "version": 2,
   "page": "页面名称",
+  "approval": {
+    "required": true,
+    "previewDelivery": "MEDIA:/absolute/path/to/preview-or-source.png",
+    "approvedAt": null,
+    "approvedBy": null,
+    "note": "生成图须先保存本地、核对非空和尺寸，再作为媒体发给用户确认；确认后再转成最终项目资产。"
+  },
   "assets": [
     {
       "id": "hero-visual",
@@ -10,25 +17,65 @@
       "strategy": "single-generation",
       "displaySize": { "width": 560, "height": 420 },
       "pixelSize": { "width": 1120, "height": 840 },
+      "promptPath": "artifacts/prompts/hero-visual.md",
+      "rawSource": {
+        "url": null,
+        "localPath": "artifacts/generated/raw/hero-visual.png",
+        "verified": false,
+        "verification": {
+          "exists": false,
+          "nonZeroBytes": false,
+          "width": null,
+          "height": null,
+          "command": "identify -format '%w %h' artifacts/generated/raw/hero-visual.png"
+        }
+      },
       "outputPath": "src/assets/generated/hero-visual.webp",
+      "outputVerification": {
+        "exists": false,
+        "nonZeroBytes": false,
+        "width": 1120,
+        "height": 840,
+        "command": "identify -format '%w %h' src/assets/generated/hero-visual.webp"
+      },
       "status": "planned",
-      "note": "正式产品主视觉，不使用占位说明文字"
+      "note": "正式产品主视觉，不使用占位说明文字；代码只引用 outputPath。"
     }
   ],
   "atlases": [
     {
       "id": "card-visuals-atlas",
-      "sourcePath": "src/assets/generated/card-visuals-atlas.png",
+      "sourcePath": "artifacts/generated/raw/card-visuals-atlas.png",
+      "promptPath": "artifacts/prompts/card-visuals-atlas.md",
       "prompt": "中文说明：生成同一视觉家族的卡片图片图集，每块之间留出安全边距。",
       "canvasRatio": "4:3",
+      "canvasSize": { "width": 1600, "height": 1200 },
+      "verification": {
+        "exists": false,
+        "nonZeroBytes": false,
+        "width": 1600,
+        "height": 1200,
+        "command": "identify -format '%w %h' artifacts/generated/raw/card-visuals-atlas.png"
+      },
       "entries": [
         {
           "id": "card-visual-1",
           "crop": { "x": 32, "y": 32, "width": 320, "height": 240 },
+          "safePadding": 12,
           "displaySize": { "width": 160, "height": 120 },
+          "pixelSize": { "width": 320, "height": 240 },
           "outputPath": "src/assets/generated/card-visual-1.webp",
+          "objectFit": "cover",
+          "objectPosition": "center",
+          "verification": {
+            "exists": false,
+            "nonZeroBytes": false,
+            "width": 320,
+            "height": 240,
+            "command": "identify -format '%w %h' src/assets/generated/card-visual-1.webp"
+          },
           "status": "planned",
-          "note": "从 atlas 裁切，代码只引用独立文件"
+          "note": "从 atlas 裁切，代码只引用独立文件，不直接引用 atlas。"
         }
       ]
     }

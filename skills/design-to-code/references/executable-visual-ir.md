@@ -30,6 +30,15 @@ For each page:
   "viewport": { "width": 390, "height": 844, "dpr": 2 },
   "source_refs": ["project-state/design/references/board-02-mall-news-cases.png"],
   "source_crop": { "x": 0, "y": 0, "w": 390, "h": 844 },
+  "extraction_strategy": {
+    "level": "page-skeleton + section-executable",
+    "reason": "long/dense page; full-page pass preserves context, section crops provide component precision",
+    "coverage": [
+      { "kind": "full-page", "source": "project-state/design/references/full.png", "purpose": "section order + density" },
+      { "kind": "section-crop", "source": "project-state/design/references/crops/featured-case.png", "purpose": "card anatomy + asset role" }
+    ],
+    "known_precision_limits": ["small icon glyphs estimated", "lower-list repeated cards sampled from first two items"]
+  },
   "first_screen_density": "header + search + chips + featured card + 2.5 list cards + fixed tabbar",
   "must_not_substitute": [
     "real industry photos must not become CSS gradients or single-letter tiles",
@@ -39,6 +48,8 @@ For each page:
   "sections": []
 }
 ```
+
+Every IR should state its extraction strategy and known precision limits. If the IR was created only from a full-page image and the page is dense, treat it as a skeleton until section-critical crops are extracted.
 
 Each section must include:
 

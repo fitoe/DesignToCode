@@ -21,6 +21,17 @@
       "mock_status": "planned|in-use|replaced|not-needed",
       "asset_level": "A|B|C|D",
       "verification_level": "coverage|system|fidelity",
+      "visual_first_gate": {
+        "kanban_visual_card_id": "",
+        "phase": "visual-first",
+        "page_visual_ready": false,
+        "requires_user_or_orchestrator_acceptance": true,
+        "blocks_interaction_api_until_accepted": true,
+        "separate_interaction_api_card_required": true,
+        "accepted_at": null,
+        "accepted_by": null,
+        "remaining_visual_debt": []
+      },
       "open_debt_ids": []
     }
   ]

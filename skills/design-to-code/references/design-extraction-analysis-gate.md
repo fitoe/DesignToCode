@@ -55,6 +55,91 @@ Use section crops when:
 
 When section crops are used, merge them into one page IR before coding. Do not implement from only the first successful crop unless the scope is explicitly limited to that crop.
 
+## IR Precision Limits And Segmentation Policy
+
+Visual IR precision is limited by a combination of source resolution, page complexity, visual density, and model attention budget. It is not a fixed "maximum element count", but dense pages effectively exceed the useful attention budget before every element can be captured reliably.
+
+Use three extraction levels:
+
+1. `page-skeleton IR` — one full-page pass for section order, global layout, first-screen density, major tokens, and obvious assets. Use this even for long pages to avoid losing page context.
+2. `section-executable IR` — crop one section or viewport-height band when the full-page pass misses small text, icons, component roles, exact spacing, or layer structure.
+3. `component-critical IR` — crop a card/control/hero visual when fidelity depends on nested anatomy, generated asset boundaries, icon details, chart layers, or form/control behavior.
+
+Escalate from full-page to section/component crops when any of these red flags appear:
+
+- the IR says generic words like `cards`, `icons`, `metrics`, `list`, or `decorations` but does not enumerate visible roles;
+- small text, icon type, chip labels, separators, or nested card layers are omitted;
+- bbox/height/token estimates are obviously coarse or inconsistent with the source;
+- the page has many repeated components and the IR describes only the first pattern;
+- implementation from the IR would require guessing asset class, spacing, or anatomy;
+- a first implementation pass is structurally similar but visually unlike the source.
+
+Recommended operating rule:
+
+- simple page: full-page IR may be enough;
+- medium page: full-page skeleton + crops for the top 1-3 visually important sections;
+- long/dense page: full-page skeleton + per-section IR for every implementation slice;
+- high-stakes component: component-critical IR before coding that component.
+
+Do not try to force one giant IR to be perfectly exhaustive. Treat full-page extraction as context and coverage, then use section/component crops to reach implementation precision. After crop extraction, merge the results into a single page IR so cross-section spacing, navigation, and density remain coherent.
+
+## Speed-First Extraction Budget
+
+IR extraction must be calibrated by risk; do not make every page pay the full strict-fidelity cost up front.
+
+Default fast path:
+
+1. Run one page-skeleton extraction for the whole page.
+2. Classify sections by risk: `hero/above-fold`, `asset-heavy`, `interactive/control`, `repeated-pattern`, `low-risk/static`.
+3. Extract section-executable IR only for the top 1-3 risk sections before first implementation.
+4. For repeated sections, extract one representative component plus variant notes instead of every item.
+5. Implement a first pass from skeleton + high-risk section IR.
+6. Use screenshot diff to decide the next crop; crop only where the first pass has product-breaking visual gaps.
+
+Timebox guidance:
+
+- If extraction is slower than coding, stop after the skeleton + top-risk sections and implement a verifiable first pass.
+- Low-risk sections may use pattern-derived tokens from nearby extracted sections, but mark them `estimated` until screenshot review.
+- Do not crop every section preemptively unless the task explicitly requires strict L5 parity for the whole page.
+- Prefer reusable page/component contracts once a pattern is extracted; do not re-extract identical cards, tabs, or headers across pages.
+
+This keeps D2C fast while preserving escalation: only evidence of ambiguity or mismatch earns another crop.
+
+## Parallel Section IR And Implementation
+
+Yes: section IR extraction can run in parallel, and implementation can also be parallelized when file ownership is isolated. Use this to reduce wall-clock time, but only after the controller creates a page skeleton and a section contract.
+
+Safe parallel pattern:
+
+1. Controller extracts or defines page skeleton: section ids, source crop paths, viewport, shared tokens, route, target files, and integration order.
+2. Controller assigns each subagent one bounded section or component and a unique output artifact path, e.g. `project-state/design/visual-ir/<page>/<section>.json`.
+3. IR subagents do read-only extraction; they must not edit implementation files.
+4. Controller merges section IR files into one page IR, resolving shared tokens, vertical rhythm, and cross-section boundaries.
+5. Implementation subagents run in parallel only if they own different files/components/assets. If multiple sections share one page file, prefer one integrator agent or sequential patches to avoid merge conflicts.
+6. Controller performs final integration: section order, shared CSS tokens, route behavior, screenshot evidence, and parity/debt report.
+
+Parallelization matrix:
+
+| Work item | Parallel? | Guardrail |
+|---|---:|---|
+| section IR extraction | yes | one crop + one output JSON per agent |
+| asset prompt/fulfillment | yes | unique asset ids/paths; controller approves final assets |
+| independent components | yes | one component file per agent |
+| same page SFC/TSX/template edits | usually no | use one integrator to compose sections |
+| global styles/tokens | no | controller/integrator owns shared tokens |
+| final screenshot/parity report | limited | one controller pass for coherent evidence |
+
+Subagent prompt requirements:
+
+- include exact crop path or source bbox;
+- include page skeleton and neighboring section boundaries;
+- specify output schema/path;
+- forbid code edits for IR-only agents;
+- require confidence and `needs_component_crop` flags;
+- require estimated fields to be marked `estimated`, not asserted as measured.
+
+Do not let independent agents each invent their own spacing scale, typography scale, icon system, or asset strategy. Shared tokens come from the page skeleton or the controller merge.
+
 ## Minimum Pass Before Coding
 
 Before coding, the extracted IR must answer:

@@ -45,6 +45,12 @@ Expected task envelope fields:
 - `allowed_side_effects`
 - `review_policy`
 - `blocking_policy`
+- `kanban_constraints`:
+  - `required: true`
+  - `visual_card_id`
+  - `depends_on`
+  - `blocks_interaction_api_until_visual_accepted: true`
+  - `separate_interaction_api_card_required: true`
 
 Input priority:
 
@@ -72,6 +78,12 @@ Minimum fields:
   "blockers": [],
   "debts": [],
   "review_required": true,
+  "visual_acceptance": {
+    "page_visual_ready": false,
+    "accepted_by_user_or_orchestrator": false,
+    "remaining_visual_debt": [],
+    "interaction_api_unblocked": false
+  },
   "suggested_gate_updates": [],
   "next_recommended_task": null
 }
@@ -125,6 +137,28 @@ Set `review_required: true` for visual parity evidence, major deviations, genera
 - Do not claim design parity from DOM/text smoke alone.
 - Do not directly edit global execution progress unless the task explicitly authorizes it.
 - Skipped/waived checks must be labeled as `skipped` or `waived`, never `passed`.
+
+## Visual-first page acceptance kernel
+
+D2C's implementation order is **visual-first, page-by-page, Kanban-gated** across all targets: H5, web, admin, static sites, desktop-responsive pages, and componentized app pages.
+
+Default sequence:
+
+1. PlanToDelivery/Javis creates Kanban cards that separate visual implementation from interaction/API integration.
+2. D2C takes one page/card at a time and implements final-intent visual structure first: layout, section order, component anatomy, typography, spacing, density, assets, responsive behavior, and required visual states.
+3. The page uses local mock/fallback data until real data is part of the accepted integration slice.
+4. The page cannot move to interaction/API cards until its visual card has screenshot/evidence and is accepted, or the remaining visual debt is explicitly documented and waived by the orchestrator/user.
+5. Only after all pages in the visual batch are accepted should downstream cards wire shared interactions, navigation behavior, request helpers, API payloads, persistence, and integration tests.
+
+Required Kanban constraints:
+
+- Visual cards and interaction/API cards must be distinct unless the interaction state is required to judge the visual design.
+- A page visual card must end as `review_required` with evidence, not silently mark global completion.
+- Interaction/API cards must declare dependency on accepted visual cards.
+- If interface data reveals missing states that affect appearance, create or reopen a visual-state card instead of burying redesign inside API wiring.
+- The orchestrator records canonical gate transitions; D2C only returns result manifests and suggested gate updates.
+
+A page is visually ready only when the route renders with final visual hierarchy, stable local assets, key responsive states, representative data density, and screenshot/parity evidence. Route scaffolds, placeholder-looking pages, or DOM/text smoke are not visual acceptance.
 
 ## L5-first fidelity kernel
 

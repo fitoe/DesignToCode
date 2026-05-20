@@ -9,6 +9,18 @@
   "source_refs": [
     "docs/design/approved/source.png"
   ],
+  "extraction_strategy": {
+    "level": "page-skeleton | section-executable | component-critical | mixed",
+    "reason": "why this granularity is sufficient for the page complexity",
+    "coverage": [
+      {
+        "kind": "full-page",
+        "source": "docs/design/approved/source.png",
+        "purpose": "section order, density, global tokens"
+      }
+    ],
+    "known_precision_limits": []
+  },
   "tokens": {
     "container_width": "1280px",
     "page_background": "",
