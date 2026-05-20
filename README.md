@@ -1,232 +1,59 @@
 # DesignToCode
 
 [![Release](https://img.shields.io/github/v/release/fitoe/DesignToCode)](https://github.com/fitoe/DesignToCode/releases)
-![Topics](https://img.shields.io/badge/topics-agent--skills%20%C2%B7%20design--to--code%20%C2%B7%20unocss-blue)
+[![Skill](https://img.shields.io/badge/agent--skill-DesignToCode-f97316)](#)
+[![Provider](https://img.shields.io/badge/Javis%20%2F%20PlanToDelivery-Kanban%20Provider-0ea5e9)](#)
 
-安装：
+**DesignToCode turns approved visual sources into high-fidelity frontend implementation.**
+
+It is an agent skill for teams that care about visual parity, maintainable UI code, and evidence-based delivery. Instead of “make something similar,” DesignToCode asks for a confirmed visual handoff, writes an implementation brief, builds inside the target project, and verifies the result with screenshots.
+
+## Install
 
 ```bash
 npx skills add fitoe/DesignToCode
 ```
 
-DesignToCode 是一个通用 Codex skill，用于把分段设计稿图片转成基于 UnoCSS 的高保真页面代码。
+## Why it is useful
 
-## Javis / PlanToDelivery V2 provider mode
+- Convert sectioned screenshots or approved visual sources into frontend code.
+- Preserve layout hierarchy, spacing, media roles, and visual anchors.
+- Map designs onto the target project’s existing components and conventions.
+- Handle missing assets through explicit fulfillment strategies instead of placeholders.
+- Verify implementation with Playwright screenshots and parity reports.
 
-DesignToCode 现在也是 Javis/Kanban V2 的 visual implementation provider kernel。它通过 `contracts/provider-manifest.json` 暴露：
+## Kanban provider mode
+
+DesignToCode is a **Javis / PlanToDelivery V2 visual implementation provider**.
+
+Through `contracts/provider-manifest.json`, it exposes:
 
 - `visual_implementation`
 
-在 provider mode 中，它只处理已批准的 visual/design handoff：approved visual source、Visual IR、page contract、Level-3 handoff 或技术计划引用。PlanToDelivery 负责 provider registry、canonical gates、review 和 progress；DesignToCode 负责当前 active slice 的代码、截图、parity evidence 和 debt。详细协作边界见 [docs/provider-collaboration-v2.md](docs/provider-collaboration-v2.md)。
-
-它适合处理结构清晰、视觉要求明确的图片转代码任务，重点是保留页面层次、背景关系、媒体语义和可维护的实现方式。
-
-## 它能帮你做什么
-
-- 将按区块拆分的设计稿落成页面代码
-- 处理有明确层级、背景和内容关系的页面
-- 在生成代码前先得到可确认的实现说明
-- 在缺少图片资源时先规划补足策略，避免页面实现变乱
-- 用 Playwright 做区块级截图校验
-
-## 适用范围
-
-DesignToCode 适用于：
-
-- 按区块切分好的页面设计截图
-- 现有前端项目
-- 基于 UnoCSS 的新页面实现
-- 高保真落地页、营销页、dashboard、功能展示页
-
-DesignToCode 不适用于：
-
-- Figma 节点直接转代码
-- 后端或 API 生成
-- “照着这个随便做个类似的” 这类模糊需求
-- 最终输出为框架无关伪代码
-
-## 工作方式
-
-1. 读取按顺序排列的区块图片和说明。
-2. 检查当前项目，识别页面约定和可复用约束。
-3. 从仓库推断目标页面宽度，或回退到用户提供的 `pageWidth`。
-4. 按目标页面宽度缩放每个区块设计图。
-5. 分析区块结构、媒体角色、资源情况和实现风险。
-6. 缺少关键图片时，先输出 `Asset Fulfillment Plan`。
-7. 先对当前项目做 design system mapping pass。
-8. 输出强制性的 `Pre-Implementation Brief`。
-9. 等待用户确认。
-10. 按项目约定生成页面代码。
-11. 使用 Playwright 做页面和区块截图 diff。
-12. 对高保真任务执行至少一轮 repair loop。
-13. 输出分层 parity report：structure / proportion / style / detail。
-
-## Pre-Implementation Brief
-
-在真正生成代码前，skill 必须先输出：
-
-```md
-## Page Understanding
-## Fidelity Target
-## Source Inputs
-## Section Breakdown
-## Input Mode
-## Visual Anchors
-## Reuse Mapping
-## Media Role Decisions
-## Asset Fulfillment Plan
-## Asset Compression Plan
-## Normalized Measurements
-## Layout Implementation Plan
-## Framework/Output Plan
-## Accepted Deviations
-## Not Accepted Deviations
-## Known Ambiguities
-## Verification and Repair Plan
-```
-
-在用户确认这份 brief 之前，不应开始生成页面代码。
-
-## 项目判定
-
-DesignToCode 采用“项目优先”规则：
-
-- 先读取仓库中已有的页面、组件和约定
-- 生成与现有项目一致的页面输出
-- 仓库约定混合或不清晰时，停止并询问
-
-不会静默猜测项目约定。
-
-## 媒体与资源
-
-每个重要视觉媒体元素都要先判定为：
-
-- `background`
-- `content image`
-
-默认映射：
-
-- `background` -> CSS background
-- `content image` -> `<img>` 或 `<picture>`
-
-资源解析顺序固定为：
-
-- `provided original`
-- `project existing`
-- `crop fallback`
-- `css reproducible`
-- `unresolved`
-
-当图片资源缺失时，先按 `Asset Fulfillment` 策略处理：
-
-- `existing/crop`：使用已有资源或可靠裁切
-- `css/svg`：用 CSS、SVG 或组件实现简单视觉
-- `single-generation`：为 hero、产品、人像、复杂插画单独生成
-- `atlas-generation`：为 2-8 张同类 bitmap 生成图集再按坐标裁切
-- `formal-fallback`：使用正式可上线的 fallback，不写占位说明文字
-
-图集只用于多张同类小/中型 bitmap。代码只能引用裁切后的独立文件，不能引用 atlas 大图。
-
-位图资源需要遵循基于角色的压缩规则。新增大图在合入前应先经过扫描检查；fallback 和 exemption 情况必须显式记录。
-
-如果关键视觉角色或关键资源存在歧义，skill 必须先停下来问，而不是猜。
-
-## 资源工具
-
-仓库内包含轻量资源工具：
-
-```bash
-npm run scan-assets
-npm run optimize-assets -- --input assets/example.png --write
-npm run crop-atlas -- --manifest path/to/asset-fulfillment-manifest.json
-npm run validate-atlas -- --manifest path/to/asset-fulfillment-manifest.json
-npm run check-design-inputs -- path/to/design-to-code-inputs/manifest.json
-```
-
-使用建议：
-
-- `scan-assets`：检查图片尺寸、格式和角色策略
-- `optimize-assets`：将选定图片转为合适的 WebP 资源
-- `crop-atlas`：从 atlas 大图按像素坐标裁切独立图片
-- `validate-atlas`：检查 atlas 坐标越界、输出缺失和尺寸不匹配
-- `check-design-inputs`：检查 manifest、页面裁切图、section 裁切图和 pre-implementation brief 是否齐全
-
-缺图补足的推荐时机是：先在 `Pre-Implementation Brief` 阶段整体盘点，再按策略批处理；不要写代码时遇到一张缺一张再临时生成。
-
-## 输入格式
-
-推荐输入格式：
+When orchestrated by PlanToDelivery, DesignToCode only works on approved handoffs: visual source, Visual IR, page contract, Level-3 design package, or technical plan references. PlanToDelivery owns canonical Kanban gates, review, provider routing, and progress; DesignToCode owns the active implementation slice, screenshots, parity evidence, and debt report.
 
 ```text
-目标：页面用途
-
-全局要求：
-- 目标项目：现有项目 / 新页面
-- pageWidth：1440
-- 风格关键词：...
-- 允许近似项：...
-
-区块 1：
-- 名称：hero
-- 图片：/path/hero.png
-- 说明：首屏，左文右图
-- 必须出现文案：...
-- 交互要求：按钮 hover
-- 不能错的点：标题换行、主 CTA 层级
-- 媒体说明：背景有渐变纹理；右侧是内容主图
+approved design handoff -> DesignToCode -> code + screenshot evidence
+                 ^
+                 |
+        PlanToDelivery Kanban gates
 ```
 
-## 验证方式
+## What is inside
 
-主验证方式是 Playwright 区块级截图 diff：
+- `skills/design-to-code/SKILL.md` — the runtime skill kernel
+- `contracts/` — provider and visual implementation contracts
+- `docs/provider-collaboration-v2.md` — cross-provider boundaries
+- asset tools for scanning, optimizing, atlas cropping, and design-input validation
 
-- 通过 `data-section` 锚点锁定区块
-- 将渲染结果与缩放后的区块参考图对比
-- 只容忍轻微字体渲染噪声
+## Best fit
 
-验证拆成三层：
+- marketing pages
+- landing pages
+- dashboards
+- product feature pages
+- high-fidelity UI rebuilds from approved visual references
 
-- structure checks
-- visual checks
-- reuse checks
+## Design philosophy
 
-结构层面的 smoke check 包括：
-
-- 不允许横向溢出
-- 不允许明显文字重叠
-- 不允许图片变形
-- 不允许关键区块内容丢失
-- 不允许主 CTA 不可见
-
-## 强制停止条件
-
-以下情况必须停止并追问：
-
-- 目标页面宽度无法确定
-- 必需文案无法识别且用户未提供
-- 关键视觉的媒体角色存在歧义
-- 关键资源缺失且截图裁切也无法可靠替代
-- 核心布局关系无法安全推断
-- 关键图片缺失且没有确认的补足策略
-- 用户尚未确认 `Pre-Implementation Brief`
-
-## 当前状态
-
-当前仓库已包含 skill 规范和参考文档。
-
-当前已包含资源扫描、压缩、atlas 裁切和 atlas 校验脚本。还未包含端到端示例运行结果。
-
-## 相关文件
-
-- 中文主文档：[README.md](README.md)
-- English README：[README.en.md](README.en.md)
-- skill 主规范：[skills/design-to-code/SKILL.md](skills/design-to-code/SKILL.md)
-- Provider manifest：[contracts/provider-manifest.json](contracts/provider-manifest.json)
-- visual implementation task contract：[contracts/visual-implementation-task-v1.md](contracts/visual-implementation-task-v1.md)
-- visual implementation result contract：[contracts/visual-implementation-result-v1.md](contracts/visual-implementation-result-v1.md)
-- V2 provider 协作边界：[docs/provider-collaboration-v2.md](docs/provider-collaboration-v2.md)
-- V2 provider 规划：[docs/superpowers/plans/2026-05-20-kanban-capable-provider.md](docs/superpowers/plans/2026-05-20-kanban-capable-provider.md)
-- 缺图补足规则：[skills/design-to-code/references/asset-fulfillment-pipeline.md](skills/design-to-code/references/asset-fulfillment-pipeline.md)
-- atlas 图集规则：[skills/design-to-code/references/asset-atlas-generation.md](skills/design-to-code/references/asset-atlas-generation.md)
-- 许可证：[LICENSE](LICENSE)
-- 发布记录：[RELEASE_NOTES.md](RELEASE_NOTES.md)
+DesignToCode is not a Figma-node-to-code exporter. It is a disciplined visual implementation workflow for agentic development: understand first, brief before coding, implement inside the real project, then prove parity with evidence.
