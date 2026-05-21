@@ -25,6 +25,7 @@
   "verification_policy": {
     "mode": "trust-first-checkpoint-based",
     "active_editing": "do not run command-driven verification unless a concrete failure signal appears",
+    "kanban_gate_authority": "stage-admission gates unlock only through Hermes Kanban review/approval cards and dependencies; this blueprint may only recommend gates",
     "stage_gate_commands": ["full lint", "full type-check", "full build", "broad regression", "broad E2E"],
     "stage_gate_moments": ["pass completion", "core fidelity checkpoint", "handoff", "merge readiness", "release readiness"],
     "early_escalation_triggers": ["dependency or lockfile change", "build/bundler/lint/test/typescript config change", "shared type/public API/routing contract change", "auth/permission/payment/security/privacy/data mutation/schema/migration/persistence change", "broad cross-module refactor"],

@@ -133,6 +133,8 @@ Set `review_required: true` for visual parity evidence, major deviations, genera
 ## Gate discipline
 
 - Providers recommend; Javis/PlanToDelivery records canonical gates.
+- D2C must not create, complete, approve, or unlock Hermes Kanban stage Gates directly. In P2D mode it may only return `kanban-capability-result/v1` evidence plus `suggested_kanban_updates`; the orchestrator decides and applies concrete Kanban card/link/review transitions.
+- If a D2C slice discovers that another page family, visual state, asset, interaction, API, or release step needs a Gate before downstream work starts, report it as a suggested Kanban update with required evidence and dependency target; do not silently continue into the downstream phase.
 - Do not mark global implementation or visual gates passed.
 - Do not claim design parity from DOM/text smoke alone.
 - Do not directly edit global execution progress unless the task explicitly authorizes it.
@@ -152,11 +154,13 @@ Default sequence:
 
 Required Kanban constraints:
 
+- Stage-admission Gates are Kanban-owned: if a visual batch/page/card decides whether downstream interaction/API/release work may start, the downstream card must depend on an accepted Hermes Kanban review/approval card, not on D2C prose, local manifests, or screenshot files alone.
 - Visual cards and interaction/API cards must be distinct unless the interaction state is required to judge the visual design.
 - A page visual card must end as `review_required` with evidence, not silently mark global completion.
 - Interaction/API cards must declare dependency on accepted visual cards.
 - If interface data reveals missing states that affect appearance, create or reopen a visual-state card instead of burying redesign inside API wiring.
 - The orchestrator records canonical gate transitions; D2C only returns result manifests and suggested gate updates.
+- D2C suggestions must include the proposed Gate/card title, dependency target, required approval artifact, and reason the Gate affects downstream start; they are not authoritative until Javis records them in Hermes Kanban.
 
 A page is visually ready only when the route renders with final visual hierarchy, stable local assets, key responsive states, representative data density, and screenshot/parity evidence. Route scaffolds, placeholder-looking pages, or DOM/text smoke are not visual acceptance.
 
