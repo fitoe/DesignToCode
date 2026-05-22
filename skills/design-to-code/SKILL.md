@@ -84,7 +84,7 @@ Minimum fields:
     "remaining_visual_debt": [],
     "interaction_api_unblocked": false
   },
-  "suggested_gate_updates": [],
+  "suggested_kanban_updates": [],
   "next_recommended_task": null
 }
 ```
@@ -151,10 +151,23 @@ Before any code edit in P2D mode, verify all of the following inputs are present
 3. capability is `visual_implementation`;
 4. current Hermes Kanban card is claimed/running for that task;
 5. `output_root` is defined and result manifest path will be `output_root/result-manifest.json`;
-6. approved visual source artifact is listed in `input_artifact_refs`;
-7. page contract/pass criteria are in the envelope, digest, or referenced artifacts.
+6. approved visual source artifact is listed in `input_artifact_refs` and `visual_contract.approved_visual_source`;
+7. page contract target pages and visual pass criteria are in the envelope, digest, or referenced artifacts;
+8. expected outputs include screenshot/parity/diff/comparison evidence and `result-manifest.json`;
+9. allowed side effects explicitly cover implementation edits and evidence writes.
 
-Run the provider-side admission check when available, such as `plantodelivery.provider_guard.validate_provider_execution_context(...)` or the project's `p2d_enforce.py claim`/backend claim path. If the check cannot be run or any required item is missing, return a `blocked` result naming the missing artifact/check. Do not modify implementation files first and do not downgrade this to a best-effort visual polish pass.
+Run the local admission guard when available:
+
+```bash
+python3 skills/design-to-code/scripts/check-provider-context.py \
+  --task "$OUTPUT_ROOT/task-envelope.json" \
+  --digest "$OUTPUT_ROOT/active-slice-digest.json" \
+  --card-status "$OUTPUT_ROOT/card-status.json"
+```
+
+`--skip-running-check` is only for local contract tests or isolated dry-runs. In real PlanToDelivery/Hermes Kanban orchestration, missing running-card proof is a blocker.
+
+If the guard cannot be run or any required item is missing, return a `blocked` result naming the missing artifact/check. Do not modify implementation files first and do not downgrade this to a best-effort visual polish pass.
 
 A session `todo` item may track local progress, but it is never evidence that D2C is admitted to edit code under P2D.
 

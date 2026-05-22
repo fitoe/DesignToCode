@@ -9,9 +9,55 @@
     "visual_implementation": "contracts/visual-implementation-task-v1.md"
   },
   "result_schema_ref": "contracts/visual-implementation-result-v1.md",
+  "admission_contract": {
+    "task_schema": "kanban-capability-task/v1",
+    "active_slice_digest_schema": "active-slice-digest/v1",
+    "result_schema": "kanban-capability-result/v1",
+    "result_manifest_path": "output_root/result-manifest.json",
+    "local_checker": "skills/design-to-code/scripts/check-provider-context.py",
+    "required_checks": [
+      "running_card_required",
+      "task_envelope_schema",
+      "active_slice_digest_schema",
+      "task_id_match",
+      "capability_match",
+      "output_root_result_manifest_path",
+      "allowed_side_effects_present",
+      "expected_outputs_present",
+      "approved_visual_source_required",
+      "page_contract_required",
+      "visual_pass_criteria_required",
+      "screenshot_or_parity_evidence_required",
+      "result_manifest_schema_when_present"
+    ],
+    "required_task_fields": [
+      "schema",
+      "task_id",
+      "capability",
+      "project_root",
+      "active_slice",
+      "input_artifact_refs",
+      "output_root",
+      "expected_outputs",
+      "verification_expectations",
+      "allowed_side_effects",
+      "review_policy",
+      "blocking_policy",
+      "visual_contract",
+      "kanban_constraints"
+    ]
+  },
+  "result_semantics": {
+    "completed": "Implementation code and visual evidence were produced for the active slice and are ready for orchestrator/user visual review.",
+    "partial": "Useful implementation/evidence was produced, but named visual states, assets, parity gaps, or checks remain.",
+    "blocked": "Approved visual source, page contract, target project/route, asset/tool/runtime access, or non-waivable product/technical input is missing.",
+    "failed": "No usable implementation slice was produced; include cause and recovery recommendation."
+  },
   "review_policy_notes": [
     "Visual parity review is review_required, not blocked.",
-    "Use blocked for missing approved source, inaccessible project path, or unavailable required tool/dependency."
+    "Use blocked for missing approved source, missing page contract/pass criteria, inaccessible project path, unavailable required tool/dependency, or unsafe side effect scope.",
+    "Implementation screenshots are evidence, not authoritative design sources.",
+    "DesignToCode may suggest Kanban updates, but PlanToDelivery records canonical gates and unlocks downstream interaction/API work."
   ],
   "standalone_supported": true
 }
