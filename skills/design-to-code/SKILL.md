@@ -140,6 +140,35 @@ Set `review_required: true` for visual parity evidence, major deviations, genera
 - Do not directly edit global execution progress unless the task explicitly authorizes it.
 - Skipped/waived checks must be labeled as `skipped` or `waived`, never `passed`.
 
+## P2D admission guard
+
+When invoked from PlanToDelivery/Javis/P2D/Hermes Kanban, DesignToCode must not begin implementation from chat history, restored TODOs, screenshots in the conversation, or an informal `继续` instruction alone.
+
+Before any code edit in P2D mode, verify all of the following inputs are present and consistent:
+
+1. `kanban-capability-task/v1` task envelope path;
+2. `active-slice-digest/v1` path whose provenance matches the task envelope;
+3. capability is `visual_implementation`;
+4. current Hermes Kanban card is claimed/running for that task;
+5. `output_root` is defined and result manifest path will be `output_root/result-manifest.json`;
+6. approved visual source artifact is listed in `input_artifact_refs`;
+7. page contract/pass criteria are in the envelope, digest, or referenced artifacts.
+
+Run the provider-side admission check when available, such as `plantodelivery.provider_guard.validate_provider_execution_context(...)` or the project's `p2d_enforce.py claim`/backend claim path. If the check cannot be run or any required item is missing, return a `blocked` result naming the missing artifact/check. Do not modify implementation files first and do not downgrade this to a best-effort visual polish pass.
+
+A session `todo` item may track local progress, but it is never evidence that D2C is admitted to edit code under P2D.
+
+## Visual source and IR preflight
+
+Before implementing from an approved design image, D2C must complete the extraction gate:
+
+- extract or load page-skeleton Visual IR for the whole approved source;
+- extract section/component IR for the top-risk areas before the first serious pass when the source is dense, asset-heavy, or the prior implementation looked visually unlike the source;
+- freeze a page contract: source path, route, viewports, section order, first-screen density, asset roles, must-not-substitute rules, and pass criteria;
+- write these artifacts under the task `output_root` or project-approved `project-state/implementation`/`project-state/design/visual-ir` paths.
+
+If the approved visual source exists but no executable IR/page contract exists yet, create those artifacts first. If the task does not authorize writing those artifacts, return `blocked` rather than coding from visual impression.
+
 ## Visual-first page acceptance kernel
 
 D2C's implementation order is **visual-first, page-by-page, Kanban-gated** across all targets: H5, web, admin, static sites, desktop-responsive pages, and componentized app pages.
