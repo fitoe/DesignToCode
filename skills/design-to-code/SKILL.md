@@ -183,6 +183,18 @@ Allowed exceptions must be explicit: route-coverage spikes, technical proof-of-c
 
 ## Product-state checks
 
+## Visual-source vs screenshot-evidence boundary
+
+- DesignToCode consumes approved design sources; it does not create authoritative design images.
+- User-facing “设计图 / 视觉源 / 视觉板 / 设计稿 / mockup” artifacts must come from the upstream design provider using GPT Image2/image generation and be labeled as `design_source`.
+- When consuming generated design sources from `idea-to-design`, check whether homepage, landing-page, brand-defining, or key visual approval images were produced with the High-Quality Visual Prompt Protocol. Expected companion artifacts may include Prompt Brief Card, Design DNA Card, Content Evidence Ledger, One Memorable Move, Page Narrative Map, Domain Risk Pack, Final Image Prompt, and a manifest. Use these artifacts to preserve visual DNA, typography/spacing intent, content boundaries, domain risk constraints, and the one memorable move during implementation. Do not reinterpret the generated source in ways that violate the Content Evidence Ledger, factual-safety constraints, or domain risk pack.
+- Expected GPT Image2 quality tiers: homepage/landing-page hero and other final/key approval visuals should be generated with `gpt-image-2-high`; ordinary secondary pages and most follow-up page batches may use `gpt-image-2-medium`. Treat `gpt-image-2-low` approval sources as suspect unless explicitly marked as rough private drafts; if quality looks degraded, ask the design provider to regenerate the homepage/key board at high or secondary pages at medium before coding from it.
+- For generated design approval images, delivery should be immediate after `image_generate` succeeds and the file is saved/copied to a stable artifact path. Do not add `vision_analyze`, OCR, or recognition checks before sending the generated image to the user unless the user explicitly requests inspection, a tool/runtime error occurs, the file is missing/empty, or the active task is verification rather than design delivery. Cheap file existence/size/dimension checks are acceptable.
+- Approved design sources must contain complete, decisionable page/screen states; they may be single-page images or flexible boards. Acceptable examples include one complete homepage/key page, two complete secondary desktop pages side-by-side, or up to about three complete mobile/H5 phone pages/states in one readable board. A contact sheet with cropped/half-page previews is not sufficient as the only design source for implementation; request complete generated sources from `idea-to-design` before claiming visual parity.
+- Local browser screenshots, Playwright captures, built-route screenshots, and coded HTML previews are only `implementation_screenshot` or `verification_evidence`; they must not be presented as design drawings or used to replace missing GPT Image2 design sources.
+- If a task lacks a GPT Image2/generated design source and asks for design approval, return `blocked` or recommend `visual_source_creation` via `idea-to-design` rather than sending local screenshots as the design.
+- Side-by-side comparisons are allowed only when roles are explicit: left/design source = GPT Image2/generated or approved design artifact; right/live = local implementation screenshot.
+
 Before calling a slice product-ready, verify or explicitly waive relevant states:
 
 - loading, empty, error, fallback data
